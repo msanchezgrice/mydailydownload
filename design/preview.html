@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>My Daily Download — Design System Preview</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<style>
+  :root{
+    --bg-void:#0B0C10; --bg-surface:#14171D; --bg-elevated:#1A1D23;
+    --accent:#F2A900; --accent-hover:#D49500; --accent-glow:rgba(242,169,0,.30);
+    --text-primary:#E6E8EE; --text-muted:#8A91A0; --border-subtle:rgba(255,255,255,.08);
+    --success:#3FB950; --error:#F85149; --info:#58A6FF;
+    --radius-sm:6px; --radius-md:10px; --radius-lg:16px;
+    --font-sans:'Inter',system-ui,-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;
+    --font-mono:'JetBrains Mono',ui-monospace,monospace;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{
+    background:var(--bg-void); color:var(--text-primary);
+    font-family:var(--font-sans); -webkit-font-smoothing:antialiased;
+    line-height:1.6; padding:48px 24px 96px;
+  }
+  .wrap{max-width:960px; margin:0 auto;}
+  .section{margin-top:64px;}
+  .section:first-of-type{margin-top:0;}
+  .section-label{
+    font-size:11px; font-weight:600; text-transform:uppercase;
+    letter-spacing:.08em; color:var(--accent); margin-bottom:14px;
+  }
+  h2.heading{font-size:28px; font-weight:600; margin-bottom:6px; letter-spacing:-.01em;}
+  .sub{color:var(--text-muted); font-size:14px; margin-bottom:24px;}
+  hr.rule{border:0; border-top:1px solid var(--border-subtle); margin:0;}
+
+  /* ---- Wordmark ---- */
+  .brandbar{display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:24px;}
+  .wordmark{display:flex; align-items:center; gap:12px;}
+  .dot{
+    width:11px; height:11px; border-radius:50%; background:var(--accent);
+    box-shadow:0 0 0 6px var(--accent-glow); animation:pulse 2.4s ease-in-out infinite;
+  }
+  @keyframes pulse{0%,100%{box-shadow:0 0 0 4px var(--accent-glow);}50%{box-shadow:0 0 0 9px rgba(242,169,0,.10);}}
+  @media (prefers-reduced-motion:reduce){.dot{animation:none;}}
+  .wordmark .name{font-size:26px; font-weight:600; letter-spacing:-.015em;}
+  .wordmark .name b{color:var(--accent); font-weight:600;}
+  .tag{color:var(--text-muted); font-size:13px; max-width:300px;}
+
+  /* ---- Swatches ---- */
+  .swatches{display:grid; grid-template-columns:repeat(auto-fill,minmax(150px,1fr)); gap:14px;}
+  .swatch{
+    background:var(--bg-surface); border:1px solid var(--border-subtle);
+    border-radius:var(--radius-md); overflow:hidden;
+  }
+  .swatch .chip{height:64px;}
+  .swatch .meta{padding:10px 12px;}
+  .swatch .role{font-size:12px; font-weight:600; color:var(--text-primary);}
+  .swatch .hex{font-family:var(--font-mono); font-size:11px; color:var(--text-muted); margin-top:3px; text-transform:uppercase;}
+  .swatch.bordered .chip{border-bottom:1px solid var(--border-subtle);}
+
+  /* ---- Type scale ---- */
+  .type-row{display:flex; align-items:baseline; gap:20px; padding:12px 0; border-bottom:1px solid var(--border-subtle);}
+  .type-row:last-child{border-bottom:0;}
+  .type-meta{flex:0 0 130px; font-family:var(--font-mono); font-size:11px; color:var(--text-muted);}
+  .type-sample{flex:1; min-width:0; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;}
+  .t-display{font-size:48px; font-weight:700; line-height:1.1; letter-spacing:-.02em;}
+  .t-h1{font-size:36px; font-weight:700; line-height:1.15;}
+  .t-h2{font-size:28px; font-weight:600;}
+  .t-h3{font-size:22px; font-weight:600;}
+  .t-h4{font-size:18px; font-weight:600;}
+  .t-bodylg{font-size:16px; font-weight:400;}
+  .t-body{font-size:14px; font-weight:400;}
+  .t-small{font-size:13px; font-weight:400; color:var(--text-muted);}
+  .t-label{font-size:11px; font-weight:600; text-transform:uppercase; letter-spacing:.08em; color:var(--accent);}
+  .t-mono{font-family:var(--font-mono); font-size:14px;}
+
+  /* ---- Components ---- */
+  .grid2{display:grid; grid-template-columns:1fr 1fr; gap:24px;}
+  @media(max-width:720px){.grid2{grid-template-columns:1fr;}}
+  .btn{
+    font-family:var(--font-sans); font-size:14px; font-weight:600;
+    padding:12px 20px; border-radius:var(--radius-md); border:1px solid transparent;
+    cursor:pointer; transition:all .15s ease; display:inline-flex; align-items:center; gap:8px;
+  }
+  .btn:focus-visible{outline:none; box-shadow:0 0 0 3px var(--accent-glow);}
+  .btn-primary{background:var(--accent); color:var(--bg-void);}
+  .btn-primary:hover{background:var(--accent-hover);}
+  .btn-secondary{background:transparent; color:var(--text-primary); border-color:var(--border-subtle);}
+  .btn-secondary:hover{background:var(--bg-elevated);}
+  .btn-ghost{background:transparent; color:var(--text-muted);}
+  .btn-ghost:hover{color:var(--text-primary);}
+  .btnrow{display:flex; gap:12px; flex-wrap:wrap; align-items:center;}
+
+  .card{
+    background:var(--bg-surface); border:1px solid var(--border-subtle);
+    border-radius:var(--radius-md); padding:24px; transition:all .15s ease;
+  }
+  .card:hover{border-color:rgba(242,169,0,.4); transform:translateY(-2px);}
+  .card h3{font-size:22px; font-weight:600; margin-bottom:8px;}
+  .card p{font-size:14px; color:var(--text-muted);}
+  .card .src{display:inline-block; margin-top:14px; color:var(--accent); font-size:13px; text-decoration:none; font-weight:500;}
+
+  .input{
+    width:100%; background:var(--bg-elevated); border:1px solid var(--border-subtle);
+    border-radius:var(--radius-sm); padding:12px 14px; color:var(--text-primary);
+    font-family:var(--font-sans); font-size:14px;
+  }
+  .input::placeholder{color:var(--text-muted);}
+  .input:focus{outline:none; border-color:var(--accent); box-shadow:0 0 0 3px var(--accent-glow);}
+  .field-label{font-size:12px; color:var(--text-muted); margin-bottom:8px; display:block;}
+
+  .badges{display:flex; gap:10px; flex-wrap:wrap;}
+  .badge{font-size:11px; font-weight:600; padding:4px 10px; border-radius:999px;}
+  .badge-default{background:var(--bg-elevated); color:var(--text-muted);}
+  .badge-accent{background:rgba(242,169,0,.12); color:var(--accent);}
+  .badge-success{background:rgba(63,185,80,.12); color:var(--success);}
+  .badge-error{background:rgba(248,81,73,.12); color:var(--error);}
+
+  /* ---- Mini email header ---- */
+  .email-mock{max-width:560px; border-radius:var(--radius-md); overflow:hidden; border:1px solid var(--border-subtle); background:#fff;}
+  .em-header{background:#0B0C10; padding:24px 32px; text-align:center;}
+  .em-header .em-word{color:#F2A900; font-size:20px; font-weight:700; letter-spacing:-.01em;}
+  .em-header .em-sub{color:#7A8194; font-size:13px; margin-top:6px;}
+  .em-body{padding:28px 32px; font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;}
+  .em-greeting{font-size:14px; color:#1A1D23; margin-bottom:22px;}
+  .em-label{font-size:11px; font-weight:600; text-transform:uppercase; letter-spacing:.08em; color:#F2A900; margin-bottom:8px;}
+  .em-story h4{font-size:18px; color:#1A1D23; line-height:1.4; margin-bottom:10px;}
+  .em-story p{font-size:14px; color:#555; line-height:1.7;}
+  .em-story a{color:#F2A900; text-decoration:none; font-weight:600;}
+  .em-tool{background:#FFF8E7; border-left:3px solid #F2A900; border-radius:0 8px 8px 0; padding:16px; margin:22px 0;}
+  .em-tool .nm{font-size:15px; font-weight:600; color:#1A1D23; margin-bottom:4px;}
+  .em-tool .ds{font-size:13px; color:#555; line-height:1.6;}
+  .em-stats{display:table; width:100%; margin-top:4px;}
+  .em-stat{display:table-cell; width:50%; text-align:center; padding:16px; background:#F8F9FA;}
+  .em-stat:first-child{border-radius:8px 0 0 8px; border-right:4px solid #fff;}
+  .em-stat:last-child{border-radius:0 8px 8px 0;}
+  .em-stat .v{font-size:28px; font-weight:700; color:#F2A900;}
+  .em-stat .l{font-size:11px; color:#555; margin-top:4px;}
+
+  .foot{margin-top:80px; padding-top:24px; border-top:1px solid var(--border-subtle); color:var(--text-muted); font-size:12px; text-align:center;}
+  .foot b{color:var(--accent); font-weight:600;}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <!-- WORDMARK -->
+  <div class="brandbar">
+    <div class="wordmark">
+      <span class="dot" title="signal dot"></span>
+      <span class="name">My Daily <b>Download</b></span>
+    </div>
+    <div class="tag">AI news that actually matters to your career.<br />Every item cites a real source.</div>
+  </div>
+  <hr class="rule" style="margin-top:32px;" />
+
+  <!-- COLOR PALETTE -->
+  <div class="section">
+    <div class="section-label">Color System</div>
+    <h2 class="heading">Palette</h2>
+    <p class="sub">Dark-first void shell · amber accent · light email-body tokens.</p>
+
+    <div class="section-label" style="margin-top:8px;">Surfaces &amp; Text (web / app)</div>
+    <div class="swatches">
+      <div class="swatch bordered"><div class="chip" style="background:#0B0C10;"></div><div class="meta"><div class="role">Void · bg</div><div class="hex">#0B0C10</div></div></div>
+      <div class="swatch bordered"><div class="chip" style="background:#14171D;"></div><div class="meta"><div class="role">Surface · cards</div><div class="hex">#14171D</div></div></div>
+      <div class="swatch bordered"><div class="chip" style="background:#1A1D23;"></div><div class="meta"><div class="role">Elevated · inputs</div><div class="hex">#1A1D23</div></div></div>
+      <div class="swatch"><div class="chip" style="background:#E6E8EE;"></div><div class="meta"><div class="role">Mist · text</div><div class="hex">#E6E8EE</div></div></div>
+      <div class="swatch"><div class="chip" style="background:#8A91A0;"></div><div class="meta"><div class="role">Slate · muted</div><div class="hex">#8A91A0</div></div></div>
+      <div class="swatch bordered"><div class="chip" style="background:rgba(255,255,255,.08);"></div><div class="meta"><div class="role">Border · hairline</div><div class="hex">rgba(255,255,255,.08)</div></div></div>
+    </div>
+
+    <div class="section-label" style="margin-top:24px;">Accent &amp; Status</div>
+    <div class="swatches">
+      <div class="swatch"><div class="chip" style="background:#F2A900;"></div><div class="meta"><div class="role">Amber · brand</div><div class="hex">#F2A900</div></div></div>
+      <div class="swatch"><div class="chip" style="background:#D49500;"></div><div class="meta"><div class="role">Amber · hover</div><div class="hex">#D49500</div></div></div>
+      <div class="swatch"><div class="chip" style="background:#3FB950;"></div><div class="meta"><div class="role">Success</div><div class="hex">#3FB950</div></div></div>
+      <div class="swatch"><div class="chip" style="background:#F85149;"></div><div class="meta"><div class="role">Error</div><div class="hex">#F85149</div></div></div>
+      <div class="swatch"><div class="chip" style="background:#58A6FF;"></div><div class="meta"><div class="role">Info</div><div class="hex">#58A6FF</div></div></div>
+    </div>
+
+    <div class="section-label" style="margin-top:24px;">Email Body (light · production-tuned)</div>
+    <div class="swatches">
+      <div class="swatch bordered"><div class="chip" style="background:#FFFFFF;"></div><div class="meta"><div class="role">Content</div><div class="hex">#FFFFFF</div></div></div>
+      <div class="swatch bordered"><div class="chip" style="background:#FFF8E7;"></div><div class="meta"><div class="role">Tool-box tint</div><div class="hex">#FFF8E7</div></div></div>
+      <div class="swatch bordered"><div class="chip" style="background:#F8F9FA;"></div><div class="meta"><div class="role">Panel</div><div class="hex">#F8F9FA</div></div></div>
+      <div class="swatch"><div class="chip" style="background:#1A1D23;"></div><div class="meta"><div class="role">Ink · headings</div><div class="hex">#1A1D23</div></div></div>
+      <div class="swatch"><div class="chip" style="background:#555555;"></div><div class="meta"><div class="role">Body text</div><div class="hex">#555555</div></div></div>
+      <div class="swatch"><div class="chip" style="background:#7A8194;"></div><div class="meta"><div class="role">Meta</div><div class="hex">#7A8194</div></div></div>
+    </div>
+  </div>
+
+  <!-- TYPE SCALE -->
+  <div class="section">
+    <div class="section-label">Typography</div>
+    <h2 class="heading">Type Scale</h2>
+    <p class="sub">Inter (UI &amp; headings) · JetBrains Mono (prompts &amp; code).</p>
+    <div class="card" style="padding:8px 24px;">
+      <div class="type-row"><div class="type-meta">display · 48/700</div><div class="type-sample t-display">Your daily download</div></div>
+      <div class="type-row"><div class="type-meta">h1 · 36/700</div><div class="type-sample t-h1">AI that matters to your career</div></div>
+      <div class="type-row"><div class="type-meta">h2 · 28/600</div><div class="type-sample t-h2">Personalized to your role</div></div>
+      <div class="type-row"><div class="type-meta">h3 · 22/600</div><div class="type-sample t-h3">The Big Story, for you</div></div>
+      <div class="type-row"><div class="type-meta">h4 · 18/600</div><div class="type-sample t-h4">Tool of the day spotlight</div></div>
+      <div class="type-row"><div class="type-meta">body-lg · 16/1.7</div><div class="type-sample t-bodylg">A sharp colleague who already read everything this morning.</div></div>
+      <div class="type-row"><div class="type-meta">body · 14/1.65</div><div class="type-sample t-body">The three things that matter to your job today, with sources.</div></div>
+      <div class="type-row"><div class="type-meta">small · 13/1.6</div><div class="type-sample t-small">Meta, captions, and footnotes sit at thirteen pixels.</div></div>
+      <div class="type-row"><div class="type-meta">section-label · 11/600</div><div class="type-sample t-label">The Big Story</div></div>
+      <div class="type-row"><div class="type-meta">mono · 14</div><div class="type-sample t-mono">Summarize this thread for a busy PM in 3 bullets.</div></div>
+    </div>
+  </div>
+
+  <!-- COMPONENTS -->
+  <div class="section">
+    <div class="section-label">Components</div>
+    <h2 class="heading">Core Components</h2>
+    <p class="sub">Buttons, card, input, badges, section label.</p>
+
+    <div class="grid2">
+      <div>
+        <div class="section-label">Buttons</div>
+        <div class="btnrow">
+          <button class="btn btn-primary">Get my briefing</button>
+          <button class="btn btn-secondary">See a sample</button>
+          <button class="btn btn-ghost">Skip</button>
+        </div>
+
+        <div class="section-label" style="margin-top:28px;">Input</div>
+        <label class="field-label" for="em">Work email</label>
+        <input class="input" id="em" type="email" placeholder="you@company.com" />
+
+        <div class="section-label" style="margin-top:28px;">Badges</div>
+        <div class="badges">
+          <span class="badge badge-accent">Marketing</span>
+          <span class="badge badge-success">Source verified</span>
+          <span class="badge badge-default">Free</span>
+          <span class="badge badge-error">Send failed</span>
+        </div>
+      </div>
+
+      <div>
+        <div class="section-label">Card</div>
+        <div class="card">
+          <div class="section-label">The Big Story</div>
+          <h3>Anthropic ships a new agent SDK</h3>
+          <p>What it means for you: faster tool-use loops and cheaper background jobs for your team's internal automations.</p>
+          <a class="src" href="#">Source: Anthropic →</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- EMAIL HEADER -->
+  <div class="section">
+    <div class="section-label">Email</div>
+    <h2 class="heading">Email Blocks</h2>
+    <p class="sub">Void header band · light readable body · amber accents (production-tuned).</p>
+
+    <div class="email-mock">
+      <div class="em-header">
+        <div class="em-word">My Daily Download</div>
+        <div class="em-sub">Thursday · Your Daily Download for Product Managers</div>
+      </div>
+      <div class="em-body">
+        <p class="em-greeting">Good morning! Here's your AI edge for <strong>Product</strong>.</p>
+
+        <div class="em-label">The Big Story</div>
+        <div class="em-story">
+          <h4>OpenAI opens its agent platform to enterprise teams</h4>
+          <p>For PMs: you can now ship an internal copilot without a backend team. Start with one
+          high-friction workflow and measure deflection before expanding.
+          <a href="#">Source: The Verge →</a></p>
+        </div>
+
+        <div class="em-label" style="margin-top:22px;">Tool of the Day</div>
+        <div class="em-tool">
+          <div class="nm">Linear Agents</div>
+          <div class="ds">Auto-triage and draft specs from your backlog. Free for small teams.</div>
+        </div>
+
+        <div class="em-label">By the Numbers</div>
+        <div class="em-stats">
+          <div class="em-stat"><div class="v">3 min</div><div class="l">Avg. read time</div></div>
+          <div class="em-stat"><div class="v">100%</div><div class="l">Items with a real source</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="foot">
+    My Daily Download · design system preview · <b>Every item cites a real source.</b>
+  </div>
+
+</div>
+</body>
+</html>

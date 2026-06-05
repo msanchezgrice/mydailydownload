@@ -20,3 +20,7 @@ subscribers.db
 
 # large archives
 *.zip
+
+# python venv / build
+.venv/
+*.egg-info/

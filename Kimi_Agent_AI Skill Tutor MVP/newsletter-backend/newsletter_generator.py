@@ -1,20 +1,31 @@
 """Daily AI newsletter generator.
 
 For each subscriber's career category:
-1. Search for latest AI news relevant to that career
-2. Use LLM to compile personalized newsletter content
-3. Generate HTML email using Jinja2 template
+1. Pull REAL, CITED news from the news engine (RSS-backed, zero API keys
+   required). Every item carries a real source name + URL.
+2. Optionally rewrite each item's summary with a STRICT grounded LLM prompt
+   (only if OPENAI_API_KEY is set) — adds no facts, keeps every URL.
+3. Render an HTML email in which every fact/headline links to a real source.
+
+NO-FABRICATION GUARANTEE (load-bearing):
+  - There is NO code path that invents a headline, stat, quote, tool, or URL.
+  - The old `search_ai_news()` (LLM-as-source) and `_fallback_*` invented
+    stats have been deleted.
+  - Blocks that genuinely require curation we cannot derive from RSS
+    (Tool of the Day, By-the-Numbers stats, Upcoming events) are OMITTED
+    rather than fabricated. They only render if a real, sourced value exists.
+  - news_engine.validate() enforces that every rendered URL came from the
+    fetched feed set (hard invariant).
 """
 import re
 import json
-import sqlite3
 from datetime import datetime
 from typing import List, Dict
 from jinja2 import Template
 from config import (
-    LLM_PROVIDER, OPENAI_API_KEY, ANTHROPIC_API_KEY, LLM_MODEL,
-    CAREER_CATEGORIES, MAX_NEWS_ITEMS, MAX_TOOLS,
+    CAREER_CATEGORIES, MAX_NEWS_ITEMS,
 )
+from news_engine import build_briefing
 
 
 # ─── HTML Email Template ───
@@ -59,46 +70,59 @@ body { margin: 0; padding: 0; background: #f5f5f5; font-family: -apple-system, B
 .cta { background: #0B0C10; padding: 24px 32px; text-align: center; margin: 24px -32px -32px; }
 .cta a { color: #F2A900; font-size: 14px; font-weight: 600; text-decoration: none; }
 .greeting { font-size: 14px; color: #1A1D23; margin: 0 0 24px; }
+.src { font-size: 12px; color: #7A8194; margin: 8px 0 0; }
+.src a { color: #F2A900; text-decoration: none; }
+.sources-list { margin: 20px 0 0; }
+.sources-list .src-item { font-size: 12px; color: #555; margin: 0 0 6px; }
+.sources-list a { color: #F2A900; text-decoration: none; word-break: break-all; }
+.dow { font-size: 12px; color: #7A8194; margin: 0 0 16px; font-style: italic; }
 </style>
 </head>
 <body>
 <div class="container">
   <div class="header">
-    <h1>Daily AI Edge</h1>
+    <h1>My Daily Download</h1>
     <p>Your morning briefing for {{ career_name }} &middot; {{ date }}</p>
   </div>
 
   <div class="body">
-    <p class="greeting">Good morning! Here's your AI edge for <strong>{{ career_name }}</strong>.</p>
+    <p class="greeting">Good morning! Here's your AI briefing for <strong>{{ career_name }}</strong>.</p>
+    {% if dow_theme %}<p class="dow">{{ dow_theme }} &mdash; {{ dow_blurb }}</p>{% endif %}
 
+    {% if top_story %}
     <div class="section-label">The Big Story</div>
     <div class="top-story">
       <h2>{{ top_story.headline }}</h2>
-      <p>{{ top_story.summary }}</p>
+      {% if top_story.summary %}<p>{{ top_story.summary }}</p>{% endif %}
+      <p class="src">Source: <a href="{{ top_story.url }}">{{ top_story.source }}</a></p>
     </div>
+    {% endif %}
 
+    {# Tool of the Day renders ONLY if a real, sourced tool exists. We never fabricate it. #}
+    {% if tool and tool.url %}
     <div class="section-label">Tool of the Day</div>
     <div class="tool-box">
       <p class="name">{{ tool.name }}</p>
       <p class="desc">{{ tool.description }}</p>
+      <p class="src">Source: <a href="{{ tool.url }}">{{ tool.source }}</a></p>
     </div>
+    {% endif %}
 
+    {% if quick_hits %}
     <div class="section-label">Quick Hits</div>
     <div class="quick-hits">
       {% for hit in quick_hits %}
       <div class="hit">
         <h4>{{ hit.headline }}</h4>
-        <p>{{ hit.description }}</p>
+        {% if hit.description %}<p>{{ hit.description }}</p>{% endif %}
+        <p class="src">Source: <a href="{{ hit.url }}">{{ hit.source }}</a></p>
       </div>
       {% endfor %}
     </div>
+    {% endif %}
 
-    <div class="section-label">Quick How-To</div>
-    <div class="how-to">
-      <h3>{{ how_to.title }}</h3>
-      <p>{{ how_to.content }}</p>
-    </div>
-
+    {# By-the-Numbers stats render ONLY with a real cited source. Never invented. #}
+    {% if stats and stats.source_url %}
     <div class="stats">
       <div class="stat">
         <div class="value">{{ stats.value1 }}</div>
@@ -109,20 +133,27 @@ body { margin: 0; padding: 0; background: #f5f5f5; font-family: -apple-system, B
         <div class="label">{{ stats.label2 }}</div>
       </div>
     </div>
+    <p class="src">Source: <a href="{{ stats.source_url }}">{{ stats.source }}</a></p>
+    {% endif %}
 
-    <div class="upcoming">
-      <strong>Coming up:</strong> {{ upcoming.event }} &mdash; {{ upcoming.date }}
+    {% if sources %}
+    <div class="section-label">Sources</div>
+    <div class="sources-list">
+      {% for s in sources %}
+      <p class="src-item">&middot; {{ s.name }}: <a href="{{ s.url }}">{{ s.url }}</a></p>
+      {% endfor %}
     </div>
+    {% endif %}
 
     <div class="cta">
-      <a href="https://dailyaiedge.com">Upgrade to Pro for the full briefing &rarr;</a>
+      <a href="https://mydailydownload.com">Upgrade to Pro for the full briefing &rarr;</a>
     </div>
   </div>
 
   <div class="footer">
-    <p>You're receiving this because you subscribed to Daily AI Edge.</p>
+    <p>You're receiving this because you subscribed to My Daily Download.</p>
     <p><a href="{{ unsubscribe_url }}">Unsubscribe</a> &middot; <a href="{{ preferences_url }}">Update preferences</a></p>
-    <p style="margin-top: 12px;">&copy; 2026 Daily AI Edge</p>
+    <p style="margin-top: 12px;">&copy; 2026 My Daily Download</p>
   </div>
 </div>
 </body>
@@ -130,248 +161,171 @@ body { margin: 0; padding: 0; background: #f5f5f5; font-family: -apple-system, B
 """
 
 
-def get_llm_client():
-    """Initialize LLM client."""
-    if LLM_PROVIDER == "anthropic":
-        import anthropic
-        return anthropic.Anthropic(api_key=ANTHROPIC_API_KEY)
-    else:
-        import openai
-        return openai.OpenAI(api_key=OPENAI_API_KEY)
-
-
-def call_llm(system: str, user: str, json_mode: bool = False) -> str:
-    """Call LLM and return text response."""
-    client = get_llm_client()
-
-    if LLM_PROVIDER == "anthropic":
-        resp = client.messages.create(
-            model=LLM_MODEL,
-            max_tokens=4000,
-            system=system,
-            messages=[{"role": "user", "content": user}],
-        )
-        return resp.content[0].text
-    else:
-        kwargs = {
-            "model": LLM_MODEL,
-            "messages": [
-                {"role": "system", "content": system},
-                {"role": "user", "content": user},
-            ],
-            "temperature": 0.5,
-            "max_tokens": 4000,
-        }
-        if json_mode:
-            kwargs["response_format"] = {"type": "json_object"}
-        resp = client.chat.completions.create(**kwargs)
-        return resp.choices[0].message.content
-
-
 def search_ai_news(career: dict) -> List[Dict]:
-    """Search for latest AI news relevant to a career category.
+    """REAL, CITED news for a career category — drawn from the news engine.
 
-    In production, this would use:
-    - News API (newsapi.org)
-    - Google Custom Search API
-    - RSS feeds (TechCrunch, The Verge, etc.)
-    - Twitter/X API for trending topics
-    - Reddit API for discussions
+    This replaces the old LLM-fabrication path. Returns a list of real feed
+    items, each with a real source URL. NEVER invents headlines or sources.
 
-    For the MVP, we simulate with LLM-generated realistic content.
+    Returns items shaped:
+        {headline, description, source, url, published, is_major, trending_score}
     """
-    system = """You are an AI news researcher. Find the latest (2026) AI news, tools,
-    and developments relevant to a specific career. Return a JSON array of news items.
-
-    Each item should have:
-    - headline: compelling headline
-    - description: 2-3 sentence summary
-    - source: likely source (e.g., "TechCrunch", "The Verge")
-    - is_major: true if this is the top story
-
-    Include a mix of: product launches, funding news, research breakthroughs,
-    and practical tool announcements. Make them realistic and specific."""
-
-    user = f"Career: {career['name']}\nSearch context: {career['search_terms']}\n\nReturn {MAX_NEWS_ITEMS} news items as JSON."
-
-    result = call_llm(system, user, json_mode=True)
-
-    try:
-        data = json.loads(result)
-        if isinstance(data, dict) and "items" in data:
-            return data["items"]
-        if isinstance(data, dict):
-            # Try to find array in values
-            for v in data.values():
-                if isinstance(v, list):
-                    return v[:MAX_NEWS_ITEMS]
-        if isinstance(data, list):
-            return data[:MAX_NEWS_ITEMS]
-    except (json.JSONDecodeError, KeyError):
-        pass
-
-    # Fallback: return realistic items
-    return _fallback_news(career["name"])
+    briefing = build_briefing(career["id"])
+    items: List[Dict] = []
+    top = briefing.get("topStory")
+    if top:
+        items.append({
+            "headline": top["headline"],
+            "description": top["summary"],
+            "source": top["source"],
+            "url": top["url"],
+            "published": top.get("published", ""),
+            "is_major": True,
+            "trending_score": top.get("trending_score", 1),
+        })
+    for hit in briefing.get("quickHits", []):
+        items.append({
+            "headline": hit["headline"],
+            "description": hit["summary"],
+            "source": hit["source"],
+            "url": hit["url"],
+            "published": hit.get("published", ""),
+            "is_major": False,
+            "trending_score": hit.get("trending_score", 1),
+        })
+    return items
 
 
-def compile_newsletter(career: dict, news_items: List[Dict]) -> dict:
-    """Use LLM to compile news items into a structured newsletter."""
-    # Pick the major story as top story, rest as quick hits
-    major = next((n for n in news_items if n.get("is_major")), news_items[0]) if news_items else None
-    others = [n for n in news_items if n != major][:3]
+def compile_newsletter(career: dict, briefing: dict) -> dict:
+    """Shape a validated briefing into the structure the template renders.
 
-    system = f"""You are an expert newsletter editor for "Daily AI Edge," a personalized
-    AI briefing for {career['name']}s. Create engaging, scannable content.
-
-    Return ONLY a JSON object with this exact structure:
-    {{
-        "topStory": {{"headline": "...", "summary": "..."}},
-        "toolOfTheDay": {{"name": "...", "description": "..."}},
-        "howTo": {{"title": "...", "content": "..."}},
-        "stats": {{"value1": "X%", "label1": "...", "value2": "Yx", "label2": "..."}},
-        "upcoming": {{"event": "...", "date": "Month Day, 2026"}}
-    }}"""
-
-    news_text = "\n\n".join([
-        f"- {n['headline']}: {n['description']}"
-        for n in news_items
-    ])
-
-    user = f"Career: {career['name']}\n\nNews items:\n{news_text}\n\nCompile these into a newsletter."
-
-    result = call_llm(system, user, json_mode=True)
-
-    try:
-        compiled = json.loads(result)
-    except json.JSONDecodeError:
-        compiled = _fallback_compiled(career["name"])
-
+    No LLM fabrication occurs here. Every field maps directly from real,
+    guardrail-validated feed items. Blocks that require curation we cannot
+    derive from RSS (tool of the day, by-the-numbers stats, upcoming events)
+    are passed through as-is from the briefing — i.e. None — and the template
+    omits them. We never synthesize them.
+    """
+    top = briefing.get("topStory")
     return {
-        "topStory": compiled.get("topStory", compiled.get("top_story", {"headline": "AI Update", "summary": "Latest developments in AI."})),
-        "toolOfTheDay": compiled.get("toolOfTheDay", compiled.get("tool_of_the_day", {"name": "ChatGPT", "description": "General-purpose AI assistant."})),
+        "topStory": {
+            "headline": top["headline"],
+            "summary": top["summary"],
+            "source": top["source"],
+            "url": top["url"],
+        } if top else None,
+        # Curation-only blocks: only render if the engine supplied a REAL,
+        # sourced value. Today the engine returns None (honest omission).
+        "toolOfTheDay": briefing.get("toolOfTheDay"),   # None -> omitted
+        "stats": briefing.get("byTheNumbers"),          # None -> omitted
         "quickHits": [
-            {"headline": n["headline"], "description": n["description"]}
-            for n in others
-        ] if others else [{"headline": "AI Market Update", "description": "Continued growth in AI adoption."}],
-        "howTo": compiled.get("howTo", compiled.get("how_to", {"title": "Get Started with AI", "content": "Pick one AI tool and use it for 15 minutes daily."})),
-        "stats": compiled.get("stats", {"value1": "75%", "label1": "of teams using AI", "value2": "2.5x", "label2": "productivity gain"}),
-        "upcoming": compiled.get("upcoming", {"event": "AI Summit 2026", "date": "March 2026"}),
+            {
+                "headline": h["headline"],
+                "description": h["summary"],
+                "source": h["source"],
+                "url": h["url"],
+            }
+            for h in briefing.get("quickHits", [])
+        ],
+        "sources": briefing.get("sources", []),
+        "dow_theme": briefing.get("dow_theme"),
+        "dow_blurb": briefing.get("dow_blurb"),
     }
 
 
-def render_html_email(career_id: str, career_name: str, content: dict, subscriber_id: str = "") -> str:
-    """Render newsletter content into HTML email."""
+def render_html_email(career_name: str, content: dict, subscriber_id: str = "") -> str:
+    """Render validated, sourced content into the HTML email."""
     template = Template(EMAIL_TEMPLATE)
     return template.render(
         career_name=career_name,
         date=datetime.now().strftime("%B %d, %Y"),
+        dow_theme=content.get("dow_theme"),
+        dow_blurb=content.get("dow_blurb"),
         top_story=content["topStory"],
-        tool=content["toolOfTheDay"],
+        tool=content.get("toolOfTheDay"),
         quick_hits=content["quickHits"],
-        how_to=content["howTo"],
-        stats=content["stats"],
-        upcoming=content["upcoming"],
-        unsubscribe_url=f"https://dailyaiedge.com/unsubscribe?id={subscriber_id}",
-        preferences_url=f"https://dailyaiedge.com/preferences?id={subscriber_id}",
+        stats=content.get("stats"),
+        sources=content.get("sources", []),
+        unsubscribe_url=f"https://mydailydownload.com/unsubscribe?token={subscriber_id}",
+        preferences_url=f"https://mydailydownload.com/preferences?token={subscriber_id}",
     )
 
 
-def generate_newsletter(career_id: str, subscriber_id: str = "") -> dict:
-    """Generate a complete newsletter for a career category.
+def _render_text_email(career_name: str, content: dict, subscriber_id: str = "") -> str:
+    """Plain-text version — every item carries its real source URL."""
+    lines = [
+        f"My Daily Download - {career_name} Briefing - {datetime.now().strftime('%B %d, %Y')}",
+    ]
+    if content.get("dow_theme"):
+        lines.append(f"{content['dow_theme']} - {content['dow_blurb']}")
+    lines.append("")
 
-    Returns:
-        {
-            "career_id": "product-management",
-            "career_name": "Product Manager",
-            "subject": "Your AI Edge for Product Manager — June 6, 2026",
-            "html": "<html>...</html>",
-            "text": "Plain text version..."
-        }
+    top = content.get("topStory")
+    if top:
+        lines.append("THE BIG STORY")
+        lines.append(top["headline"])
+        if top["summary"]:
+            lines.append(top["summary"])
+        lines.append(f"Source: {top['source']} - {top['url']}")
+        lines.append("")
+
+    if content["quickHits"]:
+        lines.append("QUICK HITS")
+        for h in content["quickHits"]:
+            lines.append(f"* {h['headline']}")
+            if h["description"]:
+                lines.append(f"  {h['description']}")
+            lines.append(f"  Source: {h['source']} - {h['url']}")
+        lines.append("")
+
+    if content.get("sources"):
+        lines.append("SOURCES")
+        for s in content["sources"]:
+            lines.append(f"- {s['name']}: {s['url']}")
+        lines.append("")
+
+    lines.append("---")
+    lines.append("You're receiving this because you subscribed to My Daily Download.")
+    lines.append(f"Unsubscribe: https://mydailydownload.com/unsubscribe?token={subscriber_id}")
+    return "\n".join(lines)
+
+
+def generate_newsletter(career_id: str, subscriber_id: str = "") -> dict:
+    """Generate a complete, REAL, CITED newsletter for a career category.
+
+    Pipeline: news_engine.build_briefing() (fetch real RSS -> canonicalize ->
+    dedupe -> rank -> grounded-summarize -> GUARDRAIL) -> shape -> render.
+
+    Every emitted fact/headline links to a real source URL present in the
+    fetched feed set. There is no fabrication path.
+
+    Returns: {career_id, career_name, subject, html, text}
     """
     career = next((c for c in CAREER_CATEGORIES if c["id"] == career_id), CAREER_CATEGORIES[0])
 
-    # Step 1: Search for relevant news
-    news_items = search_ai_news(career)
+    # Step 1: real, cited, guardrail-validated briefing.
+    briefing = build_briefing(career["id"])
 
-    # Step 2: Compile into structured content
-    content = compile_newsletter(career, news_items)
+    # Step 2: shape into render-ready content (no fabrication).
+    content = compile_newsletter(career, briefing)
 
-    # Step 3: Render HTML
-    html = render_html_email(career_id, career["name"], content, subscriber_id)
-
-    # Step 4: Generate plain text
-    text = f"""Daily AI Edge — {career['name']} Briefing — {datetime.now().strftime('%B %d, %Y')}
-
-{content['topStory']['headline']}
-{content['topStory']['summary']}
-
-TOOL OF THE DAY: {content['toolOfTheDay']['name']}
-{content['toolOfTheDay']['description']}
-
-QUICK HITS:
-""" + "\n\n".join([f"• {h['headline']}: {h['description']}" for h in content['quickHits']]) + f"""
-
-HOW-TO: {content['howTo']['title']}
-{content['howTo']['content']}
-
-IN NUMBERS:
-{content['stats']['value1']} — {content['stats']['label1']}
-{content['stats']['value2']} — {content['stats']['label2']}
-
-COMING UP: {content['upcoming']['event']} — {content['upcoming']['date']}
-
----
-You're receiving this because you subscribed to Daily AI Edge.
-Unsubscribe: https://dailyaiedge.com/unsubscribe?id={subscriber_id}
-"""
+    # Step 3 + 4: render HTML + plain text, both with source URLs.
+    html = render_html_email(career["name"], content, subscriber_id)
+    text = _render_text_email(career["name"], content, subscriber_id)
 
     return {
         "career_id": career_id,
         "career_name": career["name"],
-        "subject": f"Your AI Edge for {career['name']} — {datetime.now().strftime('%B %d, %Y')}",
+        "subject": f"Your AI briefing for {career['name']} - {datetime.now().strftime('%B %d, %Y')}",
         "html": html,
         "text": text,
     }
 
 
-# ─── Fallback data generators ───
-
-def _fallback_news(career_name: str) -> List[Dict]:
-    return [
-        {
-            "headline": f"Major AI Platform Launches Career-Specific Features for {career_name}s",
-            "description": f"A leading AI company announced specialized tools designed specifically for {career_name.lower()}s, promising 40% productivity gains.",
-            "source": "TechCrunch",
-            "is_major": True,
-        },
-        {
-            "headline": "OpenAI Releases New Enterprise API with Enhanced Security",
-            "description": "The update includes SOC 2 compliance, audit logs, and team management features for organizations.",
-            "source": "The Verge",
-        },
-        {
-            "headline": "Google DeepMind Publishes Breakthrough Research on AI Reasoning",
-            "description": "The new model demonstrates significant improvements in multi-step reasoning tasks.",
-            "source": "MIT Technology Review",
-        },
-    ]
-
-
-def _fallback_compiled(career_name: str) -> dict:
-    return {
-        "topStory": {"headline": f"AI Tools Reshaping {career_name} Work", "summary": f"New AI capabilities are transforming how {career_name.lower()}s approach their daily work, with early adopters reporting significant productivity gains."},
-        "toolOfTheDay": {"name": "ChatGPT Team", "description": "Collaborative AI workspace for teams. Share conversations, build custom GPTs, and maintain team knowledge."},
-        "howTo": {"title": f"Automate a {career_name} Task in 10 Minutes", "content": "Identify one repetitive task you do daily. Write a simple prompt describing the task and desired output. Test with ChatGPT or Claude, refine the prompt, and integrate into your workflow."},
-        "stats": {"value1": "73%", "label1": f"of {career_name.lower()}s using AI tools", "value2": "2.4x", "label2": "productivity improvement"},
-        "upcoming": {"event": f"AI for {career_name}s Summit", "date": "March 15, 2026"},
-    }
-
-
-# ─── CLI for testing ───
+# --- CLI for testing ---
 if __name__ == "__main__":
     import sys
     career_id = sys.argv[1] if len(sys.argv) > 1 else "product-management"
     result = generate_newsletter(career_id)
     print(f"Subject: {result['subject']}")
     print(f"\nHTML length: {len(result['html'])} chars")
-    print(f"\nText preview:\n{result['text'][:500]}...")
+    print(f"\nText:\n{result['text']}")

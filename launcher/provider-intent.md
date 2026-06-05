@@ -30,3 +30,20 @@ Domain: **mydailydownload.com** (registered in Vercel, team `miguel-sanchezgrice
 **Phase 3–4 (billing/analytics/SEO):** `STRIPE_SECRET_KEY`, GA4 `G-XXXX`, confirm Search Console access, confirm/create the PostHog project.
 
 Nothing above blocks **Phase 0** (the local demo) — that needs no keys.
+
+---
+
+## Live update — keys received / changes
+- **OpenAI** — HAVE (stored in gitignored `newsletter-backend/.env`).
+- **Exa** — HAVE. **AgentMail** — HAVE.
+- **Proxycurl** — **DISCONTINUED** (service shut down). **Replacement:** v1 = resume-PDF parsing + "paste your role/headline" (no scraping — free, honest, zero legal/vendor risk; onboarding already supports manual role select). Optional later enrichment: **People Data Labs** (Person Enrichment API) or **Apify** LinkedIn actors.
+- **Resend** — domain-add in progress (domain id `d7f12968-7f21-4bca-953e-96a0cc09b771`). Need **RESEND_API_KEY** so I can pull the DKIM/SPF/DMARC records via API and add them to Vercel DNS automatically.
+- **Still pending:** `RESEND_API_KEY`, `TAVILY_API_KEY` (optional — Exa covers search), Supabase project decision, Stripe account (separate from "Leak Check Me"), GA4 `G-XXXX`.
+
+## Live update 2 — provisioned
+- **Supabase** — ✅ project `mydailydownload` (ref `wzhnfctutueunirvciol`, us-east-1) created; anon+service keys stored in `newsletter-backend/.env`.
+- **GA4** — ✅ `G-X27FVHNW9T` recorded (add gtag to web app head).
+- **Vercel DNS** — ✅ inbound MX `inbound-smtp.us-east-1.amazonaws.com` added (rec_ce7819260b3de547).
+- **Stripe** — new product to be created in **Reboot** org (`org_6UPTVB3ySQk8MaOiYQPP3YO`, account `acct_1TG5XpPnOEpRvQuT`). NEED: that account's `sk_test_...` (CLI is on "Leak Check Me", different account).
+- **LinkedIn enrichment** — SKIPPED for v1 (resume-PDF + paste-role only).
+- **Resend** — still need `RESEND_API_KEY` (I only have the domain URL) for sending + DKIM/SPF/DMARC.
