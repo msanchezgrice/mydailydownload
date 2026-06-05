@@ -16,13 +16,13 @@ export default function Footer() {
           </div>
           <div className="flex items-center gap-6">
             <a
-              href="#"
+              href="#/privacy"
               className="text-sm text-[#7A8194] hover:text-[#E0E2E8] transition-colors"
             >
               Privacy
             </a>
             <a
-              href="#"
+              href="#/terms"
               className="text-sm text-[#7A8194] hover:text-[#E0E2E8] transition-colors"
             >
               Terms

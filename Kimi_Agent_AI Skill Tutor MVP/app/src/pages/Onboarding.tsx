@@ -171,6 +171,12 @@ export default function Onboarding() {
   const [dragOver, setDragOver] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
+  // Real subscribe submission state (Phase 2 — persists to Supabase).
+  const [subscribeStatus, setSubscribeStatus] = useState<
+    "idle" | "submitting" | "success" | "error"
+  >("idle");
+  const [subscribeError, setSubscribeError] = useState<string>("");
+
   // Persist to sessionStorage on every change
   useEffect(() => {
     const { resumeFile, ...serializable } = state;
@@ -257,6 +263,42 @@ export default function Onboarding() {
         ? prev.interests.filter((i) => i !== interest)
         : [...prev.interests, interest],
     }));
+  };
+
+  /* ── Subscribe (Phase 2: real persistence to Supabase) ── */
+  const handleSubscribe = async () => {
+    if (subscribeStatus === "submitting") return;
+    setSubscribeStatus("submitting");
+    setSubscribeError("");
+    try {
+      const res = await fetch("/api/subscribe", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          email: state.email,
+          careerId: detectedCareerId,
+          seniority: state.detectedProfile?.seniority || state.seniority,
+          interests: state.interests,
+          plan: state.plan,
+          consentText:
+            "I agree to receive the My Daily Download newsletter. Unsubscribe anytime.",
+        }),
+      });
+      const data = await res.json().catch(() => ({}));
+      if (res.ok && data?.ok) {
+        setSubscribeStatus("success");
+      } else {
+        setSubscribeStatus("error");
+        setSubscribeError(
+          typeof data?.error === "string"
+            ? data.error
+            : "Something went wrong. Please try again."
+        );
+      }
+    } catch {
+      setSubscribeStatus("error");
+      setSubscribeError("Network error. Please check your connection and try again.");
+    }
   };
 
   /* ── Derived ── */
@@ -1176,9 +1218,17 @@ export default function Onboarding() {
 
             {/* Final CTA */}
             <button
+              onClick={handleSubscribe}
+              disabled={subscribeStatus === "submitting" || subscribeStatus === "success"}
               className="w-full mt-8 py-4 px-8 rounded-lg font-semibold text-base flex items-center justify-center gap-2 transition-all duration-200"
-              style={{ background: "var(--accent)", color: "#0B0C10" }}
+              style={{
+                background: "var(--accent)",
+                color: "#0B0C10",
+                opacity: subscribeStatus === "submitting" ? 0.7 : 1,
+                cursor: subscribeStatus === "submitting" || subscribeStatus === "success" ? "default" : "pointer",
+              }}
               onMouseEnter={(e) => {
+                if (subscribeStatus === "submitting" || subscribeStatus === "success") return;
                 e.currentTarget.style.background = "var(--accent-hover)";
                 e.currentTarget.style.transform = "translateY(-2px)";
                 e.currentTarget.style.boxShadow = "0 0 20px rgba(242, 169, 0, 0.3)";
@@ -1189,8 +1239,17 @@ export default function Onboarding() {
                 e.currentTarget.style.boxShadow = "none";
               }}
             >
-              Subscribe — Start Free
+              {subscribeStatus === "submitting"
+                ? "Subscribing…"
+                : subscribeStatus === "success"
+                ? "Check your inbox to confirm ✓"
+                : "Subscribe — Start Free"}
             </button>
+            {subscribeError && (
+              <p className="text-xs text-center mt-3" style={{ color: "#ff6b6b" }}>
+                {subscribeError}
+              </p>
+            )}
             <p
               className="text-xs text-center mt-3"
               style={{ color: "var(--text-secondary)" }}
