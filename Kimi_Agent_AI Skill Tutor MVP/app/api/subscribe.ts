@@ -11,7 +11,7 @@ import type { VercelRequest, VercelResponse } from "@vercel/node";
 const SITE = "https://mydailydownload.com";
 const FROM = "My Daily Download <newsletter@mydailydownload.com>";
 // TODO before launch: real physical mailing address (CAN-SPAM).
-const MAILING_ADDRESS = "My Daily Download · [mailing address — update before launch]";
+const MAILING_ADDRESS = "My Daily Download, 8808 Mesa Drive, Austin, TX";
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const ALLOWED_PLANS = new Set(["free", "pro"]);
 

@@ -5,7 +5,7 @@ import type { VercelRequest, VercelResponse } from "@vercel/node";
 
 const SITE = "https://mydailydownload.com";
 const FROM = "My Daily Download <newsletter@mydailydownload.com>";
-const MAILING_ADDRESS = "My Daily Download · [mailing address — update before launch]";
+const MAILING_ADDRESS = "My Daily Download, 8808 Mesa Drive, Austin, TX";
 
 async function sendEmail(to: string, subject: string, html: string, text: string, unsubscribeUrl: string): Promise<boolean> {
   const key = process.env.RESEND_API_KEY;

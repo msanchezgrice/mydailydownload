@@ -44,7 +44,7 @@ BASE_URL = "https://mydailydownload.com"
 
 # Physical mailing address is legally required (CAN-SPAM). Placeholder until the
 # founder fills a real one — visible in every footer so it can't be forgotten.
-MAILING_ADDRESS = "[MAILING ADDRESS — fill before launch]"
+MAILING_ADDRESS = "My Daily Download, 8808 Mesa Drive, Austin, TX"
 
 # Brand tokens (from design/DESIGN.md).
 C_VOID = "#0B0C10"
