@@ -17,6 +17,29 @@ export const dynamicParams = false; // only the 15 known slugs
 
 const SITE_URL = "https://mydailydownload.com";
 
+// Natural audience plural per career — the category names are mostly field nouns
+// ("Marketing", "Sales"), so blindly appending "s" produced "marketings"/"saless".
+const AUDIENCE: Record<string, string> = {
+  "product-management": "product managers",
+  marketing: "marketers",
+  sales: "sales teams",
+  operations: "operations teams",
+  "hr-people": "people teams",
+  design: "designers",
+  finance: "finance teams",
+  engineering: "engineers",
+  "data-science": "data scientists",
+  "customer-success": "customer success teams",
+  "content-creation": "content creators",
+  consulting: "consultants",
+  legal: "legal teams",
+  healthcare: "healthcare professionals",
+  entrepreneurship: "founders",
+};
+function audienceFor(c: { id: string; name: string }): string {
+  return AUDIENCE[c.id] ?? c.name.toLowerCase();
+}
+
 /* ── shapes pulled from briefings.blocks_json (see backend compile_newsletter) ── */
 interface BriefItem {
   headline: string;
@@ -52,7 +75,7 @@ export async function generateMetadata({
   const cat = categoryFor(career);
   if (!cat) return {};
   const title = `AI for ${cat.name} — My Daily Download`;
-  const description = `The AI news, tools, and tactics that matter for ${cat.name.toLowerCase()}s — personalized, source-cited, every morning. ${cat.description}`;
+  const description = `The AI news, tools, and tactics that matter for ${audienceFor(cat)} — personalized, source-cited, every morning. ${cat.description}`;
   const url = `${SITE_URL}/ai-for/${cat.id}`;
   return {
     title,
@@ -137,7 +160,7 @@ export default async function CareerHubPage({
     "@context": "https://schema.org",
     "@type": "CollectionPage",
     name: `AI for ${cat.name}`,
-    description: `The AI news, tools, and tactics that matter for ${cat.name.toLowerCase()}s.`,
+    description: `The AI news, tools, and tactics that matter for ${audienceFor(cat)}.`,
     url: `${SITE_URL}/ai-for/${cat.id}`,
     isPartOf: { "@type": "WebSite", name: "My Daily Download", url: SITE_URL },
     ...(hasRealData && topStory
@@ -185,7 +208,7 @@ export default async function CareerHubPage({
         {/* Header / intro */}
         <p className="section-label mb-4">AI for {cat.name}</p>
         <h1 className="text-[clamp(32px,5vw,52px)] font-bold text-[#E6E8EE] leading-[1.1] tracking-[-0.02em]">
-          AI news that actually matters to {cat.name.toLowerCase()}s
+          AI news that actually matters to {audienceFor(cat)}
         </h1>
         <p className="mt-5 text-lg text-[#8A91A0] leading-relaxed max-w-[620px]">
           {cat.description} Below is the most recent briefing — the real, source-cited
