@@ -36,6 +36,50 @@ LAUNCH_CATEGORIES = ["marketing", "product-management", "entrepreneurship"]
 SENIORITY_TIERS = ["Junior", "Mid Level", "Senior"]
 
 
+def generate_one(career_id: str, seniority: str, date=None, dow: int = None,
+                 dry_run: bool = False) -> dict:
+    """Build, render, and persist a SINGLE (career_id, seniority, date) briefing.
+
+    This is the unit of generation reused by both generate_all (the 9-cell
+    launch matrix) and run_daily (only the cells with confirmed subscribers).
+
+    Returns a result dict {career_id, seniority, headline, stored, [id|html_bytes]}.
+    """
+    if dow is None:
+        dow = datetime.now().weekday()
+    if date is None:
+        date = date_cls.today()
+
+    career = CAREER_ID_MAP[career_id]
+
+    # Build a fully-grounded, guardrail-validated briefing.
+    briefing = build_briefing(career_id, day_of_week=dow, seniority=seniority)
+
+    # Render HTML + text for storage (subscriber_id left blank — the
+    # per-recipient unsubscribe token is stamped at send time).
+    content = compile_newsletter(career, briefing)
+    html = render_html_email(career["name"], content, subscriber_id="")
+    _ = _render_text_email(career["name"], content, subscriber_id="")
+
+    top = briefing.get("topStory")
+    headline = top["headline"] if top else "(none)"
+
+    if dry_run:
+        log.info("DRY  %-20s %-10s top=%r  html=%dB", career_id, seniority,
+                 headline[:60], len(html))
+        return {"career_id": career_id, "seniority": seniority,
+                "html_bytes": len(html), "headline": headline, "stored": False}
+
+    row = db.upsert_briefing(
+        career_id=career_id, seniority=seniority, date=date,
+        blocks_json=briefing, html=html, dow=dow,
+    )
+    log.info("STORE id=%-4s %-20s %-10s top=%r", row["id"], career_id,
+             seniority, headline[:60])
+    return {"career_id": career_id, "seniority": seniority,
+            "id": row["id"], "headline": headline, "stored": True}
+
+
 def generate_all(dow: int = None, dry_run: bool = False) -> list:
     """Build, render, and persist the 9-cell launch matrix for today.
 
@@ -47,36 +91,11 @@ def generate_all(dow: int = None, dry_run: bool = False) -> list:
     results = []
 
     for career_id in LAUNCH_CATEGORIES:
-        career = CAREER_ID_MAP[career_id]
         for seniority in SENIORITY_TIERS:
-            # Build a fully-grounded, guardrail-validated briefing.
-            briefing = build_briefing(career_id, day_of_week=dow, seniority=seniority)
-
-            # Render HTML + text for storage (subscriber_id left blank — the
-            # per-recipient unsubscribe token is stamped at send time).
-            content = compile_newsletter(career, briefing)
-            html = render_html_email(career["name"], content, subscriber_id="")
-            _ = _render_text_email(career["name"], content, subscriber_id="")
-
-            top = briefing.get("topStory")
-            headline = top["headline"] if top else "(none)"
-
-            if dry_run:
-                log.info("DRY  %-20s %-10s top=%r  html=%dB", career_id, seniority,
-                         headline[:60], len(html))
-                results.append({"career_id": career_id, "seniority": seniority,
-                                "html_bytes": len(html), "headline": headline,
-                                "stored": False})
-                continue
-
-            row = db.upsert_briefing(
-                career_id=career_id, seniority=seniority, date=today,
-                blocks_json=briefing, html=html, dow=dow,
+            results.append(
+                generate_one(career_id, seniority, date=today, dow=dow,
+                             dry_run=dry_run)
             )
-            log.info("STORE id=%-4s %-20s %-10s top=%r", row["id"], career_id,
-                     seniority, headline[:60])
-            results.append({"career_id": career_id, "seniority": seniority,
-                            "id": row["id"], "headline": headline, "stored": True})
 
     return results
 

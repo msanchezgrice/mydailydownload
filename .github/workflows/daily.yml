@@ -1,0 +1,54 @@
+name: Daily Send — My Daily Download
+
+# Runs the automated daily briefing send.
+#   - schedule: 11:00 UTC daily (~7:00am ET) — note GitHub cron is UTC-only and
+#     can be delayed a few minutes under load.
+#   - workflow_dispatch: lets you trigger a run by hand from the Actions tab.
+on:
+  schedule:
+    - cron: "0 11 * * *"
+  workflow_dispatch: {}
+
+# Never run two daily sends at once (manual + cron overlap). The sends table's
+# UNIQUE(subscriber_id, briefing_date) guard makes this safe anyway, but
+# serializing avoids redundant API spend.
+concurrency:
+  group: daily-send
+  cancel-in-progress: false
+
+jobs:
+  daily-send:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    defaults:
+      run:
+        # Path contains a space — quote it.
+        working-directory: "Kimi_Agent_AI Skill Tutor MVP/newsletter-backend"
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python 3.12
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: "pip"
+          cache-dependency-path: "Kimi_Agent_AI Skill Tutor MVP/newsletter-backend/requirements.txt"
+
+      - name: Install dependencies
+        run: pip install -r "requirements.txt"
+
+      - name: Run daily send
+        env:
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          EXA_API_KEY: ${{ secrets.EXA_API_KEY }}
+          AGENTMAIL_API_KEY: ${{ secrets.AGENTMAIL_API_KEY }}
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+          SUPABASE_DB_PASSWORD: ${{ secrets.SUPABASE_DB_PASSWORD }}
+          # Optional pooler overrides — set as repo secrets if the direct
+          # IPv6 Supabase host isn't reachable from the runner.
+          DB_PG_HOST: ${{ secrets.DB_PG_HOST }}
+          DB_PG_USER: ${{ secrets.DB_PG_USER }}
+        run: python run_daily.py
