@@ -30,3 +30,12 @@
 - CEO-mode scope: real LinkedIn parsing + full 45-variant matrix from day one + real archive + SEO/social growth engine.
 - Launch verticals: **Marketing, Product, Founder** first; social verticals add **Sales, Design**.
 - GTM launcher will consume this package; Phase 0 demo is the sign-off surface (localhost:6990 plan page + :5273 app demo).
+
+---
+
+## Live status (as of this build)
+- **Site LIVE:** https://mydailydownload.com (Vite app; Next.js migration in progress in `web/` → will cut over after verification).
+- **Working:** real double-opt-in signups (Supabase + consent), confirmation + welcome emails (Resend, verified domain), one-click unsubscribe, Privacy/Terms, briefing archive (9 in Supabase), per-category example briefings.
+- **Email DNS:** DKIM/SPF/DMARC + inbound MX verified.
+- **In progress:** daily send cron (GitHub Actions), Next.js migration + SEO hubs (`/ai-for/[career]`), Stripe Pro checkout.
+- **Launch blocker:** physical mailing address placeholder in email footers (CAN-SPAM) — needs a real PO box / virtual address.
