@@ -176,6 +176,8 @@ export default function Onboarding() {
     "idle" | "submitting" | "success" | "error"
   >("idle");
   const [subscribeError, setSubscribeError] = useState<string>("");
+  // True while we create a Stripe Checkout session and redirect (Pro plan only).
+  const [redirectingToCheckout, setRedirectingToCheckout] = useState(false);
 
   // Persist to sessionStorage on every change
   useEffect(() => {
@@ -287,6 +289,31 @@ export default function Onboarding() {
       const data = await res.json().catch(() => ({}));
       if (res.ok && data?.ok) {
         setSubscribeStatus("success");
+        // Pro plan: send them to Stripe Checkout to start the $19/mo subscription.
+        if (state.plan === "pro") {
+          setRedirectingToCheckout(true);
+          try {
+            const checkoutRes = await fetch("/api/checkout", {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({ email: state.email }),
+            });
+            const checkoutData = await checkoutRes.json().catch(() => ({}));
+            if (checkoutRes.ok && typeof checkoutData?.url === "string") {
+              window.location.href = checkoutData.url;
+              return;
+            }
+            setRedirectingToCheckout(false);
+            setSubscribeError(
+              "We saved your subscription, but couldn't open checkout. Refresh to try upgrading again."
+            );
+          } catch {
+            setRedirectingToCheckout(false);
+            setSubscribeError(
+              "We saved your subscription, but couldn't reach checkout. Check your connection and try again."
+            );
+          }
+        }
       } else {
         setSubscribeStatus("error");
         setSubscribeError(
@@ -1219,16 +1246,16 @@ export default function Onboarding() {
             {/* Final CTA */}
             <button
               onClick={handleSubscribe}
-              disabled={subscribeStatus === "submitting" || subscribeStatus === "success"}
+              disabled={subscribeStatus === "submitting" || subscribeStatus === "success" || redirectingToCheckout}
               className="w-full mt-8 py-4 px-8 rounded-lg font-semibold text-base flex items-center justify-center gap-2 transition-all duration-200"
               style={{
                 background: "var(--accent)",
                 color: "#0B0C10",
-                opacity: subscribeStatus === "submitting" ? 0.7 : 1,
-                cursor: subscribeStatus === "submitting" || subscribeStatus === "success" ? "default" : "pointer",
+                opacity: subscribeStatus === "submitting" || redirectingToCheckout ? 0.7 : 1,
+                cursor: subscribeStatus === "submitting" || subscribeStatus === "success" || redirectingToCheckout ? "default" : "pointer",
               }}
               onMouseEnter={(e) => {
-                if (subscribeStatus === "submitting" || subscribeStatus === "success") return;
+                if (subscribeStatus === "submitting" || subscribeStatus === "success" || redirectingToCheckout) return;
                 e.currentTarget.style.background = "var(--accent-hover)";
                 e.currentTarget.style.transform = "translateY(-2px)";
                 e.currentTarget.style.boxShadow = "0 0 20px rgba(242, 169, 0, 0.3)";
@@ -1239,10 +1266,16 @@ export default function Onboarding() {
                 e.currentTarget.style.boxShadow = "none";
               }}
             >
-              {subscribeStatus === "submitting"
+              {redirectingToCheckout
+                ? "Redirecting to secure checkout…"
+                : subscribeStatus === "submitting"
                 ? "Subscribing…"
                 : subscribeStatus === "success"
-                ? "Check your inbox to confirm ✓"
+                ? state.plan === "pro"
+                  ? "Subscribed ✓"
+                  : "Check your inbox to confirm ✓"
+                : state.plan === "pro"
+                ? "Subscribe & Continue to Checkout — $19/mo"
                 : "Subscribe — Start Free"}
             </button>
             {subscribeError && (
