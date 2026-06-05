@@ -464,7 +464,7 @@ function PricingSection() {
             </div>
             <h3 className="text-2xl font-semibold text-[#E6E8EE] mb-2">Pro</h3>
             <div className="flex items-baseline gap-1 mb-2">
-              <span className="text-5xl font-bold text-[#F2A900]">$12</span>
+              <span className="text-5xl font-bold text-[#F2A900]">$19</span>
               <span className="text-base text-[#8A91A0]">/month</span>
             </div>
             <p className="text-sm text-[#8A91A0] mb-8">

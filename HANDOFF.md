@@ -66,3 +66,17 @@ A daily, career-personalized AI newsletter. Pivot from myaiskilltutor.com. The p
   4. Backfill briefings for the other 12 careers (run `run_daily`/`generate_all` for all 15×3) so every hub is live-cited (today only marketing/product-management/entrepreneurship have real data; rest show honest sample fallback).
   5. `vercel deploy --prod` web/ → `vercel alias set <web-prod-url> mydailydownload.com`. Keep `app` (Vite) as instant rollback.
   6. SEO: submit `https://mydailydownload.com/sitemap.xml` to Google Search Console (DNS-verified) + IndexNow.
+
+## UPDATE 3 — APEX CUTOVER COMPLETE ✅ (2026-06-05)
+**mydailydownload.com now serves the Next.js app (`mydailydownload-web`).** All cutover steps done + verified live.
+- **Apex flipped** → deployment `mydailydownload-dhoas0t1t-…vercel.app` (project `mydailydownload-web`). Verified: `/` 200 (51KB SSR, `__next`+`/_next/`+GA4, no Vite markers), `/ai-for/*` real SSR, `/sitemap.xml` 15 hubs, `/robots.txt` 200.
+  - **ROLLBACK (instant):** `vercel alias set app-61b36zzpc-miguel-sanchezgrices-projects.vercel.app mydailydownload.com` (Vite `app` project kept intact).
+- **Stripe ported to App Router** — `web/app/api/checkout/route.ts` + `stripe-webhook/route.ts` (self-contained, `req.text()` raw-body verify). `stripe` added to web deps. **Pro button now wired**: onboarding subscribe → if plan=pro, POST `/api/checkout` → redirect to Stripe Checkout (verified live `cs_live_…`, no charge). Success `/?pro=success`, cancel `/onboarding?pro=cancel`.
+  - **Price reconciled $12→$19** in `web/app/page.tsx` + `OnboardingClient.tsx` (matches Stripe price `price_1Tf5ma…`).
+  - **Webhook secret was NOT recoverable** (Vercel Sensitive vars pull as blank). Solution: minted a NEW endpoint **`we_1Tf6WwPnLtm1veVCNQWstYj0`** (enabled) at the same apex path → captured its signing secret → set on web prod. **Old `we_1Tf5ukPnLtm1veVCJPa4ITej` = DISABLED** (re-enable to revert). Apex webhook verified alive (400 "Missing stripe-signature header" = secret loaded).
+  - Web prod env now has: SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY, RESEND_API_KEY, **STRIPE_SECRET_KEY, STRIPE_PRO_PRICE_ID, STRIPE_WEBHOOK_SECRET**.
+- **GA4** `G-X27FVHNW9T` added to `web/app/layout.tsx` via `next/script` (verified in apex HTML).
+- **Backfill DONE** — Mid Level briefings generated for the 12 missing careers (`backend/backfill_hubs.py`); **all 15 careers now have a Mid Level briefing (2026-06-05)**, so every `/ai-for/[career]` hub is live-cited. Junior/Senior fill in on demand via `run_daily`.
+- **IndexNow** — key file `web/public/2503e097d56b9a4de0e2276c8ee22c58.txt` live; submitted 20 URLs (apex + 15 hubs + sample/onboarding/privacy/terms) → HTTP 202.
+- **REMAINING (manual, needs your Google login):** submit `https://mydailydownload.com/sitemap.xml` in Google Search Console (domain already DNS-verified). robots.txt already advertises the sitemap, so Google will also auto-discover.
+- **Still advisable:** rotate the LIVE Stripe keys (they were pasted in chat). The `app` (Vite) project remains as instant rollback; retire it once the Next.js apex has soaked.

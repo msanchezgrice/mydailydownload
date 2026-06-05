@@ -276,6 +276,31 @@ export default function OnboardingClient() {
       });
       const data = await res.json().catch(() => ({}));
       if (res.ok && data?.ok) {
+        // Pro: now that they're subscribed (row + confirmation email exist),
+        // start the $19/mo Stripe Checkout. The webhook upgrades plan=pro on
+        // completion, keyed by this email.
+        if (state.plan === "pro") {
+          try {
+            const checkoutRes = await fetch("/api/checkout", {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({ email: state.email }),
+            });
+            const checkoutData = await checkoutRes.json().catch(() => ({}));
+            if (checkoutRes.ok && typeof checkoutData?.url === "string") {
+              window.location.href = checkoutData.url; // leaving for Stripe
+              return;
+            }
+          } catch {
+            /* fall through to success — they're subscribed, just not upgraded */
+          }
+          // Checkout couldn't start: they're still subscribed (free); let them know.
+          setSubscribeStatus("success");
+          setSubscribeError(
+            "You're subscribed! We couldn't open Pro checkout just now — you can upgrade anytime from your inbox."
+          );
+          return;
+        }
         setSubscribeStatus("success");
       } else {
         setSubscribeStatus("error");
@@ -1148,7 +1173,7 @@ export default function OnboardingClient() {
                   className="text-lg font-bold"
                   style={{ color: "var(--text-primary)" }}
                 >
-                  $12
+                  $19
                   <span
                     className="text-xs font-normal"
                     style={{ color: "var(--text-secondary)" }}
@@ -1207,7 +1232,9 @@ export default function OnboardingClient() {
                 ? "Subscribing…"
                 : subscribeStatus === "success"
                   ? "Check your inbox to confirm ✓"
-                  : "Subscribe — Start Free"}
+                  : state.plan === "pro"
+                    ? "Subscribe & Continue to Pro Checkout →"
+                    : "Subscribe — Start Free"}
             </button>
             {subscribeError && (
               <p className="text-xs text-center mt-3" style={{ color: "#F85149" }}>
