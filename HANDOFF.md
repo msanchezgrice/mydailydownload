@@ -55,3 +55,14 @@ A daily, career-personalized AI newsletter. Pivot from myaiskilltutor.com. The p
   4. SEO: submit sitemap to Google Search Console (already DNS-verified) + IndexNow.
 - Then post-launch: social X accounts + repurpose loop; subscribe AgentMail inbox to incumbent newsletters to light up Lane C.
 - Commits now: `b9e0248` stripe · `d05b61b` address · `5b6843f` cron · `f75a4b8` signups · `e7f96c4` engine · `86fbbd5` init.
+
+## UPDATE 2 — Next.js DONE (preview); apex cutover is the only remaining step
+- ✅ **#2 Next.js migration COMPLETE on preview** — project **`mydailydownload-web`** (`prj_Unzgy1KnP58xw4HWhgBwjMmtnYPM`), preview `https://mydailydownload-1inr3s9kx-miguel-sanchezgrices-projects.vercel.app`. Verified: `/ai-for/marketing` server-renders real "Stensul launches MCP server" + URL; sitemap has 15 hubs; `/api/subscribe` works. Committed.
+- web/ env set: SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY, RESEND_API_KEY (Prod+Dev). Address placeholder FIXED in web/.
+- **APEX CUTOVER CHECKLIST (do in a fresh session — touches live):**
+  1. Port Stripe into web/: copy `api/checkout` + `api/stripe-webhook` logic as App Router `web/app/api/checkout/route.ts` + `stripe-webhook/route.ts` (self-contained); `npm i stripe` in web/; wire the Pro button. Update the Stripe webhook endpoint URL (currently points at the Vite app's /api/stripe-webhook — same apex path, so it KEEPS WORKING after cutover; verify).
+  2. Add GA4 tag `G-X27FVHNW9T` to web/ root layout.
+  3. Set STRIPE_SECRET_KEY, STRIPE_PRO_PRICE_ID, STRIPE_WEBHOOK_SECRET on `mydailydownload-web` (Prod). Connect the GitHub repo to the project so Preview env works without inline flags.
+  4. Backfill briefings for the other 12 careers (run `run_daily`/`generate_all` for all 15×3) so every hub is live-cited (today only marketing/product-management/entrepreneurship have real data; rest show honest sample fallback).
+  5. `vercel deploy --prod` web/ → `vercel alias set <web-prod-url> mydailydownload.com`. Keep `app` (Vite) as instant rollback.
+  6. SEO: submit `https://mydailydownload.com/sitemap.xml` to Google Search Console (DNS-verified) + IndexNow.
