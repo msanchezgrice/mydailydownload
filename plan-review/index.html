@@ -1,0 +1,555 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>My Daily Download — Build Plan Review</title>
+<style>
+  :root{
+    --void:#0B0C10; --surface:#14171d; --elevated:#1A1D23;
+    --text:#E6E8EE; --muted:#8A91A0; --faint:#5d636f;
+    --accent:#F2A900; --accent-soft:rgba(242,169,0,.10); --accent-line:rgba(242,169,0,.35);
+    --border:rgba(255,255,255,.08); --border-strong:rgba(255,255,255,.14);
+    --red:#ff6b6b; --redbg:rgba(255,107,107,.10);
+    --green:#36d399; --greenbg:rgba(54,211,153,.10);
+    --blue:#5aa7ff;
+    --mono:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+    --sans:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Inter,sans-serif;
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{margin:0;background:var(--void);color:var(--text);font-family:var(--sans);font-size:15px;line-height:1.65;-webkit-font-smoothing:antialiased}
+  a{color:var(--accent);text-decoration:none}
+  a:hover{text-decoration:underline}
+  code{font-family:var(--mono);font-size:.86em;background:rgba(255,255,255,.06);padding:.1em .4em;border-radius:5px;color:#f3d490}
+
+  /* top bar */
+  .topbar{position:sticky;top:0;z-index:50;display:flex;align-items:center;justify-content:space-between;
+    padding:14px 28px;background:rgba(11,12,16,.86);backdrop-filter:blur(12px);border-bottom:1px solid var(--border)}
+  .brand{display:flex;align-items:center;gap:11px;font-weight:700;letter-spacing:-.01em}
+  .dot{width:11px;height:11px;border-radius:50%;background:var(--accent);box-shadow:0 0 14px var(--accent)}
+  .brand small{display:block;font-weight:500;color:var(--muted);font-size:11px;letter-spacing:.02em}
+  .pill{font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.08em;color:var(--accent);
+    border:1px solid var(--accent-line);background:var(--accent-soft);padding:5px 11px;border-radius:999px}
+
+  .layout{display:grid;grid-template-columns:236px 1fr;max-width:1180px;margin:0 auto}
+  /* sidebar */
+  nav.side{position:sticky;top:60px;align-self:start;height:calc(100vh - 60px);overflow-y:auto;padding:28px 14px 60px 24px;border-right:1px solid var(--border)}
+  nav.side a{display:block;color:var(--muted);font-size:13px;padding:6px 10px;border-radius:7px;border-left:2px solid transparent;margin-bottom:1px}
+  nav.side a:hover{color:var(--text);background:rgba(255,255,255,.03);text-decoration:none}
+  nav.side a.active{color:var(--accent);border-left-color:var(--accent);background:var(--accent-soft)}
+  nav.side .grp{font-size:10px;text-transform:uppercase;letter-spacing:.1em;color:var(--faint);margin:18px 0 6px 10px}
+
+  main{padding:36px 44px 120px;min-width:0}
+  section{scroll-margin-top:72px;margin-bottom:46px}
+  h1{font-size:30px;letter-spacing:-.025em;margin:6px 0 6px;line-height:1.15}
+  .sub{color:var(--muted);font-size:15px;margin:0 0 22px}
+  h2{font-size:20px;letter-spacing:-.02em;margin:0 0 14px;padding-bottom:9px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:10px}
+  h2 .n{font-family:var(--mono);font-size:12px;color:var(--accent);border:1px solid var(--accent-line);border-radius:6px;padding:2px 7px}
+  h3{font-size:15px;margin:20px 0 8px;color:var(--text)}
+  p{margin:0 0 12px}
+  .lead{font-size:16px;line-height:1.7}
+  strong{color:#fff}
+  ul{margin:0 0 12px;padding-left:20px}
+  li{margin-bottom:6px}
+
+  .card{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:20px 22px}
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+  .grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+
+  /* decision chips */
+  .chips{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
+  .chip{background:var(--surface);border:1px solid var(--border);border-left:3px solid var(--accent);border-radius:10px;padding:13px 16px}
+  .chip .k{font-size:11px;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);margin-bottom:3px}
+  .chip .v{font-weight:600;font-size:14px}
+
+  /* risk cards */
+  .risk{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:16px 18px;margin-bottom:12px;position:relative}
+  .risk .hd{display:flex;align-items:center;gap:10px;margin-bottom:6px}
+  .risk .num{font-family:var(--mono);font-weight:700;color:var(--void);background:var(--accent);width:24px;height:24px;border-radius:7px;display:grid;place-items:center;font-size:13px;flex:0 0 auto}
+  .risk .ttl{font-weight:700;font-size:15px}
+  .sev{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;padding:3px 8px;border-radius:999px;margin-left:auto;flex:0 0 auto}
+  .sev.crit{color:var(--red);background:var(--redbg);border:1px solid rgba(255,107,107,.3)}
+  .sev.high{color:var(--accent);background:var(--accent-soft);border:1px solid var(--accent-line)}
+  .risk p{margin:0;color:var(--muted);font-size:13.5px}
+  .risk .fix{margin-top:8px;font-size:13px;color:var(--text)}
+  .risk .fix b{color:var(--green)}
+
+  table{width:100%;border-collapse:collapse;font-size:13.5px;margin:6px 0 4px}
+  th,td{text-align:left;padding:9px 12px;border-bottom:1px solid var(--border);vertical-align:top}
+  th{color:var(--muted);font-weight:600;font-size:12px;text-transform:uppercase;letter-spacing:.04em;background:rgba(255,255,255,.02)}
+  tr:hover td{background:rgba(255,255,255,.015)}
+  td code{white-space:nowrap}
+
+  pre.diagram{background:#0d1117;border:1px solid var(--border);border-radius:12px;padding:18px 20px;overflow-x:auto;
+    font-family:var(--mono);font-size:12px;line-height:1.55;color:#aeb6c2}
+  pre.diagram .a{color:var(--accent)}
+  pre.diagram .g{color:var(--green)}
+  pre.diagram .r{color:var(--red)}
+
+  /* keep fix throw */
+  .kft{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+  .kft .col{border-radius:12px;padding:14px 16px;border:1px solid var(--border)}
+  .kft .keep{border-top:3px solid var(--green)}
+  .kft .fix{border-top:3px solid var(--accent)}
+  .kft .throw{border-top:3px solid var(--red)}
+  .kft h4{margin:0 0 8px;font-size:13px;text-transform:uppercase;letter-spacing:.05em}
+  .kft .keep h4{color:var(--green)} .kft .fix h4{color:var(--accent)} .kft .throw h4{color:var(--red)}
+  .kft ul{font-size:12.5px;color:var(--muted);padding-left:16px}
+
+  /* phases */
+  .phase{display:grid;grid-template-columns:54px 1fr;gap:16px;margin-bottom:14px}
+  .phase .badge{display:flex;flex-direction:column;align-items:center}
+  .phase .pn{font-family:var(--mono);font-weight:700;font-size:14px;color:var(--accent);border:1px solid var(--accent-line);background:var(--accent-soft);border-radius:9px;width:46px;height:46px;display:grid;place-items:center}
+  .phase .line{flex:1;width:2px;background:var(--border);margin-top:6px}
+  .phase .body{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:14px 18px}
+  .phase .body h4{margin:0 0 4px;font-size:15px}
+  .phase .body .ac{margin-top:8px;font-size:12.5px;color:var(--muted);border-top:1px dashed var(--border);padding-top:8px}
+  .phase .body .ac b{color:var(--green);text-transform:uppercase;font-size:10px;letter-spacing:.06em}
+
+  .callout{background:var(--accent-soft);border:1px solid var(--accent-line);border-radius:12px;padding:14px 18px;font-size:13.5px}
+  .callout.warn{background:var(--redbg);border-color:rgba(255,107,107,.3)}
+  .note{color:var(--faint);font-size:12px;margin-top:8px}
+  hr{border:0;border-top:1px solid var(--border);margin:30px 0}
+
+  .foot{max-width:1180px;margin:0 auto;padding:30px 44px 60px;color:var(--faint);font-size:12px;border-top:1px solid var(--border)}
+  /* email mockups */
+  .emocks{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:6px}
+  .emock{background:#fff;color:#1A1D23;border:1px solid var(--border-strong);border-radius:12px;overflow:hidden;font-size:12px;line-height:1.5;box-shadow:0 8px 30px rgba(0,0,0,.25)}
+  .emock .eh{background:#0B0C10;padding:12px 14px}
+  .emock .eh .wm{color:#F2A900;font-weight:700;font-size:12px;letter-spacing:.04em}
+  .emock .eh .mt{color:#7A8194;font-size:10px;margin-top:2px}
+  .emock .eb{padding:13px 14px;background:#fff}
+  .emock .el{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:#C98A00;margin:13px 0 4px}
+  .emock .el:first-child{margin-top:0}
+  .emock h5{margin:0 0 4px;font-size:13px;color:#14171d;line-height:1.3}
+  .emock p{margin:0 0 4px;color:#555;font-size:11.5px}
+  .emock .wm-you{color:#C98A00;font-weight:600}
+  .emock .hero{background:#FFF8E7;border-left:3px solid #F2A900;border-radius:0 8px 8px 0;padding:10px 12px;margin-bottom:2px}
+  .emock .hero .tag{display:inline-block;font-size:9px;font-weight:700;color:#0B0C10;background:#F2A900;padding:2px 6px;border-radius:4px;margin-bottom:6px;letter-spacing:.04em}
+  .emock .prompt{background:#0d1117;color:#aeb6c2;font-family:var(--mono);font-size:10px;border-radius:6px;padding:8px 10px;margin:2px 0 4px}
+  .emock ul.b{margin:2px 0 4px;padding-left:14px}
+  .emock ul.b li{margin-bottom:3px;color:#555;font-size:11px}
+  .emock .nums{display:flex;gap:8px;margin-top:5px}
+  .emock .num{flex:1;background:#f8f9fa;border-radius:6px;padding:8px;text-align:center}
+  .emock .num b{display:block;color:#C98A00;font-size:16px;line-height:1.1}
+  .emock .num span{font-size:9px;color:#666}
+  .emock .fund{display:flex;justify-content:space-between;border-bottom:1px solid #eee;padding:4px 0;font-size:11px}
+  .emock .fund b{color:#14171d;font-weight:600}
+  .emock .fund .amt{color:#C98A00;font-weight:700}
+  .emock .src{font-size:9px;color:#9aa0aa;margin-top:2px}
+  .emock .ec{background:#0B0C10;text-align:center;padding:9px;color:#F2A900;font-size:10px;font-weight:600}
+  .emock .cap{text-align:center;font-size:9px;color:#b9bec7;padding:6px;background:#f3f4f6}
+  .dow{display:grid;grid-template-columns:repeat(6,1fr);gap:8px;margin-top:6px}
+  .dow .d{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:11px 9px;text-align:center}
+  .dow .d .dd{font-size:10px;color:var(--faint);text-transform:uppercase;letter-spacing:.06em}
+  .dow .d .dt{font-size:12.5px;font-weight:700;color:var(--accent);margin:4px 0 3px}
+  .dow .d .dh{font-size:10px;color:var(--muted);line-height:1.35}
+  .palette{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}
+  .palette .bt{font-size:10.5px;color:var(--muted);background:rgba(255,255,255,.04);border:1px solid var(--border);border-radius:999px;padding:3px 9px;font-family:var(--mono)}
+  @media(max-width:880px){.layout{grid-template-columns:1fr}nav.side{display:none}main{padding:26px 20px 90px}.chips,.grid2,.grid3,.kft{grid-template-columns:1fr}.emocks{grid-template-columns:1fr}.dow{grid-template-columns:repeat(2,1fr)}}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="brand"><span class="dot"></span><div>My Daily Download<small>Adversarial Review &amp; Build Plan</small></div></div>
+  <div style="display:flex;gap:10px;align-items:center">
+    <span class="pill">For sign-off</span>
+  </div>
+</div>
+
+<div class="layout">
+  <nav class="side" id="toc">
+    <div class="grp">Review</div>
+    <a href="#context">Context</a>
+    <a href="#verdict">Verdict</a>
+    <a href="#risks">Top risks</a>
+    <a href="#decisions">Locked decisions</a>
+    <div class="grp">Build</div>
+    <a href="#arch">Architecture</a>
+    <a href="#cost">Cost</a>
+    <a href="#archive">Archive · SEO · social</a>
+    <a href="#formats">Formats &amp; mockups</a>
+    <a href="#categories">Categories first</a>
+    <a href="#content">Content / SEO / Brand</a>
+    <a href="#plan">Build plan</a>
+    <a href="#kft">Keep / Fix / Throw</a>
+    <div class="grp">Wrap</div>
+    <a href="#localhost">Localhost review</a>
+    <a href="#questions">Open questions</a>
+    <a href="#verify">Verification</a>
+  </nav>
+
+  <main>
+    <section id="context">
+      <h1>My Daily Download — pivot to a career-personalized daily AI newsletter</h1>
+      <p class="sub">Web-verified red-team (6 agents) + your locked decisions, turned into a shippable plan.</p>
+      <div class="card">
+        <p class="lead" style="margin:0">The <code>Kimi_Agent_AI Skill Tutor MVP/</code> folder holds a strategy package plus two code skeletons — a React/Vite landing+onboarding app and a Python newsletter engine. The strategy recommends pivoting <code>myaiskilltutor.com</code> to a <strong>career-personalized daily AI newsletter</strong> as an acquisition wedge. The wedge is real and monetizable — but the MVP as built <strong>cannot ship</strong>. This plan fixes that and adds a content/SEO growth engine + a ready-to-feed launcher spec package.</p>
+      </div>
+    </section>
+
+    <section id="verdict">
+      <h2><span class="n">01</span> Verdict</h2>
+      <div class="callout">
+        <strong>Directionally sound wedge — but three hard blockers and two diligence-killers.</strong> The single biggest risk is the <strong>trust boundary</strong>: the engine emails <em>hallucinated</em> facts under real brand names. That's the actual product (real, cited news) <em>and</em> the top liability. Fix it first, then compliance, then the broken frontend.
+      </div>
+      <div class="grid3" style="margin-top:14px">
+        <div class="card"><div style="font-size:26px;font-weight:700;color:var(--accent)">3</div><div style="color:var(--muted);font-size:13px">hard blockers before a single email can ship</div></div>
+        <div class="card"><div style="font-size:26px;font-weight:700;color:var(--accent)">~$40–70</div><div style="color:var(--muted);font-size:13px">/mo all-in at 1k subs (LLM is a rounding error)</div></div>
+        <div class="card"><div style="font-size:26px;font-weight:700;color:var(--accent)">3</div><div style="color:var(--muted);font-size:13px">launch verticals: Marketing · PM · Founder</div></div>
+      </div>
+    </section>
+
+    <section id="risks">
+      <h2><span class="n">02</span> Top risks (ranked, web-verified)</h2>
+
+      <div class="risk">
+        <div class="hd"><span class="num">1</span><span class="ttl">Hallucinated news = brand-killer + legal exposure</span><span class="sev crit">Critical · P0</span></div>
+        <p><code>search_ai_news()</code> asks an LLM (temp 0.5) to <em>invent</em> 2026 headlines, sources ("TechCrunch"), funding ("Harvey raises $300M") and stats ("73% of PMs"). <code>careerContent.ts</code> ships the same fabrications with fake company quotes. Emailing invented facts under real brand names = false attribution / FTC deceptive-content risk.</p>
+        <div class="fix"><b>Fix →</b> invert the pipeline: fetch real items → dedup → rank → LLM summarizes <em>only fetched text</em> with mandatory source links; hard guard rejects any URL not in the fetched set.</div>
+      </div>
+
+      <div class="risk">
+        <div class="hd"><span class="num">2</span><span class="ttl">Cannot legally send one email</span><span class="sev crit">Critical · P0</span></div>
+        <p>Single-checkbox consent; <strong>enumerable unsubscribe via raw PK</strong> (<code>?id=1,2,3…</code> → anyone unsubscribes anyone); no physical address (FTC ~$53k/email); no consent log; no <code>List-Unsubscribe</code> one-click (Gmail/Yahoo require it); no bounce handling; cold domain sending daily.</p>
+        <div class="fix"><b>Fix →</b> double opt-in token, unguessable unsubscribe token, RFC 8058 header, footer address + privacy link, consent record (ts+IP+text), bounce webhook → deactivate, SPF/DKIM/DMARC + warmup.</div>
+      </div>
+
+      <div class="risk">
+        <div class="hd"><span class="num">3</span><span class="ttl">Frontend won't compile</span><span class="sev high">High</span></div>
+        <p>Missing <code>Navbar</code>; imports <code>react-router-dom</code> (only <code>react-router</code> v7 is a dep); pages import 5 symbols <code>careerContent.ts</code> never exports; <code>SampleEmail</code> reads fields that don't exist; <strong>three conflicting career-ID namespaces</strong>; <code>node_modules</code> never installed.</p>
+        <div class="fix"><b>Fix →</b> rebuild the data layer against the backend slug taxonomy (source of truth); reuse design tokens, theme, markup, leaf components, copy (70–80% salvageable).</div>
+      </div>
+
+      <div class="risk">
+        <div class="hd"><span class="num">4</span><span class="ttl">Personalization theater</span><span class="sev high">High</span></div>
+        <p>Resume tab assigns career via <code>Math.random()</code> presented as "analysis"; backend collects seniority/interests then <strong>discards them</strong>. Cosmetic loading is fine; asserting a false inference about the user's real data is deception.</p>
+        <div class="fix"><b>Fix →</b> honest, user-correctable role selection; real parsing labeled best-effort; generate at career×seniority granularity so the collected data is actually used.</div>
+      </div>
+
+      <div class="risk">
+        <div class="hd"><span class="num">5</span><span class="ttl">Market-claim fragility (kills diligence)</span><span class="sev high">High</span></div>
+        <p>"Zero career-personalized competitors" is <strong>FALSE</strong> — Marketing AI Institute, <strong>Mindstream (HubSpot-owned)</strong>, Ben's Bites, Latent Space, Spellbook Redline, SHRM AI+HI already serve career-segmented AI news; <strong>Refind (~500k)</strong> + Particle do per-interest personalization; <strong>The Rundown already shipped role-based onboarding</strong> in its University product. Several TAM stats are fabricated/misquoted.</p>
+        <div class="fix"><b>Fix →</b> reframe as "personalization <em>within one product</em> across <em>any</em> career"; stress-test vs The Rundown; drop fabricated stats. <b>Verified-good:</b> sub counts, pricing anchors, CPM $20–50, affiliate 20–40%.</div>
+      </div>
+    </section>
+
+    <section id="decisions">
+      <h2><span class="n">03</span> Locked decisions <span style="font-size:11px;color:var(--muted);font-weight:400">(from you)</span></h2>
+      <div class="chips">
+        <div class="chip"><div class="k">Pricing</div><div class="v">Free + Pro $15–19, one price everywhere</div></div>
+        <div class="chip"><div class="k">Personalization</div><div class="v">Real parsing + career×seniority variants → real archive → SEO growth</div></div>
+        <div class="chip"><div class="k">Profile parsing</div><div class="v">Proxycurl provisioned now + resume PDF, user-correctable</div></div>
+        <div class="chip"><div class="k">Archive</div><div class="v">Forward-only · 45-variant matrix live from launch · signup sees rolling last 2 weeks</div></div>
+        <div class="chip"><div class="k">News sourcing</div><div class="v">RSS + paid Exa/Tavily + AgentMail + dailyaibrief.com</div></div>
+        <div class="chip"><div class="k">Social</div><div class="v">5 vertical X accounts, fed by archive repurpose loop</div></div>
+        <div class="chip"><div class="k">Sending domain</div><div class="v">✅ mydailydownload.com (in Vercel — wire DNS at build)</div></div>
+        <div class="chip"><div class="k">Localhost review</div><div class="v">Plan <code>:6990</code> + fixed demo <code>:5273</code></div></div>
+      </div>
+    </section>
+
+    <section id="arch">
+      <h2><span class="n">04</span> Architecture — 3-lane ingestion → grounded synthesis</h2>
+      <pre class="diagram">
+<span class="a">LANE A</span>  Curated RSS (~30 feeds: TechCrunch, Verge, VentureBeat AI, MIT TR,
+        arXiv cs.AI, OpenAI/Anthropic/Google blogs, Simon Willison…)     [free]
+<span class="a">LANE B</span>  Exa + Tavily — per-career topical recall / gap-fill              [paid, day 1]
+<span class="a">LANE C</span>  AgentMail inbox subscribed to ~15-20 incumbent newsletters
+        (Rundown, TLDR AI, Mindstream, Ben's Bites, Latent Space + dailyaibrief.com's
+        per-vertical briefs: Sales &amp; Marketing AI Weekly, Enterprise AI Brief…)
+        → <span class="g">DISCOVERY SIGNAL ONLY</span>                                       [$20/mo]
+                 │
+                 ▼   unwrap tracking redirects (link.mail.beehiiv.com, list-manage.com)
+        resolve → <span class="g">PRIMARY SOURCE URL</span> → strip UTM → canonicalize
+                 │
+                 ▼   DEDUP by canonical URL → story in N newsletters = trending score N
+                 ▼   RANK per (career × seniority bucket): relevance + recency + trend
+                 │
+                 ▼   LLM summarizes <span class="g">ONLY fetched text</span> (gpt-4o-mini, JSON mode)
+                 │   "add no facts not present · keep every source URL"
+                 ▼
+        <span class="r">GUARDRAIL</span>: reject any rendered URL ∉ fetched set → render w/ "Source:" link
+                 │
+                 ▼   persist → <span class="a">briefings</span> archive  → email · Pro archive · public SEO pages
+      </pre>
+      <div class="callout warn" style="margin-top:14px">
+        <strong>Directory as a map:</strong> <code>dailyaibrief.com</code> is a directory of ~15 vertical AI briefs (Sales &amp; Marketing, Enterprise, Legal, Finance…) with a public archive but no RSS/API — ingest via the AgentMail lane or archive-scrape discovery-only; its taxonomy doubles as our category-expansion map (and it's another <em>per-publication</em> competitor — our wedge is <em>per-individual</em>).<br><br>
+        <strong>Legal pattern (load-bearing):</strong> newsletters/directories are a <em>discovery signal only</em>. Always cite the <strong>primary source</strong>, write <strong>100% original prose</strong>, never reproduce a newsletter's blurb/lede/lineup (the <em>AP v. Meltwater</em> line), respect paywalls. AgentMail guards: API-fetch fallback for &gt;1 MB payloads, double-opt-in auto-confirm, Svix verification. Fallbacks: Cloudflare Email Routing, Gmail/Fastmail IMAP.
+      </div>
+
+      <h3>The archive / growth flywheel</h3>
+      <p>Generate at <strong>career × seniority</strong> granularity (cached; interests re-rank a shared pool — cost stays flat). Every variant is persisted as a dated <strong>briefing</strong> → (a) the <em>real</em> Pro archive, (b) public programmatic-SEO pages <code>/briefing/[career]/[date]</code>, (c) social/content fuel.</p>
+
+      <h3>Stack</h3>
+      <table>
+        <tr><th>Layer</th><th>Choice</th><th>Why</th></tr>
+        <tr><td>Public site + archive + onboarding</td><td><strong>Next.js (App Router) / Vercel</strong>, ISR/SSG</td><td>SEO archive needs SSR/SSG; Vite SPA can't rank</td></tr>
+        <tr><td>Generation engine</td><td><strong>Python</strong> (keep backend) via Vercel Cron</td><td>reuse coherent engine; kill in-process loop</td></tr>
+        <tr><td>Scheduler</td><td>Vercel Cron, one job / UTC hour bucket</td><td>timezone-correct, no SPOF</td></tr>
+        <tr><td>DB</td><td><strong>Supabase / Postgres</strong></td><td>SQLite incompatible w/ serverless</td></tr>
+        <tr><td>Email</td><td><strong>Resend Pro</strong> + batch + List-Unsub + bounce webhook + warmup</td><td>deliverability + compliance</td></tr>
+        <tr><td>Inbound newsletters</td><td><strong>AgentMail</strong> $20/mo + Cloudflare/IMAP fallback</td><td>discovery lane</td></tr>
+        <tr><td>News</td><td>RSS (free) + <strong>Exa + Tavily</strong> (paid)</td><td>real, citable recall</td></tr>
+        <tr><td>LLM</td><td><strong>gpt-4o-mini</strong> grounded summarization</td><td>~6× cheaper than Haiku, sufficient</td></tr>
+        <tr><td>Payments / Analytics</td><td>Stripe · PostHog · GA4 · Search Console · IndexNow</td><td>Pro tier + growth</td></tr>
+      </table>
+    </section>
+
+    <section id="cost">
+      <h2><span class="n">05</span> Realistic cost</h2>
+      <table>
+        <tr><th>Subs</th><th>LLM</th><th>News (RSS+Exa/Tavily)</th><th>AgentMail</th><th>Email (Resend)</th><th>Total/mo</th></tr>
+        <tr><td>1k</td><td>~$1</td><td>~$0–30</td><td>$20</td><td>Pro $20</td><td><strong>~$40–70</strong></td></tr>
+        <tr><td>10k</td><td>~$2</td><td>~$30–60</td><td>$20</td><td>Scale ~$90–160</td><td><strong>~$140–240</strong></td></tr>
+      </table>
+      <p class="note">Email + tooling dominate. <strong>LLM is a rounding error</strong> because generation is per-variant, not per-subscriber. Biggest cost lever = list hygiene (double opt-in + sunset non-openers). Note: Resend free tier is 3k/<em>month</em> + 100/day — paid from ~day one.</p>
+    </section>
+
+    <section id="archive">
+      <h2><span class="n">05b</span> Full-archive generation, SEO &amp; social</h2>
+      <p>All 15 professions × 3 seniority tiers (<strong>45 variants</strong>) go live from launch. <strong>Forward-only — no historical backfill.</strong></p>
+      <table>
+        <tr><th>Run</th><th>Scope</th><th>Total</th></tr>
+        <tr><td>Day-1 full matrix</td><td>45 variants, today's real cited news (all categories live)</td><td><strong>~$1 one-time</strong></td></tr>
+        <tr><td>Forward daily</td><td>45 variants/day, ongoing</td><td><strong>~$30/mo</strong></td></tr>
+        <tr><td>SEO refresh</td><td>15 category pages, ~weekly from recent briefings</td><td><strong>~$1/mo</strong></td></tr>
+      </table>
+      <p class="note">All-in ≈ <strong>~$1 to launch, ~$30/mo ongoing.</strong> Cost is a non-issue.</p>
+
+      <div class="grid3" style="margin-top:14px">
+        <div class="card"><h3 style="margin-top:0">Public SEO</h3><p style="margin:0;color:var(--muted);font-size:13px"><strong>One page per category (15)</strong> — <code>/ai-for/[career]</code>, refreshed ~weekly. Seniority variants + daily issues are <code>noindex</code> → <strong>zero thin-content risk</strong>.</p></div>
+        <div class="card"><h3 style="margin-top:0">Gated archive</h3><p style="margin:0;color:var(--muted);font-size:13px"><strong>Rolling trailing 2 weeks.</strong> On signup, a user sees the <strong>last 14 days</strong> of their category — real, accreting from launch. Replaces the fabricated "500+ archive".</p></div>
+        <div class="card"><h3 style="margin-top:0">Social repurpose</h3><p style="margin:0;color:var(--muted);font-size:13px"><strong>5 vertical X accounts</strong> (Marketing, Product, Founder, Sales, Eng — TBD) + brand master. Top items auto-drafted → <strong>human-approve → post</strong>.</p></div>
+      </div>
+    </section>
+
+    <section id="formats">
+      <h2><span class="n">05c</span> Format per category <span style="font-size:11px;color:var(--muted);font-weight:400">— not standardized</span></h2>
+      <p>Each vertical consumes AI news differently, so each composes its own blocks from a shared palette. Same engine, different newsletter. Mockups in the original email style (sample content):</p>
+
+      <div class="emocks">
+        <!-- MARKETING -->
+        <div class="emock">
+          <div class="eh"><div class="wm">MY DAILY DOWNLOAD</div><div class="mt">Marketing · Tool Tuesday · Jun 9</div></div>
+          <div class="eb">
+            <div class="hero"><span class="tag">🔥 TOOL TUESDAY</span>
+              <h5>Pencil 3.0 — 50 on-brand ad variants from one URL</h5>
+              <p>Paste a product page; it generates and auto-kills losers by ROAS. <span class="wm-you">Try it →</span></p>
+            </div>
+            <div class="el">The Big Story</div>
+            <h5>Meta opens Advantage+ creative API to all advertisers</h5>
+            <p><span class="wm-you">What it means for your campaigns:</span> A/B hundreds of AI creatives without manual upload.</p>
+            <div class="src">Source: TechCrunch ↗</div>
+            <div class="el">Prompt of the Day</div>
+            <div class="prompt">Write 5 hook variations for a {product} TikTok ad targeting {ICP} — each &lt;12 words, pattern-interrupt first line.</div>
+            <div class="el">Channel Watch</div>
+            <ul class="b"><li>Google PMax adds asset-level reporting</li><li>TikTok Symphony opens avatar ads</li><li>Meta sunsets manual placements</li></ul>
+            <div class="el">By the Numbers</div>
+            <div class="nums"><div class="num"><b>+32%</b><span>ROAS lift, AI creative</span></div><div class="num"><b>2.4×</b><span>faster creative cycle</span></div></div>
+          </div>
+          <div class="ec">Unlock the full briefing — go Pro →</div>
+          <div class="cap">sample · Marketing format, Tuesday rotation</div>
+        </div>
+
+        <!-- PRODUCT -->
+        <div class="emock">
+          <div class="eh"><div class="wm">MY DAILY DOWNLOAD</div><div class="mt">Product · Playbook Wednesday · Jun 10</div></div>
+          <div class="eb">
+            <div class="hero"><span class="tag">📐 PLAYBOOK WEDNESDAY</span>
+              <h5>40 support tickets → a ranked PRD in 15 min</h5>
+              <p>1) Export tickets 2) Cluster by theme w/ the prompt 3) Auto-draft problem statements + RICE scores.</p>
+            </div>
+            <div class="el">The Big Story</div>
+            <h5>OpenAI ships structured outputs for agent tools</h5>
+            <p><span class="wm-you">What it means for your roadmap:</span> reliable JSON unblocks the agent features you shelved.</p>
+            <div class="src">Source: OpenAI ↗</div>
+            <div class="el">Teardown</div>
+            <h5>How Linear shipped AI issue triage</h5>
+            <p>Routed 60% of inbound to the right team on day one — here's the architecture.</p>
+            <div class="el">Benchmark Board</div>
+            <ul class="b"><li>Gemini 2.5: 2M-token context GA</li><li>Claude tops SWE-bench Verified</li><li>New cheap embeddings cut RAG cost 40%</li></ul>
+          </div>
+          <div class="ec">See the 14-day archive — go Pro →</div>
+          <div class="cap">sample · Product format, Wednesday rotation</div>
+        </div>
+
+        <!-- FOUNDER -->
+        <div class="emock">
+          <div class="eh"><div class="wm">MY DAILY DOWNLOAD</div><div class="mt">Founder · Signal Thursday · Jun 11</div></div>
+          <div class="eb">
+            <div class="hero"><span class="tag">📈 FUNDING SIGNAL</span>
+              <div class="fund"><b>Vertical AI for ops</b><span class="amt">$22M A</span></div>
+              <div class="fund"><b>AI voice agents</b><span class="amt">$40M B</span></div>
+              <div class="fund"><b>Dev-tools copilot</b><span class="amt">$8M seed</span></div>
+              <div class="fund" style="border:0"><b>Legal AI</b><span class="amt">$300M D</span></div>
+            </div>
+            <div class="el">The Big Story</div>
+            <h5>YC W26 is 72% AI-native</h5>
+            <p><span class="wm-you">What it means for your raise:</span> investors expect an AI-native wedge + a data moat.</p>
+            <div class="src">Source: Y Combinator ↗</div>
+            <div class="el">Tool Stack</div>
+            <h5>Cut support burn 40%</h5>
+            <p>Drop-in AI tier-1 agent that escalates only the hard 12%.</p>
+            <div class="el">The Ask — do this today</div>
+            <div class="prompt">Turn my metrics into a tight investor update: 3 wins, 1 challenge + fix, 1 specific ask. Paste dashboard ↓</div>
+          </div>
+          <div class="ec">Get the full Founder edge — go Pro →</div>
+          <div class="cap">sample · Founder format, Thursday rotation</div>
+        </div>
+      </div>
+
+      <h3 style="margin-top:24px">Day-of-week rotation <span style="font-size:11px;color:var(--muted);font-weight:400">— swaps the hero block to stay fresh + build a weekly ritual</span></h3>
+      <div class="dow">
+        <div class="d"><div class="dd">Mon</div><div class="dt">The Setup</div><div class="dh">week-ahead / Event Radar</div></div>
+        <div class="d"><div class="dd">Tue</div><div class="dt">Tool Tuesday</div><div class="dh">tool deep-dive + affiliate</div></div>
+        <div class="d"><div class="dd">Wed</div><div class="dt">Playbook Wed</div><div class="dh">tactical how-to</div></div>
+        <div class="d"><div class="dd">Thu</div><div class="dt">Signal Thu</div><div class="dh">funding / benchmark / channel*</div></div>
+        <div class="d"><div class="dd">Fri</div><div class="dt">The Roundup</div><div class="dh">biggest + community + Pro analysis</div></div>
+        <div class="d"><div class="dd">Wknd</div><div class="dt">Weekend Read</div><div class="dh">one long-form (lighter)</div></div>
+      </div>
+      <p class="note">*Thursday's hero is category-dependent: Funding (Founder) · Benchmark (Product) · Channel Watch (Marketing). Same calendar, vertical-native heroes.</p>
+
+      <h3 style="margin-top:20px">Block palette</h3>
+      <p class="note" style="margin-bottom:0">Categories pick &amp; order from this menu via a <code>CATEGORY_FORMATS</code> config (tuned without code changes):</p>
+      <div class="palette">
+        <span class="bt">BigStory</span><span class="bt">ToolDrop</span><span class="bt">PromptOfTheDay</span><span class="bt">Playbook</span><span class="bt">QuickHits</span><span class="bt">ByTheNumbers</span><span class="bt">FundingWatch</span><span class="bt">ChannelWatch</span><span class="bt">BenchmarkBoard</span><span class="bt">Teardown</span><span class="bt">ShipSignal</span><span class="bt">CommunityPulse</span><span class="bt">EventRadar</span><span class="bt">DealsAndDiscounts</span><span class="bt">TheAsk</span>
+      </div>
+      <p class="note">Assembly: ranked items + <code>CATEGORY_FORMATS[category]</code> + day-of-week → select blocks (day's hero promoted) → grounded per-block fill (cite URLs) → seniority tone modulation → Jinja partials → email shell → HTML+text → guardrail (URL-in-set) → persist. These mockups port into the app's <code>SampleEmail</code> on the landing/sample page during Phase 0.</p>
+    </section>
+
+    <section id="categories">
+      <h2><span class="n">06</span> Which categories first</h2>
+      <p>Launch <strong>2–3, not 15</strong> — a cold domain with ~0 subscribers can't warm 15 streams or fact-check 15 daily sends. Criteria: demand × content density × monetizability × <em>low liability blast radius</em>.</p>
+      <div class="grid3">
+        <div class="card"><h3 style="margin-top:0;color:var(--accent)">1 · Marketing</h3><p style="color:var(--muted);font-size:13px;margin:0">Highest content density (weekly new AI tools), best affiliate economics (Copy.ai, Jasper, Surfer), large non-technical tool-buying audience.</p></div>
+        <div class="card"><h3 style="margin-top:0;color:var(--accent)">2 · Product Manager</h3><p style="color:var(--muted);font-size:13px;margin:0">Validated demand, dense tooling, high-income B2B = premium CPM, shareable how-tos.</p></div>
+        <div class="card"><h3 style="margin-top:0;color:var(--accent)">3 · Founder</h3><p style="color:var(--muted);font-size:13px;margin:0">Highest willingness-to-pay / Pro conversion, broad cross-topic tolerance, strong affiliate intent (Stripe Atlas, Mercury).</p></div>
+      </div>
+      <p style="margin-top:14px"><strong>Next wave:</strong> Operations, Sales, Designer, Engineer. <strong>Avoid early:</strong> Healthcare, Legal, Finance — highest liability blast radius (a fabricated FDA approval / case-outcome stat is dangerous; wrong place to debug a new pipeline).</p>
+    </section>
+
+    <section id="content">
+      <h2><span class="n">07</span> Content / SEO / Branding → launcher spec package</h2>
+      <p>Each phase emits the exact files your launcher (<code>launcher-spec-builder-requirements.md</code>) consumes. Skill mapping:</p>
+      <table>
+        <tr><th>Launcher deliverable</th><th>Skill / method</th></tr>
+        <tr><td><code>design-brief.md</code> + <code>brand-assets/</code> (name, tagline, voice, palette, type, logo, OG, social)</td><td><strong>/design-consultation</strong> → <code>DESIGN.md</code></td></tr>
+        <tr><td>Hero / key-screen mockups</td><td><strong>/frontend-design</strong>, <strong>/design-html</strong></td></tr>
+        <tr><td>Landing copy, welcome email, social, ad creative</td><td><strong>/marketing</strong> (Copy Generator)</td></tr>
+        <tr><td><code>seo-strategy.md</code> + content calendar</td><td><strong>Authored directly</strong> (no <code>seo</code> skill exists — flagged) + <strong>/vercel:nextjs</strong> for technical SEO (sitemap, ISR, IndexNow)</td></tr>
+        <tr><td><code>spec.md</code> · <code>provider-intent.md</code> · <code>approval-boundaries.md</code> · <code>launch-notes.md</code> + JSON</td><td>Authored from this plan</td></tr>
+      </table>
+      <p class="note">Core SEO play = programmatic archive: "AI for [Career] — [Month]" keyword clusters, internal linking, IndexNow + Search Console. The daily briefings <em>are</em> the content engine.</p>
+    </section>
+
+    <section id="plan">
+      <h2><span class="n">08</span> Build plan</h2>
+
+      <div class="phase"><div class="badge"><div class="pn">0</div><div class="line"></div></div>
+        <div class="body"><h4>Fix &amp; host locally — the sign-off surface</h4>
+          <p style="margin:0;color:var(--muted);font-size:13.5px">Install deps; remove <code>Navbar</code>; fix router to <code>react-router</code> v7; reconcile the 3 ID namespaces to the backend taxonomy; fix data exports + <code>SampleEmail</code> contract. Branded plan page on <code>:6990</code> + fixed demo on <code>:5273</code>.</p>
+          <div class="ac"><b>Accept</b> — <code>tsc -b</code> passes · demo runs · onboarding advances end-to-end · plan reviewable in browser.</div></div></div>
+
+      <div class="phase"><div class="badge"><div class="pn">1</div><div class="line"></div></div>
+        <div class="body"><h4>Real-news engine</h4>
+          <p style="margin:0;color:var(--muted);font-size:13.5px">3-lane ingestion → unwrap/canonicalize → dedup w/ trending score → per career×seniority rank → grounded summarize → <strong>URL-validation guard</strong>; rip out <code>search_ai_news()</code> + fabricated stats; persist to archive.</p>
+          <div class="ac"><b>Accept</b> — every item links to a real, live primary URL in the fetched set · <strong>zero invented facts</strong> · 3×3 variants generate cleanly · human sign-off 5 days straight.</div></div></div>
+
+      <div class="phase"><div class="badge"><div class="pn">2</div><div class="line"></div></div>
+        <div class="body"><h4>Onboarding + capture + real profile parsing</h4>
+          <p style="margin:0;color:var(--muted);font-size:13.5px">Next.js onboarding; real LinkedIn/resume parsing (user-correctable, honest copy — kill <code>Math.random()</code>); signup → Supabase with consent record.</p>
+          <div class="ac"><b>Accept</b> — real signup persists with consent (ts+IP+text) · no UI claims an inference it didn't make.</div></div></div>
+
+      <div class="phase"><div class="badge"><div class="pn">3</div><div class="line"></div></div>
+        <div class="body"><h4>Send loop + compliance</h4>
+          <p style="margin:0;color:var(--muted);font-size:13.5px">Double opt-in gate; unguessable unsubscribe + one-click header; footer address; <code>sends</code> idempotency; Vercel Cron + tz buckets; Resend batch + retry; bounce webhook; SPF/DKIM/DMARC + warmup; Stripe Pro $15–19.</p>
+          <div class="ac"><b>Accept</b> — confirmation gates sends · unsubscribe honored &lt;2 days · restart doesn't double-send · test send lands in Gmail <em>inbox</em>.</div></div></div>
+
+      <div class="phase"><div class="badge"><div class="pn">4</div><div class="line"></div></div>
+        <div class="body"><h4>Archive / SEO growth surface</h4>
+          <p style="margin:0;color:var(--muted);font-size:13.5px">15 public ISR category hubs (<code>/ai-for/[career]</code>, ~weekly refresh) + sitemap + IndexNow + Search Console + OG; variants <code>noindex</code>; wire the <strong>rolling-2-week gated archive</strong>; build social-repurpose draft pipeline.</p>
+          <div class="ac"><b>Accept</b> — 15 hubs server-rendered + in sitemap · variants <code>noindex</code> · signed-in user sees last 14 days · repurpose drafts held for approval.</div></div></div>
+
+      <div class="phase"><div class="badge"><div class="pn">5</div></div>
+        <div class="body"><h4>Launcher spec package + launch</h4>
+          <p style="margin:0;color:var(--muted);font-size:13.5px">Run <code>/design-consultation</code> + <code>/marketing</code>; author the SEO + spec + provider + approval + notes files → drop into your GTM launcher.</p>
+          <div class="ac"><b>Accept</b> — full launcher file set valid · 3 categories live · daily send reliable 14 days · complaint rate &lt;0.10%.</div></div></div>
+    </section>
+
+    <section id="kft">
+      <h2><span class="n">09</span> Keep / Fix / Throw</h2>
+      <div class="kft">
+        <div class="col keep"><h4>✓ Keep</h4><ul>
+          <li>Backend taxonomy + Jinja email template</li>
+          <li>Design tokens + Tailwind theme</li>
+          <li><code>Footer</code> / <code>StepIndicator</code> / <code>TerminalTyping</code></li>
+          <li>Newsletter prose (as reference)</li>
+          <li>Verified strategy facts</li>
+        </ul></div>
+        <div class="col fix"><h4>⟳ Fix</h4><ul>
+          <li><code>careerContent.ts</code> schema → backend fields/slugs</li>
+          <li>Router + Navbar + <code>SampleEmail</code> contract</li>
+          <li>Data model (tokens, sends, tz)</li>
+          <li>SQLite → Postgres · scheduler → cron</li>
+          <li>Public surface → Next.js</li>
+        </ul></div>
+        <div class="col throw"><h4>✕ Throw</h4><ul>
+          <li><code>search_ai_news()</code> LLM-as-source</li>
+          <li><code>_fallback_*</code> invented stats</li>
+          <li><code>Math.random()</code> career + deception copy</li>
+          <li>"Zero competitors" + 4 fabricated stats</li>
+          <li>Fabricated "500+ archive" Pro claim</li>
+        </ul></div>
+      </div>
+    </section>
+
+    <section id="localhost">
+      <h2><span class="n">10</span> Localhost review</h2>
+      <div class="grid2">
+        <div class="card"><h3 style="margin-top:0"><code>localhost:6990</code> — this page</h3><p style="margin:0;color:var(--muted);font-size:13.5px">Branded plan-review surface: verdict, risks, architecture, plan, cost.</p></div>
+        <div class="card"><h3 style="margin-top:0"><code>localhost:5273</code> — fixed demo</h3><p style="margin:0;color:var(--muted);font-size:13.5px">The existing frontend, fixed to compile/run, so you can click landing → onboarding → sample.</p></div>
+      </div>
+      <p class="note">Phase 0 is non-destructive: dependency install, code fixes, two local dev servers. No emails, DNS, provider mutations, or spend.</p>
+    </section>
+
+    <section id="questions">
+      <h2><span class="n">11</span> Open questions / approval boundaries</h2>
+      <div class="card"><ul style="margin:0">
+        <li>✅ <strong>Real LinkedIn parsing</strong> — <strong>provision Proxycurl now</strong> (resolved).</li>
+        <li>✅ <strong>Sending domain — <code>mydailydownload.com</code></strong> (already in Vercel; wire DNS + SPF/DKIM/DMARC + warmup at build). <em>Naming flag:</em> domain implies brand could become "My Daily Download" — routed to <code>/design-consultation</code>, not a blocker.</li>
+        <li>✅ <strong>Per-source ToS</strong> — proceed with safe discovery-only pattern (cite primary source, original prose) regardless; keep a ToS log.</li>
+        <li>✅ <strong>Stop-before:</strong> paid spend · public posting · customer emails · DNS / billing — all gated to your approval (acknowledged).</li>
+      </ul></div>
+    </section>
+
+    <section id="verify">
+      <h2><span class="n">12</span> Verification (end-to-end)</h2>
+      <div class="card"><ul style="margin:0;font-size:13.5px">
+        <li><strong>Build:</strong> <code>npm i &amp;&amp; npx tsc -b &amp;&amp; npm run dev</code> → demo at <code>:5273</code></li>
+        <li><strong>News integrity (critical):</strong> every rendered URL ∈ fetched set; any stat/quote without a source link → must be zero</li>
+        <li><strong>Idempotency:</strong> run send job twice for same date → second run inserts 0 <code>sends</code> rows</li>
+        <li><strong>Compliance:</strong> confirm email gates sending; unsubscribe token → deactivates; email has <code>List-Unsubscribe</code> + address</li>
+        <li><strong>Deliverability:</strong> seed-test to Gmail/Outlook → inbox (mail-tester ≥ 9/10)</li>
+        <li><strong>SEO:</strong> archive page server-rendered + in <code>/sitemap.xml</code></li>
+        <li><strong>Launcher:</strong> emitted files validate against the requirements doc + JSON summary</li>
+      </ul></div>
+    </section>
+  </main>
+</div>
+
+<div class="foot">
+  My Daily Download · adversarial review + build plan · generated from <code>~/.claude/plans/analyze-the-folder-kimi-frolicking-matsumoto.md</code> · served locally on :6990 for sign-off.
+</div>
+
+<script>
+  const links=[...document.querySelectorAll('nav.side a')];
+  const map=new Map(links.map(a=>[a.getAttribute('href').slice(1),a]));
+  const obs=new IntersectionObserver(es=>{
+    es.forEach(e=>{if(e.isIntersecting){links.forEach(l=>l.classList.remove('active'));const a=map.get(e.target.id);if(a)a.classList.add('active');}});
+  },{rootMargin:'-20% 0px -70% 0px'});
+  document.querySelectorAll('section[id]').forEach(s=>obs.observe(s));
+</script>
+</body>
+</html>

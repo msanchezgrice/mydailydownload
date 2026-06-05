@@ -1,0 +1,83 @@
+{
+  "product": {
+    "name": "My Daily Download",
+    "domain": "mydailydownload.com",
+    "owner": "Miguel Sanchez-Grice",
+    "supportEmail": "support@mydailydownload.com",
+    "repoPath": "/Users/miguel/MyDailyDownload",
+    "githubRepoUrl": "",
+    "liveUrl": ""
+  },
+  "sources": {
+    "specPath": "/Users/miguel/MyDailyDownload/launcher/spec.md",
+    "designPath": "/Users/miguel/MyDailyDownload/launcher/design-brief.md",
+    "brandBriefPath": "/Users/miguel/MyDailyDownload/launcher/design-brief.md"
+  },
+  "launchDefinition": {
+    "objective": "Launch a daily, career-personalized AI newsletter with real cited news, across 3 verticals (Marketing, Product, Founder), with a real rolling-2-week archive and an SEO/social growth engine.",
+    "primaryConversion": "Confirmed double-opt-in newsletter subscribe",
+    "acceptanceCriteria": [
+      "Every newsletter item links to a real primary source present in the fetched set; zero LLM-invented facts/stats/quotes",
+      "Double opt-in gates sending; unguessable unsubscribe + one-click List-Unsubscribe; physical address in footer",
+      "Restart-safe send (no double-send); timezone-correct delivery",
+      "Test send lands in Gmail inbox (mail-tester >= 9/10)",
+      "15 category hubs server-rendered + in sitemap; variants noindex; signed-in user sees last 14 days",
+      "3 categories live; daily send reliable 14 days; complaint rate < 0.10%"
+    ]
+  },
+  "brand": {
+    "tagline": "AI news that actually matters to your career — every morning.",
+    "voice": "Sharp, useful, professional-but-human; tactical over hype; cites its sources",
+    "requiredAssets": [
+      "Logo/wordmark mark", "Favicon", "OG image (per category)", "X avatar + cover (6 accounts)", "Email header", "Hero illustration"
+    ]
+  },
+  "providers": {
+    "required": [
+      "Vercel", "GitHub", "OpenAI", "Resend", "Supabase", "AgentMail", "Exa", "Tavily",
+      "Proxycurl", "Stripe", "PostHog", "GA4", "Google Search Console", "IndexNow",
+      "X/Twitter", "Facebook", "Support inbox"
+    ],
+    "knownIdsOrUrls": {
+      "domain": "mydailydownload.com",
+      "vercelTeam": "miguel-sanchezgrices-projects",
+      "vercelUser": "msanchezgrice-9758",
+      "githubUser": "msanchezgrice",
+      "facebookPage": "Mydailydownload",
+      "posthog": "MCP connected (current project: Surgery Viz — likely create new)"
+    },
+    "missing": [
+      "OPENAI_API_KEY", "RESEND_API_KEY", "SUPABASE_URL", "SUPABASE_SERVICE_ROLE_KEY",
+      "AGENTMAIL_API_KEY", "EXA_API_KEY", "TAVILY_API_KEY", "PROXYCURL_API_KEY",
+      "STRIPE_SECRET_KEY", "STRIPE_WEBHOOK_SECRET", "GA4_MEASUREMENT_ID",
+      "support@mydailydownload.com mailbox", "X handles (5 verticals + brand)"
+    ]
+  },
+  "growth": {
+    "socialUrls": {
+      "x": ["Marketing", "Product", "Founder", "Sales", "Design", "brand-master"],
+      "facebook": "Mydailydownload"
+    },
+    "searchConsolePropertyUrl": "https://mydailydownload.com",
+    "contentCalendarPath": "/Users/miguel/MyDailyDownload/launcher/seo-strategy.md",
+    "seoStrategyPath": "/Users/miguel/MyDailyDownload/launcher/seo-strategy.md",
+    "paidAdsScope": "None at launch; organic + social + SEO. Paid is opt-in later (stop-before paid spend)."
+  },
+  "approvalBoundaries": {
+    "stopBefore": [
+      "Paid spend", "Public posting", "Provider/account mutations", "Billing changes",
+      "Domain/DNS changes (surface records first)", "Customer emails", "Destructive/irreversible",
+      "MFA/CAPTCHA/login/account ambiguity"
+    ],
+    "preApproved": [
+      "Local Phase 0 build", "Proxycurl provisioning", "Vercel + GitHub repo/project/DNS setup",
+      "Stripe test mode", "Resend domain verification", "Seed sends to our own inboxes"
+    ]
+  },
+  "blockers": [
+    "API keys pending (gates Phase 1+, not Phase 0)",
+    "Cold sending domain — needs warmup + double opt-in before real broadcast",
+    "support@mydailydownload.com mailbox not created",
+    "Exact Pro price ($15-19), seniority-tier labels, X handle naming unconfirmed"
+  ]
+}

@@ -1,0 +1,22 @@
+# dependencies / build
+node_modules/
+dist/
+.vercel/
+*.tsbuildinfo
+
+# logs / os
+*.log
+.DS_Store
+
+# secrets / local
+.env
+.env.local
+.env.*.local
+
+# python
+__pycache__/
+*.pyc
+subscribers.db
+
+# large archives
+*.zip
