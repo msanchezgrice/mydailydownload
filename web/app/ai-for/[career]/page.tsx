@@ -418,6 +418,16 @@ export default async function CareerHubPage({
           <Link href="/terms" className="hover:text-[#F2A900]">
             Terms
           </Link>
+          {" "}
+          ·{" "}
+          <Link href="/contact" className="hover:text-[#F2A900]">
+            Contact
+          </Link>
+          {" "}
+          ·{" "}
+          <Link href="/refunds" className="hover:text-[#F2A900]">
+            Refunds
+          </Link>
         </p>
       </footer>
     </div>

@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="2560" height="1440" viewBox="0 0 2560 1440" role="img">
+  <rect width="2560" height="1440" fill="#0B0C10"/>
+  
+    <rect x="423" y="508" width="1714" height="424" rx="28" fill="#14171D" stroke="rgba(255,255,255,0.08)"/>
+    <g>
+    <circle cx="534" cy="641.3" r="20" fill="#F2A900"/>
+    <text x="578" y="663" fill="#E6E8EE" font-family="Inter, Arial, sans-serif" font-size="62" font-weight="700" letter-spacing="0">My Daily Download</text>
+  </g>
+    <text x="534" y="793" fill="#E6E8EE" font-family="Inter, Arial, sans-serif" font-size="58" font-weight="800" letter-spacing="0">
+    <tspan x="534" dy="0">AI news that actually matters to your career.</tspan>
+  </text>
+    <text x="534" y="875" fill="#8A91A0" font-family="Inter, Arial, sans-serif" font-size="34" font-weight="500">Personalized by role + seniority. Real sources only.</text>
+    <g fill="none" stroke="#F2A900" stroke-linecap="round" stroke-linejoin="round">
+    <circle cx="1940" cy="720" r="120" fill="rgba(242,169,0,0.16)" stroke="none"/>
+    <path d="M 1940 640 L 1940 752.5" stroke-width="27.5"/>
+    <path d="M 1887.5 710 L 1940 767.5 L 1992.5 710" stroke-width="27.5"/>
+    <path d="M 1852.5 815 H 2027.5" stroke-width="27.5"/>
+  </g>
+  
+</svg>

@@ -1,0 +1,401 @@
+{
+  "generatedAt": "2026-06-06T05:05:32.702Z",
+  "assets": [
+    {
+      "name": "avatar-brand-400",
+      "width": 400,
+      "height": 400,
+      "svg": "launcher/brand-assets/exports/svg/avatar-brand-400.svg",
+      "png": "launcher/brand-assets/exports/png/avatar-brand-400.png",
+      "jpg": "launcher/brand-assets/exports/jpg/avatar-brand-400.jpg",
+      "publicPng": "/brand-assets/avatar-brand-400.png"
+    },
+    {
+      "name": "x-cover-brand-1500x500",
+      "width": 1500,
+      "height": 500,
+      "svg": "launcher/brand-assets/exports/svg/x-cover-brand-1500x500.svg",
+      "png": "launcher/brand-assets/exports/png/x-cover-brand-1500x500.png",
+      "jpg": "launcher/brand-assets/exports/jpg/x-cover-brand-1500x500.jpg",
+      "publicPng": "/brand-assets/x-cover-brand-1500x500.png"
+    },
+    {
+      "name": "story-cover-brand-1080x1920",
+      "width": 1080,
+      "height": 1920,
+      "svg": "launcher/brand-assets/exports/svg/story-cover-brand-1080x1920.svg",
+      "png": "launcher/brand-assets/exports/png/story-cover-brand-1080x1920.png",
+      "jpg": "launcher/brand-assets/exports/jpg/story-cover-brand-1080x1920.jpg",
+      "publicPng": "/brand-assets/story-cover-brand-1080x1920.png"
+    },
+    {
+      "name": "avatar-marketing-400",
+      "width": 400,
+      "height": 400,
+      "svg": "launcher/brand-assets/exports/svg/avatar-marketing-400.svg",
+      "png": "launcher/brand-assets/exports/png/avatar-marketing-400.png",
+      "jpg": "launcher/brand-assets/exports/jpg/avatar-marketing-400.jpg",
+      "publicPng": "/brand-assets/avatar-marketing-400.png"
+    },
+    {
+      "name": "x-cover-marketing-1500x500",
+      "width": 1500,
+      "height": 500,
+      "svg": "launcher/brand-assets/exports/svg/x-cover-marketing-1500x500.svg",
+      "png": "launcher/brand-assets/exports/png/x-cover-marketing-1500x500.png",
+      "jpg": "launcher/brand-assets/exports/jpg/x-cover-marketing-1500x500.jpg",
+      "publicPng": "/brand-assets/x-cover-marketing-1500x500.png"
+    },
+    {
+      "name": "story-cover-marketing-1080x1920",
+      "width": 1080,
+      "height": 1920,
+      "svg": "launcher/brand-assets/exports/svg/story-cover-marketing-1080x1920.svg",
+      "png": "launcher/brand-assets/exports/png/story-cover-marketing-1080x1920.png",
+      "jpg": "launcher/brand-assets/exports/jpg/story-cover-marketing-1080x1920.jpg",
+      "publicPng": "/brand-assets/story-cover-marketing-1080x1920.png"
+    },
+    {
+      "name": "ad-square-marketing-1080x1080",
+      "width": 1080,
+      "height": 1080,
+      "svg": "launcher/brand-assets/exports/svg/ad-square-marketing-1080x1080.svg",
+      "png": "launcher/brand-assets/exports/png/ad-square-marketing-1080x1080.png",
+      "jpg": "launcher/brand-assets/exports/jpg/ad-square-marketing-1080x1080.jpg",
+      "publicPng": "/brand-assets/ad-square-marketing-1080x1080.png"
+    },
+    {
+      "name": "avatar-product-400",
+      "width": 400,
+      "height": 400,
+      "svg": "launcher/brand-assets/exports/svg/avatar-product-400.svg",
+      "png": "launcher/brand-assets/exports/png/avatar-product-400.png",
+      "jpg": "launcher/brand-assets/exports/jpg/avatar-product-400.jpg",
+      "publicPng": "/brand-assets/avatar-product-400.png"
+    },
+    {
+      "name": "x-cover-product-1500x500",
+      "width": 1500,
+      "height": 500,
+      "svg": "launcher/brand-assets/exports/svg/x-cover-product-1500x500.svg",
+      "png": "launcher/brand-assets/exports/png/x-cover-product-1500x500.png",
+      "jpg": "launcher/brand-assets/exports/jpg/x-cover-product-1500x500.jpg",
+      "publicPng": "/brand-assets/x-cover-product-1500x500.png"
+    },
+    {
+      "name": "story-cover-product-1080x1920",
+      "width": 1080,
+      "height": 1920,
+      "svg": "launcher/brand-assets/exports/svg/story-cover-product-1080x1920.svg",
+      "png": "launcher/brand-assets/exports/png/story-cover-product-1080x1920.png",
+      "jpg": "launcher/brand-assets/exports/jpg/story-cover-product-1080x1920.jpg",
+      "publicPng": "/brand-assets/story-cover-product-1080x1920.png"
+    },
+    {
+      "name": "ad-square-product-1080x1080",
+      "width": 1080,
+      "height": 1080,
+      "svg": "launcher/brand-assets/exports/svg/ad-square-product-1080x1080.svg",
+      "png": "launcher/brand-assets/exports/png/ad-square-product-1080x1080.png",
+      "jpg": "launcher/brand-assets/exports/jpg/ad-square-product-1080x1080.jpg",
+      "publicPng": "/brand-assets/ad-square-product-1080x1080.png"
+    },
+    {
+      "name": "avatar-founder-400",
+      "width": 400,
+      "height": 400,
+      "svg": "launcher/brand-assets/exports/svg/avatar-founder-400.svg",
+      "png": "launcher/brand-assets/exports/png/avatar-founder-400.png",
+      "jpg": "launcher/brand-assets/exports/jpg/avatar-founder-400.jpg",
+      "publicPng": "/brand-assets/avatar-founder-400.png"
+    },
+    {
+      "name": "x-cover-founder-1500x500",
+      "width": 1500,
+      "height": 500,
+      "svg": "launcher/brand-assets/exports/svg/x-cover-founder-1500x500.svg",
+      "png": "launcher/brand-assets/exports/png/x-cover-founder-1500x500.png",
+      "jpg": "launcher/brand-assets/exports/jpg/x-cover-founder-1500x500.jpg",
+      "publicPng": "/brand-assets/x-cover-founder-1500x500.png"
+    },
+    {
+      "name": "story-cover-founder-1080x1920",
+      "width": 1080,
+      "height": 1920,
+      "svg": "launcher/brand-assets/exports/svg/story-cover-founder-1080x1920.svg",
+      "png": "launcher/brand-assets/exports/png/story-cover-founder-1080x1920.png",
+      "jpg": "launcher/brand-assets/exports/jpg/story-cover-founder-1080x1920.jpg",
+      "publicPng": "/brand-assets/story-cover-founder-1080x1920.png"
+    },
+    {
+      "name": "ad-square-founder-1080x1080",
+      "width": 1080,
+      "height": 1080,
+      "svg": "launcher/brand-assets/exports/svg/ad-square-founder-1080x1080.svg",
+      "png": "launcher/brand-assets/exports/png/ad-square-founder-1080x1080.png",
+      "jpg": "launcher/brand-assets/exports/jpg/ad-square-founder-1080x1080.jpg",
+      "publicPng": "/brand-assets/ad-square-founder-1080x1080.png"
+    },
+    {
+      "name": "avatar-sales-400",
+      "width": 400,
+      "height": 400,
+      "svg": "launcher/brand-assets/exports/svg/avatar-sales-400.svg",
+      "png": "launcher/brand-assets/exports/png/avatar-sales-400.png",
+      "jpg": "launcher/brand-assets/exports/jpg/avatar-sales-400.jpg",
+      "publicPng": "/brand-assets/avatar-sales-400.png"
+    },
+    {
+      "name": "x-cover-sales-1500x500",
+      "width": 1500,
+      "height": 500,
+      "svg": "launcher/brand-assets/exports/svg/x-cover-sales-1500x500.svg",
+      "png": "launcher/brand-assets/exports/png/x-cover-sales-1500x500.png",
+      "jpg": "launcher/brand-assets/exports/jpg/x-cover-sales-1500x500.jpg",
+      "publicPng": "/brand-assets/x-cover-sales-1500x500.png"
+    },
+    {
+      "name": "story-cover-sales-1080x1920",
+      "width": 1080,
+      "height": 1920,
+      "svg": "launcher/brand-assets/exports/svg/story-cover-sales-1080x1920.svg",
+      "png": "launcher/brand-assets/exports/png/story-cover-sales-1080x1920.png",
+      "jpg": "launcher/brand-assets/exports/jpg/story-cover-sales-1080x1920.jpg",
+      "publicPng": "/brand-assets/story-cover-sales-1080x1920.png"
+    },
+    {
+      "name": "ad-square-sales-1080x1080",
+      "width": 1080,
+      "height": 1080,
+      "svg": "launcher/brand-assets/exports/svg/ad-square-sales-1080x1080.svg",
+      "png": "launcher/brand-assets/exports/png/ad-square-sales-1080x1080.png",
+      "jpg": "launcher/brand-assets/exports/jpg/ad-square-sales-1080x1080.jpg",
+      "publicPng": "/brand-assets/ad-square-sales-1080x1080.png"
+    },
+    {
+      "name": "avatar-design-400",
+      "width": 400,
+      "height": 400,
+      "svg": "launcher/brand-assets/exports/svg/avatar-design-400.svg",
+      "png": "launcher/brand-assets/exports/png/avatar-design-400.png",
+      "jpg": "launcher/brand-assets/exports/jpg/avatar-design-400.jpg",
+      "publicPng": "/brand-assets/avatar-design-400.png"
+    },
+    {
+      "name": "x-cover-design-1500x500",
+      "width": 1500,
+      "height": 500,
+      "svg": "launcher/brand-assets/exports/svg/x-cover-design-1500x500.svg",
+      "png": "launcher/brand-assets/exports/png/x-cover-design-1500x500.png",
+      "jpg": "launcher/brand-assets/exports/jpg/x-cover-design-1500x500.jpg",
+      "publicPng": "/brand-assets/x-cover-design-1500x500.png"
+    },
+    {
+      "name": "story-cover-design-1080x1920",
+      "width": 1080,
+      "height": 1920,
+      "svg": "launcher/brand-assets/exports/svg/story-cover-design-1080x1920.svg",
+      "png": "launcher/brand-assets/exports/png/story-cover-design-1080x1920.png",
+      "jpg": "launcher/brand-assets/exports/jpg/story-cover-design-1080x1920.jpg",
+      "publicPng": "/brand-assets/story-cover-design-1080x1920.png"
+    },
+    {
+      "name": "ad-square-design-1080x1080",
+      "width": 1080,
+      "height": 1080,
+      "svg": "launcher/brand-assets/exports/svg/ad-square-design-1080x1080.svg",
+      "png": "launcher/brand-assets/exports/png/ad-square-design-1080x1080.png",
+      "jpg": "launcher/brand-assets/exports/jpg/ad-square-design-1080x1080.jpg",
+      "publicPng": "/brand-assets/ad-square-design-1080x1080.png"
+    },
+    {
+      "name": "avatar-brand-1024",
+      "width": 1024,
+      "height": 1024,
+      "svg": "launcher/brand-assets/exports/svg/avatar-brand-1024.svg",
+      "png": "launcher/brand-assets/exports/png/avatar-brand-1024.png",
+      "jpg": "launcher/brand-assets/exports/jpg/avatar-brand-1024.jpg",
+      "publicPng": "/brand-assets/avatar-brand-1024.png"
+    },
+    {
+      "name": "facebook-avatar-170",
+      "width": 170,
+      "height": 170,
+      "svg": "launcher/brand-assets/exports/svg/facebook-avatar-170.svg",
+      "png": "launcher/brand-assets/exports/png/facebook-avatar-170.png",
+      "jpg": "launcher/brand-assets/exports/jpg/facebook-avatar-170.jpg",
+      "publicPng": "/brand-assets/facebook-avatar-170.png"
+    },
+    {
+      "name": "facebook-cover-820x312",
+      "width": 820,
+      "height": 312,
+      "svg": "launcher/brand-assets/exports/svg/facebook-cover-820x312.svg",
+      "png": "launcher/brand-assets/exports/png/facebook-cover-820x312.png",
+      "jpg": "launcher/brand-assets/exports/jpg/facebook-cover-820x312.jpg",
+      "publicPng": "/brand-assets/facebook-cover-820x312.png"
+    },
+    {
+      "name": "youtube-banner-2560x1440",
+      "width": 2560,
+      "height": 1440,
+      "svg": "launcher/brand-assets/exports/svg/youtube-banner-2560x1440.svg",
+      "png": "launcher/brand-assets/exports/png/youtube-banner-2560x1440.png",
+      "jpg": "launcher/brand-assets/exports/jpg/youtube-banner-2560x1440.jpg",
+      "publicPng": "/brand-assets/youtube-banner-2560x1440.png"
+    },
+    {
+      "name": "youtube-thumbnail-brand-1280x720",
+      "width": 1280,
+      "height": 720,
+      "svg": "launcher/brand-assets/exports/svg/youtube-thumbnail-brand-1280x720.svg",
+      "png": "launcher/brand-assets/exports/png/youtube-thumbnail-brand-1280x720.png",
+      "jpg": "launcher/brand-assets/exports/jpg/youtube-thumbnail-brand-1280x720.jpg",
+      "publicPng": "/brand-assets/youtube-thumbnail-brand-1280x720.png"
+    },
+    {
+      "name": "og-default",
+      "width": 1200,
+      "height": 630,
+      "svg": "launcher/brand-assets/exports/svg/og-default.svg",
+      "png": "launcher/brand-assets/exports/png/og-default.png",
+      "jpg": "launcher/brand-assets/exports/jpg/og-default.jpg",
+      "publicPng": "/brand-assets/og-default.png"
+    },
+    {
+      "name": "og-ai-for-product-management",
+      "width": 1200,
+      "height": 630,
+      "svg": "launcher/brand-assets/exports/svg/og-ai-for-product-management.svg",
+      "png": "launcher/brand-assets/exports/png/og-ai-for-product-management.png",
+      "jpg": "launcher/brand-assets/exports/jpg/og-ai-for-product-management.jpg",
+      "publicPng": "/brand-assets/og-ai-for-product-management.png"
+    },
+    {
+      "name": "og-ai-for-marketing",
+      "width": 1200,
+      "height": 630,
+      "svg": "launcher/brand-assets/exports/svg/og-ai-for-marketing.svg",
+      "png": "launcher/brand-assets/exports/png/og-ai-for-marketing.png",
+      "jpg": "launcher/brand-assets/exports/jpg/og-ai-for-marketing.jpg",
+      "publicPng": "/brand-assets/og-ai-for-marketing.png"
+    },
+    {
+      "name": "og-ai-for-sales",
+      "width": 1200,
+      "height": 630,
+      "svg": "launcher/brand-assets/exports/svg/og-ai-for-sales.svg",
+      "png": "launcher/brand-assets/exports/png/og-ai-for-sales.png",
+      "jpg": "launcher/brand-assets/exports/jpg/og-ai-for-sales.jpg",
+      "publicPng": "/brand-assets/og-ai-for-sales.png"
+    },
+    {
+      "name": "og-ai-for-operations",
+      "width": 1200,
+      "height": 630,
+      "svg": "launcher/brand-assets/exports/svg/og-ai-for-operations.svg",
+      "png": "launcher/brand-assets/exports/png/og-ai-for-operations.png",
+      "jpg": "launcher/brand-assets/exports/jpg/og-ai-for-operations.jpg",
+      "publicPng": "/brand-assets/og-ai-for-operations.png"
+    },
+    {
+      "name": "og-ai-for-hr-people",
+      "width": 1200,
+      "height": 630,
+      "svg": "launcher/brand-assets/exports/svg/og-ai-for-hr-people.svg",
+      "png": "launcher/brand-assets/exports/png/og-ai-for-hr-people.png",
+      "jpg": "launcher/brand-assets/exports/jpg/og-ai-for-hr-people.jpg",
+      "publicPng": "/brand-assets/og-ai-for-hr-people.png"
+    },
+    {
+      "name": "og-ai-for-design",
+      "width": 1200,
+      "height": 630,
+      "svg": "launcher/brand-assets/exports/svg/og-ai-for-design.svg",
+      "png": "launcher/brand-assets/exports/png/og-ai-for-design.png",
+      "jpg": "launcher/brand-assets/exports/jpg/og-ai-for-design.jpg",
+      "publicPng": "/brand-assets/og-ai-for-design.png"
+    },
+    {
+      "name": "og-ai-for-finance",
+      "width": 1200,
+      "height": 630,
+      "svg": "launcher/brand-assets/exports/svg/og-ai-for-finance.svg",
+      "png": "launcher/brand-assets/exports/png/og-ai-for-finance.png",
+      "jpg": "launcher/brand-assets/exports/jpg/og-ai-for-finance.jpg",
+      "publicPng": "/brand-assets/og-ai-for-finance.png"
+    },
+    {
+      "name": "og-ai-for-engineering",
+      "width": 1200,
+      "height": 630,
+      "svg": "launcher/brand-assets/exports/svg/og-ai-for-engineering.svg",
+      "png": "launcher/brand-assets/exports/png/og-ai-for-engineering.png",
+      "jpg": "launcher/brand-assets/exports/jpg/og-ai-for-engineering.jpg",
+      "publicPng": "/brand-assets/og-ai-for-engineering.png"
+    },
+    {
+      "name": "og-ai-for-data-science",
+      "width": 1200,
+      "height": 630,
+      "svg": "launcher/brand-assets/exports/svg/og-ai-for-data-science.svg",
+      "png": "launcher/brand-assets/exports/png/og-ai-for-data-science.png",
+      "jpg": "launcher/brand-assets/exports/jpg/og-ai-for-data-science.jpg",
+      "publicPng": "/brand-assets/og-ai-for-data-science.png"
+    },
+    {
+      "name": "og-ai-for-customer-success",
+      "width": 1200,
+      "height": 630,
+      "svg": "launcher/brand-assets/exports/svg/og-ai-for-customer-success.svg",
+      "png": "launcher/brand-assets/exports/png/og-ai-for-customer-success.png",
+      "jpg": "launcher/brand-assets/exports/jpg/og-ai-for-customer-success.jpg",
+      "publicPng": "/brand-assets/og-ai-for-customer-success.png"
+    },
+    {
+      "name": "og-ai-for-content-creation",
+      "width": 1200,
+      "height": 630,
+      "svg": "launcher/brand-assets/exports/svg/og-ai-for-content-creation.svg",
+      "png": "launcher/brand-assets/exports/png/og-ai-for-content-creation.png",
+      "jpg": "launcher/brand-assets/exports/jpg/og-ai-for-content-creation.jpg",
+      "publicPng": "/brand-assets/og-ai-for-content-creation.png"
+    },
+    {
+      "name": "og-ai-for-consulting",
+      "width": 1200,
+      "height": 630,
+      "svg": "launcher/brand-assets/exports/svg/og-ai-for-consulting.svg",
+      "png": "launcher/brand-assets/exports/png/og-ai-for-consulting.png",
+      "jpg": "launcher/brand-assets/exports/jpg/og-ai-for-consulting.jpg",
+      "publicPng": "/brand-assets/og-ai-for-consulting.png"
+    },
+    {
+      "name": "og-ai-for-legal",
+      "width": 1200,
+      "height": 630,
+      "svg": "launcher/brand-assets/exports/svg/og-ai-for-legal.svg",
+      "png": "launcher/brand-assets/exports/png/og-ai-for-legal.png",
+      "jpg": "launcher/brand-assets/exports/jpg/og-ai-for-legal.jpg",
+      "publicPng": "/brand-assets/og-ai-for-legal.png"
+    },
+    {
+      "name": "og-ai-for-healthcare",
+      "width": 1200,
+      "height": 630,
+      "svg": "launcher/brand-assets/exports/svg/og-ai-for-healthcare.svg",
+      "png": "launcher/brand-assets/exports/png/og-ai-for-healthcare.png",
+      "jpg": "launcher/brand-assets/exports/jpg/og-ai-for-healthcare.jpg",
+      "publicPng": "/brand-assets/og-ai-for-healthcare.png"
+    },
+    {
+      "name": "og-ai-for-entrepreneurship",
+      "width": 1200,
+      "height": 630,
+      "svg": "launcher/brand-assets/exports/svg/og-ai-for-entrepreneurship.svg",
+      "png": "launcher/brand-assets/exports/png/og-ai-for-entrepreneurship.png",
+      "jpg": "launcher/brand-assets/exports/jpg/og-ai-for-entrepreneurship.jpg",
+      "publicPng": "/brand-assets/og-ai-for-entrepreneurship.png"
+    }
+  ]
+}

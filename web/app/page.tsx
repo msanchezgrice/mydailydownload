@@ -26,6 +26,11 @@ import {
 import TerminalTyping from "./components/TerminalTyping";
 import SampleEmail from "./components/SampleEmail";
 import { careerCategories, sampleNewsletters } from "./lib/careerContent";
+import {
+  GOOGLE_ADS_PURCHASE_LABEL,
+  sendGoogleAdsConversion,
+} from "./lib/googleAds";
+import { captureCurrentAttribution, trackAnalyticsEvent } from "./lib/clientAnalytics";
 
 /* icon map for career categories */
 const iconMap: Record<string, React.ElementType> = {
@@ -53,11 +58,11 @@ const faqData = [
   },
   {
     q: "How does the LinkedIn/resume analysis work?",
-    a: "Our AI reads your LinkedIn profile or resume to understand your role, industry, and seniority. This takes about 10 seconds and helps us tune your newsletter to exactly what you need.",
+    a: "At launch, LinkedIn and resume inputs are used only to suggest a correctable briefing profile. You always confirm or edit your career category and seniority before subscribing.",
   },
   {
     q: "Can I change my career category later?",
-    a: "Yes, you can update your career category, seniority, and interests anytime from your account settings.",
+    a: "Yes. Email support@mydailydownload.com and we can update your career category, seniority, or interests.",
   },
   {
     q: "What time is the newsletter delivered?",
@@ -65,7 +70,7 @@ const faqData = [
   },
   {
     q: "How do I cancel?",
-    a: "You can cancel anytime with one click. No calls, no emails, no hassle.",
+    a: "You can cancel anytime. Pro access continues through the paid period; pro-rated refunds are not offered by default but are reviewed case-by-case through support.",
   },
 ];
 
@@ -74,14 +79,14 @@ const howItWorksCards = [
     icon: Briefcase,
     title: "Tell us your career",
     description:
-      "Drop your LinkedIn URL, upload your resume, or pick your career category from 15 professional verticals. We use AI to understand what matters to you.",
+      "Drop your LinkedIn URL, upload your resume, or pick your career category from 15 professional verticals. You confirm the final profile before subscribing.",
     step: "01",
   },
   {
     icon: Sparkles,
     title: "Our AI researches for you",
     description:
-      "We scan 50+ sources daily for AI news, tools, and trends relevant to your specific role. No more generic tech hype — just what moves your career forward.",
+      "We assemble source-cited AI news, tools, and trends relevant to your role. No generic tech hype, just the items that move your work forward.",
     step: "02",
   },
   {
@@ -248,18 +253,23 @@ function HeroSection() {
 
 /* ───────── Trust Bar ───────── */
 function TrustBar() {
-  const companies = ["Google", "Meta", "Amazon", "McKinsey", "Deloitte", "Salesforce"];
+  const trustPoints = [
+    "Double opt-in",
+    "One-click unsubscribe",
+    "Real sources only",
+    "No profile data in ads",
+  ];
   return (
     <div className="w-full bg-[#1A1D23] border-y border-white/[0.08] py-8 px-4">
       <div className="max-w-[1200px] mx-auto flex flex-col md:flex-row items-center justify-center gap-6 md:gap-12">
         <span className="text-sm text-[#8A91A0] whitespace-nowrap">
-          Trusted by professionals at
+          Built for inbox trust
         </span>
         <div className="flex flex-wrap items-center justify-center gap-8 md:gap-12">
-          {companies.map((name) => (
+          {trustPoints.map((name) => (
             <span
               key={name}
-              className="text-[#8A91A0]/50 font-semibold text-sm tracking-wide grayscale hover:grayscale-0 hover:text-[#8A91A0]/80 transition-all duration-300"
+              className="text-[#8A91A0]/70 font-semibold text-sm tracking-wide hover:text-[#F2A900] transition-all duration-300"
             >
               {name}
             </span>
@@ -409,16 +419,15 @@ function PricingSection() {
   const freeFeatures = [
     "Daily personalized AI briefing",
     "1 career profile",
-    "Web archive access (7 days)",
-    "Community Discord access",
+    "Rolling trailing 2-week archive",
+    "One-click unsubscribe",
   ];
   const proFeatures = [
     "Everything in Free",
-    "Up to 3 career profiles",
-    "Full web archive access",
-    "Weekly deep-dive reports",
+    "Friday Roundup deep-dive",
+    "Full archive access",
+    "Tool and prompt extras",
     "Priority support",
-    "Early access to new features",
   ];
 
   return (
@@ -482,7 +491,7 @@ function PricingSection() {
               href="/onboarding?plan=pro"
               className="block text-center w-full py-3.5 bg-[#F2A900] text-[#0B0C10] font-semibold rounded-lg hover:bg-[#D49500] hover:shadow-[0_0_20px_rgba(242,169,0,0.3)] hover:-translate-y-0.5 transition-all duration-200"
             >
-              Start Free Trial
+              Subscribe to Pro
             </Link>
           </div>
         </div>
@@ -586,7 +595,7 @@ function SiteFooter() {
           <span className="w-2 h-2 rounded-full bg-[#F2A900]" aria-hidden />
           My Daily Download
         </div>
-        <div className="flex items-center gap-6 text-sm text-[#8A91A0]">
+        <div className="flex flex-wrap items-center justify-center gap-6 text-sm text-[#8A91A0]">
           <Link href="/sample" className="hover:text-[#F2A900] transition-colors">
             Sample
           </Link>
@@ -595,6 +604,12 @@ function SiteFooter() {
           </Link>
           <Link href="/terms" className="hover:text-[#F2A900] transition-colors">
             Terms
+          </Link>
+          <Link href="/contact" className="hover:text-[#F2A900] transition-colors">
+            Contact
+          </Link>
+          <Link href="/refunds" className="hover:text-[#F2A900] transition-colors">
+            Refunds
           </Link>
         </div>
         <p className="text-xs text-[#8A91A0]">
@@ -607,6 +622,34 @@ function SiteFooter() {
 }
 
 export default function Home() {
+  useEffect(() => {
+    captureCurrentAttribution();
+    trackAnalyticsEvent("landing_viewed", { page: "home" });
+
+    if (!GOOGLE_ADS_PURCHASE_LABEL) return;
+    const params = new URLSearchParams(window.location.search);
+    if (params.get("pro") !== "success") return;
+
+    const dedupeKey = "my-daily-download:google-ads:purchase";
+    if (window.sessionStorage.getItem(dedupeKey)) return;
+    trackAnalyticsEvent("pro_purchase_completed", {
+      plan: "pro",
+      source: "stripe_checkout_return",
+    });
+
+    let attempts = 0;
+    const interval = window.setInterval(() => {
+      attempts += 1;
+      const sent = sendGoogleAdsConversion(GOOGLE_ADS_PURCHASE_LABEL, {
+        dedupeKey,
+      });
+      if (sent) window.sessionStorage.setItem(dedupeKey, "1");
+      if (sent || attempts >= 8) window.clearInterval(interval);
+    }, 400);
+
+    return () => window.clearInterval(interval);
+  }, []);
+
   return (
     <div className="min-h-[100dvh] bg-[#0B0C10]">
       <Navigation />

@@ -59,9 +59,12 @@ export default function SampleEmail({
 
   const [shown, setShown] = useState(false);
   useEffect(() => {
-    setShown(false);
-    const t = setTimeout(() => setShown(true), 30);
-    return () => clearTimeout(t);
+    const hide = setTimeout(() => setShown(false), 0);
+    const show = setTimeout(() => setShown(true), 30);
+    return () => {
+      clearTimeout(hide);
+      clearTimeout(show);
+    };
   }, [data.careerId, day]);
 
   return (

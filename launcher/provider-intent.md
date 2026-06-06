@@ -13,7 +13,7 @@ Domain: **mydailydownload.com** (registered in Vercel, team `miguel-sanchezgrice
 | **Exa** | yes | PENDING | Neural news search / recall | `EXA_API_KEY` |
 | **Tavily** | yes | PENDING | News search gap-fill | `TAVILY_API_KEY` |
 | **Proxycurl** | yes | PENDING (approved) | Real LinkedIn profile parsing | `PROXYCURL_API_KEY` |
-| **Stripe** | yes | PENDING | Pro $15–19 checkout | `STRIPE_SECRET_KEY` + `STRIPE_WEBHOOK_SECRET` (test mode first) |
+| **Stripe** | yes | HAVE | Pro $19/mo checkout | Production `STRIPE_SECRET_KEY`, `STRIPE_PRO_PRICE_ID`, and `STRIPE_WEBHOOK_SECRET` are configured on `mydailydownload-web` in Vercel; values stay encrypted/out-of-band |
 | **PostHog** | yes | HAVE (MCP connected) | Product analytics | confirm target project (current MCP project = "Surgery Viz"; likely want a NEW "My Daily Download" project) |
 | **GA4** | yes | PENDING (you said access exists) | Web analytics | GA4 Measurement ID (`G-XXXX`) for mydailydownload.com |
 | **Google Search Console** | yes | PENDING (you said access exists) | SEO indexing/measurement | verify mydailydownload.com property (I'll add the DNS TXT or you confirm access) |
@@ -38,7 +38,12 @@ Nothing above blocks **Phase 0** (the local demo) — that needs no keys.
 - **Exa** — HAVE. **AgentMail** — HAVE.
 - **Proxycurl** — **DISCONTINUED** (service shut down). **Replacement:** v1 = resume-PDF parsing + "paste your role/headline" (no scraping — free, honest, zero legal/vendor risk; onboarding already supports manual role select). Optional later enrichment: **People Data Labs** (Person Enrichment API) or **Apify** LinkedIn actors.
 - **Resend** — domain-add in progress (domain id `d7f12968-7f21-4bca-953e-96a0cc09b771`). Need **RESEND_API_KEY** so I can pull the DKIM/SPF/DMARC records via API and add them to Vercel DNS automatically.
-- **Still pending:** `RESEND_API_KEY`, `TAVILY_API_KEY` (optional — Exa covers search), Supabase project decision, Stripe account (separate from "Leak Check Me"), GA4 `G-XXXX`.
+- **Still pending:** `RESEND_API_KEY`, `TAVILY_API_KEY` (optional — Exa covers search), Supabase project decision, GA4 `G-XXXX`.
+
+## Live update 3 — Stripe checkout
+- **Stripe** — ✅ existing My Daily Download account `acct_1Tf4DDPnLtm1veVC`, product `prod_UeOZFv6cuF7xpv`, and Pro price `price_1Tf5maPnLtm1veVCknVonjFS` recorded as `$19/mo`.
+- **Vercel** — ✅ `mydailydownload-web` Production env inventory shows encrypted `STRIPE_SECRET_KEY`, `STRIPE_PRO_PRICE_ID`, and `STRIPE_WEBHOOK_SECRET`.
+- **Webhook** — current endpoint recorded in handoff as `we_1Tf6WwPnLtm1veVCNQWstYj0`; old endpoint `we_1Tf5ukPnLtm1veVCJPa4ITej` is disabled.
 
 ## Live update 2 — provisioned
 - **Supabase** — ✅ project `mydailydownload` (ref `wzhnfctutueunirvciol`, us-east-1) created; anon+service keys stored in `newsletter-backend/.env`.

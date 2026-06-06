@@ -1,6 +1,7 @@
 import Stripe from "stripe";
 import { createClient } from "@supabase/supabase-js";
 import { NextRequest, NextResponse } from "next/server";
+import { dispatchAnalyticsEvent } from "../../lib/analyticsServer";
 
 /**
  * POST /api/stripe-webhook — receives Stripe webhook events.
@@ -10,9 +11,9 @@ import { NextRequest, NextResponse } from "next/server";
  *
  * App Router route handlers do NOT buffer/parse the body, so `req.text()`
  * returns the raw payload Stripe needs for signature verification. The matching
- * webhook endpoint (we_1Tf5uk…) targets mydailydownload.com/api/stripe-webhook,
- * a path that is unchanged after the apex cutover — so it keeps working as long
- * as STRIPE_WEBHOOK_SECRET on this project matches that endpoint's signing secret.
+ * webhook endpoint targets mydailydownload.com/api/stripe-webhook, a path that
+ * is unchanged after the apex cutover — so it keeps working as long as
+ * STRIPE_WEBHOOK_SECRET on this project matches that endpoint's signing secret.
  */
 
 export const runtime = "nodejs";
@@ -67,6 +68,16 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
     } else {
       console.error("checkout.session.completed had no email/client_reference_id");
     }
+    await dispatchAnalyticsEvent({
+      eventName: "pro_purchase_completed",
+      url: req.url,
+      userAgent: req.headers.get("user-agent") ?? undefined,
+      properties: {
+        plan: "pro",
+        source: "stripe_webhook",
+        stripe_event_type: event.type,
+      },
+    });
   }
 
   return NextResponse.json({ received: true });

@@ -1,5 +1,12 @@
 import { NextResponse, type NextRequest } from "next/server";
 import { createClient } from "@supabase/supabase-js";
+import {
+  GA_MEASUREMENT_ID,
+  GOOGLE_ADS_CONFIRMED_SUBSCRIBE_LABEL,
+  GOOGLE_ADS_CONVERSION_ID,
+  googleAdsSendTo,
+} from "../../lib/googleAds";
+import { dispatchAnalyticsEvent } from "../../lib/analyticsServer";
 
 /** GET /api/confirm?token= — double-opt-in confirm + welcome email (Resend, inlined). */
 
@@ -82,8 +89,33 @@ function humanizeCareer(slug: string | null): string | null {
     .join(" ");
 }
 
-function page(title: string, body: string): string {
-  return `<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>${title}</title></head>
+function escapeScriptValue(value: string): string {
+  return value.replace(/\\/g, "\\\\").replace(/'/g, "\\'");
+}
+
+function googleAdsConversionSnippet(label: string): string {
+  const sendTo = googleAdsSendTo(label);
+  if (!sendTo) return "";
+
+  const configLines = [
+    `gtag('config', '${escapeScriptValue(GA_MEASUREMENT_ID)}');`,
+    GOOGLE_ADS_CONVERSION_ID
+      ? `gtag('config', '${escapeScriptValue(GOOGLE_ADS_CONVERSION_ID)}');`
+      : "",
+  ].filter(Boolean);
+
+  return `<script async src="https://www.googletagmanager.com/gtag/js?id=${encodeURIComponent(GA_MEASUREMENT_ID)}"></script>
+  <script>
+window.dataLayer = window.dataLayer || [];
+function gtag(){dataLayer.push(arguments);}
+gtag('js', new Date());
+${configLines.join("\n")}
+gtag('event', 'conversion', {'send_to': '${escapeScriptValue(sendTo)}'});
+  </script>`;
+}
+
+function page(title: string, body: string, head = ""): string {
+  return `<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>${title}</title>${head}</head>
   <body style="margin:0;background:#0B0C10;color:#E6E8EE;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;display:flex;min-height:100vh;align-items:center;justify-content:center;">
     <div style="max-width:460px;text-align:center;padding:40px 24px;">
       <div style="color:#F2A900;font-weight:700;font-size:18px;margin-bottom:24px;">My Daily Download</div>
@@ -134,11 +166,13 @@ export async function GET(req: NextRequest) {
     );
   }
 
+  let confirmedNow = false;
   if (!sub.confirmed_at) {
     await supabase
       .from("subscribers")
       .update({ confirmed_at: new Date().toISOString(), is_active: true })
       .eq("confirm_token", token);
+    confirmedNow = true;
     const unsubUrl = `${SITE}/api/unsubscribe?token=${sub.unsubscribe_token}`;
     const { subject, html, text } = welcomeEmail(
       humanizeCareer(sub.career_id),
@@ -147,12 +181,27 @@ export async function GET(req: NextRequest) {
     await sendEmail(sub.email, subject, html, text, unsubUrl);
   }
 
+  if (confirmedNow) {
+    await dispatchAnalyticsEvent({
+      eventName: "subscription_confirmed",
+      url: req.url,
+      userAgent: req.headers.get("user-agent") ?? undefined,
+      properties: {
+        career_id: sub.career_id,
+        confirmed_now: true,
+      },
+    });
+  }
+
   return htmlResponse(
     200,
     page(
       "You're confirmed",
       `<h1 style="font-size:24px;margin:0 0 12px;">You're confirmed. 🟡</h1>
-       <p style="color:#8A91A0;font-size:15px;line-height:1.6;margin:0;">Your first personalized AI briefing arrives tomorrow morning. We just sent a welcome email with what to expect.</p>`
+       <p style="color:#8A91A0;font-size:15px;line-height:1.6;margin:0;">Your first personalized AI briefing arrives tomorrow morning. We just sent a welcome email with what to expect.</p>`,
+      confirmedNow
+        ? googleAdsConversionSnippet(GOOGLE_ADS_CONFIRMED_SUBSCRIBE_LABEL)
+        : "",
     )
   );
 }

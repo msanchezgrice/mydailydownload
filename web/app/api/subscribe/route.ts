@@ -1,6 +1,7 @@
 import { randomUUID } from "node:crypto";
 import { NextResponse, type NextRequest } from "next/server";
 import { createClient } from "@supabase/supabase-js";
+import { dispatchAnalyticsEvent } from "../../lib/analyticsServer";
 
 /**
  * POST /api/subscribe — captures a real signup into Supabase `subscribers`
@@ -194,6 +195,20 @@ export async function POST(req: NextRequest) {
           existing.unsubscribe_token
         );
       }
+      await dispatchAnalyticsEvent({
+        eventName: "confirmation_email_requested",
+        anonymousId: req.headers.get("x-mdd-anonymous-id") ?? undefined,
+        url: req.url,
+        userAgent: req.headers.get("user-agent") ?? undefined,
+        properties: {
+          career_id: careerId,
+          seniority,
+          plan,
+          interest_count: interests.length,
+          emailed,
+          already_subscribed: true,
+        },
+      });
       return NextResponse.json(
         { ok: true, alreadySubscribed: true, emailed },
         { status: 200, headers: CORS }
@@ -207,5 +222,19 @@ export async function POST(req: NextRequest) {
   }
 
   const emailed = await sendConfirm(row.confirm_token, row.unsubscribe_token);
+  await dispatchAnalyticsEvent({
+    eventName: "confirmation_email_requested",
+    anonymousId: req.headers.get("x-mdd-anonymous-id") ?? undefined,
+    url: req.url,
+    userAgent: req.headers.get("user-agent") ?? undefined,
+    properties: {
+      career_id: careerId,
+      seniority,
+      plan,
+      interest_count: interests.length,
+      emailed,
+      already_subscribed: false,
+    },
+  });
   return NextResponse.json({ ok: true, emailed }, { status: 200, headers: CORS });
 }

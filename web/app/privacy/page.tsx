@@ -50,7 +50,8 @@ export default function PrivacyPage() {
         >
           <Section title="Who we are">
             My Daily Download (&quot;we&quot;, &quot;us&quot;) operates the daily,
-            career-personalized AI newsletter at mydailydownload.com. Questions:{" "}
+            career-personalized AI newsletter at mydailydownload.com. Owner and
+            legal contact: Miguel Sanchez-Grice. Questions:{" "}
             <a href="mailto:support@mydailydownload.com" style={{ color: "var(--accent)" }}>
               support@mydailydownload.com
             </a>
@@ -73,7 +74,9 @@ export default function PrivacyPage() {
               </li>
               <li>
                 <strong style={{ color: "var(--text-primary)" }}>Usage data</strong> —
-                opens, clicks, and basic site analytics to improve the product.
+                opens, clicks, funnel step events, anonymized event IDs, coarse
+                career-category labels, coarse seniority-tier labels, and aggregate
+                counts to improve the product.
               </li>
               <li>
                 <strong style={{ color: "var(--text-primary)" }}>Consent record</strong> —
@@ -91,6 +94,17 @@ export default function PrivacyPage() {
             privacy practices.
           </Section>
 
+          <Section title="Analytics and advertising data handling">
+            Do not send to analytics or advertising platforms: Email addresses,
+            LinkedIn profile URLs, parsed resume text, employer/company, job title,
+            raw profile fields, resume file contents or filenames, Consent-log fields
+            such as IP address and checkbox text, Stripe customer identifiers, or
+            payment data. Allowed analytics fields are anonymized event IDs, coarse
+            career-category and seniority-tier labels, funnel step events, and
+            aggregate counts. In short, we only use{" "}
+            <span>coarse career-category and seniority-tier labels</span> in analytics.
+          </Section>
+
           <Section title="Your choices & rights">
             Every email includes a one-click unsubscribe, honored promptly. You may
             request access, correction, or deletion of your data, or opt out of
@@ -104,9 +118,9 @@ export default function PrivacyPage() {
 
           <Section title="Data retention & security">
             We keep your subscription data while your account is active and for a
-            reasonable period afterward to meet legal obligations. We use
-            industry-standard providers (Supabase, Resend, Vercel) and reasonable
-            safeguards to protect it.
+            reasonable period afterward to meet legal obligations, prevent abuse, and
+            honor unsubscribes. Profile data stays in Supabase with access controls
+            and is not sent to client analytics payloads.
           </Section>
 
           <Section title="Changes">
@@ -118,6 +132,9 @@ export default function PrivacyPage() {
         <div className="mt-12 flex gap-6">
           <Link href="/terms" className="text-sm hover:underline" style={{ color: "var(--accent)" }}>
             Terms of Service →
+          </Link>
+          <Link href="/contact" className="text-sm hover:underline" style={{ color: "var(--accent)" }}>
+            Contact →
           </Link>
         </div>
       </div>

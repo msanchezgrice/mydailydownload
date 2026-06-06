@@ -78,7 +78,9 @@ export default function TermsPage() {
 
           <Section title="Payment (Pro)">
             Paid subscriptions are billed through our payment processor (Stripe). You can
-            cancel anytime; cancellation stops future renewals. Contact{" "}
+            cancel anytime; cancellation stops future renewals. After cancellation,
+            access continues through the paid period. Pro-rated refunds are not offered by default, but
+            billing issues and exceptional cases are reviewed case-by-case. Contact{" "}
             <a href="mailto:support@mydailydownload.com" style={{ color: "var(--accent)" }}>
               support@mydailydownload.com
             </a>{" "}
@@ -94,7 +96,7 @@ export default function TermsPage() {
 
           <Section title="Changes & contact">
             We may update these Terms; material changes will be posted here with a new
-            date. Questions:{" "}
+            date. Owner and legal contact: Miguel Sanchez-Grice. Questions:{" "}
             <a href="mailto:support@mydailydownload.com" style={{ color: "var(--accent)" }}>
               support@mydailydownload.com
             </a>
@@ -105,6 +107,9 @@ export default function TermsPage() {
         <div className="mt-12 flex gap-6">
           <Link href="/privacy" className="text-sm hover:underline" style={{ color: "var(--accent)" }}>
             Privacy Policy →
+          </Link>
+          <Link href="/refunds" className="text-sm hover:underline" style={{ color: "var(--accent)" }}>
+            Refund Policy →
           </Link>
         </div>
       </div>

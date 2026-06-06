@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1500" height="500" viewBox="0 0 1500 500" role="img">
+  <rect width="1500" height="500" fill="#0B0C10"/>
+  
+    <rect x="60" y="40" width="1380" height="420" rx="23" fill="#14171D" stroke="rgba(255,255,255,0.08)"/>
+    <g>
+    <circle cx="135" cy="101.7" r="12" fill="#F2A900"/>
+    <text x="161.4" y="115" fill="#E6E8EE" font-family="Inter, Arial, sans-serif" font-size="38" font-weight="700" letter-spacing="0">My Daily Download</text>
+  </g>
+    <text x="135" y="195" fill="#F2A900" font-family="Inter, Arial, sans-serif" font-size="27.5" font-weight="800" text-transform="uppercase">Marketing</text>
+    <text x="135" y="290" fill="#E6E8EE" font-family="Inter, Arial, sans-serif" font-size="51" font-weight="800" letter-spacing="0">
+    <tspan x="135" dy="0">The AI download for Marketers.</tspan>
+  </text>
+    <text x="135" y="395" fill="#8A91A0" font-family="Inter, Arial, sans-serif" font-size="19" font-weight="500">Personalized by role + seniority. Real sources only.</text>
+    <g fill="none" stroke="#F2A900" stroke-linecap="round" stroke-linejoin="round">
+    <circle cx="1245" cy="260" r="77.41935483870967" fill="rgba(242,169,0,0.16)" stroke="none"/>
+    <path d="M 1245 208.38709677419354 L 1245 280.96774193548384" stroke-width="17.741935483870968"/>
+    <path d="M 1211.1290322580646 253.5483870967742 L 1245 290.64516129032256 L 1278.8709677419354 253.5483870967742" stroke-width="17.741935483870968"/>
+    <path d="M 1188.5483870967741 321.2903225806452 H 1301.4516129032259" stroke-width="17.741935483870968"/>
+  </g>
+  
+</svg>

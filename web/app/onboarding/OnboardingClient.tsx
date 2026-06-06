@@ -24,6 +24,15 @@ import StepIndicator from "../components/StepIndicator";
 import TerminalTyping from "../components/TerminalTyping";
 import SampleEmail from "../components/SampleEmail";
 import {
+  GOOGLE_ADS_BEGIN_CHECKOUT_LABEL,
+  navigateAfterGoogleAdsConversion,
+} from "../lib/googleAds";
+import {
+  captureCurrentAttribution,
+  getMddAnonymousId,
+  trackAnalyticsEvent,
+} from "../lib/clientAnalytics";
+import {
   careerCategories,
   seniorityLevels,
   interestOptions,
@@ -94,14 +103,13 @@ function parseLinkedInUrl(url: string): string {
   }
 }
 
-function generateMockProfile(state: OnboardingState) {
+function generateProfileDraft(state: OnboardingState) {
   let careerId = FALLBACK_CAREER;
 
   if (state.inputMethod === "linkedin" && state.linkedinUrl) {
     careerId = parseLinkedInUrl(state.linkedinUrl);
   } else if (state.inputMethod === "resume") {
-    const keys = Object.keys(careerNewsletters);
-    careerId = keys[Math.floor(Math.random() * keys.length)];
+    careerId = state.selectedCategory || FALLBACK_CAREER;
   } else if (state.inputMethod === "manual" && state.selectedCategory) {
     careerId = state.selectedCategory;
   }
@@ -127,12 +135,12 @@ function generateMockProfile(state: OnboardingState) {
 
 function getTerminalLines(role: string, seniority: string): string[] {
   return [
-    "Parsing career data...",
-    "Identifying role signals...",
-    `Role detected: ${role}`,
+    "Preparing profile draft...",
+    "Checking role signals...",
+    `Suggested role: ${role}`,
     `Seniority: ${seniority}`,
-    "Industry focus: Technology",
-    "Generating briefing profile...",
+    "Profile is editable before signup.",
+    "Preparing briefing preview...",
     "Done.",
   ];
 }
@@ -154,20 +162,29 @@ export default function OnboardingClient() {
 
   // Restore from sessionStorage / apply ?plan=pro on mount (client-only)
   useEffect(() => {
-    let restored: Partial<OnboardingState> | null = null;
-    try {
-      const saved = sessionStorage.getItem(STORAGE_KEY);
-      if (saved) restored = JSON.parse(saved);
-    } catch {
-      /* ignore */
-    }
-    const planParam = searchParams.get("plan");
-    setState((prev) => ({
-      ...prev,
-      ...(restored ?? {}),
-      resumeFile: null,
-      ...(planParam === "pro" && !restored ? { plan: "pro" } : {}),
-    }));
+    const restore = setTimeout(() => {
+      captureCurrentAttribution();
+      let restored: Partial<OnboardingState> | null = null;
+      try {
+        const saved = sessionStorage.getItem(STORAGE_KEY);
+        if (saved) restored = JSON.parse(saved);
+      } catch {
+        /* ignore */
+      }
+      const planParam = searchParams.get("plan");
+      trackAnalyticsEvent("onboarding_started", {
+        plan: planParam === "pro" ? "pro" : "free",
+        career_id: searchParams.get("career") ?? undefined,
+      });
+      setState((prev) => ({
+        ...prev,
+        ...(restored ?? {}),
+        resumeFile: null,
+        ...(planParam === "pro" && !restored ? { plan: "pro" } : {}),
+      }));
+    }, 0);
+
+    return () => clearTimeout(restore);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -191,7 +208,9 @@ export default function OnboardingClient() {
     isEmailValid &&
     state.agreeToNewsletter &&
     ((state.inputMethod === "linkedin" && state.linkedinUrl.trim().length > 0) ||
-      (state.inputMethod === "resume" && state.resumeFile !== null) ||
+      (state.inputMethod === "resume" &&
+        state.resumeFile !== null &&
+        state.selectedCategory !== "") ||
       (state.inputMethod === "manual" && state.selectedCategory !== ""));
 
   const handleContinue = () => {
@@ -202,7 +221,12 @@ export default function OnboardingClient() {
       }
       return;
     }
-    const profile = generateMockProfile(state);
+    const profile = generateProfileDraft(state);
+    trackAnalyticsEvent("profile_preview_generated", {
+      input_method: state.inputMethod,
+      career_id: profile.careerId,
+      seniority: profile.seniority,
+    });
     setTerminalLines(getTerminalLines(profile.role, profile.seniority));
     setShowTerminal(true);
     update("step", 2);
@@ -210,7 +234,13 @@ export default function OnboardingClient() {
   };
 
   const handleTerminalComplete = () => setShowTerminal(false);
-  const handleConfirmProfile = () => update("step", 3);
+  const handleConfirmProfile = () => {
+    trackAnalyticsEvent("profile_confirmed", {
+      career_id: detectedCareerId,
+      seniority: state.detectedProfile?.seniority || state.seniority,
+    });
+    update("step", 3);
+  };
   const handleEditProfile = () => update("editingProfile", true);
   const handleBackToStep1 = () => {
     update("step", 1);
@@ -248,22 +278,32 @@ export default function OnboardingClient() {
   };
 
   const detectedCareerId =
-    state.inputMethod === "linkedin"
+    state.selectedCategory ||
+    (state.inputMethod === "linkedin"
       ? parseLinkedInUrl(state.linkedinUrl)
       : state.inputMethod === "resume"
         ? Object.keys(careerNewsletters).find(
             (k) => careerNewsletters[k].career === state.detectedProfile?.role
           ) || FALLBACK_CAREER
-        : state.selectedCategory || FALLBACK_CAREER;
+        : FALLBACK_CAREER);
 
   const handleSubscribe = async () => {
     if (subscribeStatus === "submitting") return;
     setSubscribeStatus("submitting");
     setSubscribeError("");
+    trackAnalyticsEvent("subscribe_submitted", {
+      career_id: detectedCareerId,
+      seniority: state.detectedProfile?.seniority || state.seniority,
+      plan: state.plan,
+      interest_count: state.interests.length,
+    });
     try {
       const res = await fetch("/api/subscribe", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: {
+          "Content-Type": "application/json",
+          "X-MDD-Anonymous-ID": getMddAnonymousId(),
+        },
         body: JSON.stringify({
           email: state.email,
           careerId: detectedCareerId,
@@ -288,7 +328,15 @@ export default function OnboardingClient() {
             });
             const checkoutData = await checkoutRes.json().catch(() => ({}));
             if (checkoutRes.ok && typeof checkoutData?.url === "string") {
-              window.location.href = checkoutData.url; // leaving for Stripe
+              trackAnalyticsEvent("checkout_started", {
+                plan: "pro",
+                career_id: detectedCareerId,
+                seniority: state.detectedProfile?.seniority || state.seniority,
+              });
+              navigateAfterGoogleAdsConversion(
+                GOOGLE_ADS_BEGIN_CHECKOUT_LABEL,
+                checkoutData.url,
+              );
               return;
             }
           } catch {
@@ -351,8 +399,8 @@ export default function OnboardingClient() {
               Let&apos;s Personalize Your AI Briefing
             </h1>
             <p className="text-base mb-8" style={{ color: "var(--text-secondary)" }}>
-              We&apos;ll analyze your career to deliver tailored AI news every
-              morning.
+              Share a career signal, then confirm the role and seniority we use for
+              your daily AI briefing.
             </p>
 
             {/* Tab Switcher */}
@@ -417,14 +465,14 @@ export default function OnboardingClient() {
                     className="text-xs mt-2"
                     style={{ color: "var(--text-secondary)" }}
                   >
-                    Paste your public LinkedIn profile URL. We&apos;ll scan your
-                    headline and experience.
+                    Paste your public LinkedIn profile URL. We use it as a signal,
+                    then you confirm or edit the briefing profile.
                   </p>
                 </div>
               )}
 
               {state.inputMethod === "resume" && (
-                <div className="animate-[fadeIn_0.3s_ease-out]">
+                <div className="animate-[fadeIn_0.3s_ease-out] space-y-6">
                   {!state.resumeFile ? (
                     <div
                       onDragOver={(e) => {
@@ -501,6 +549,80 @@ export default function OnboardingClient() {
                         />
                       </button>
                     </div>
+                  )}
+
+                  {state.resumeFile && (
+                    <>
+                      <div>
+                        <label
+                          className="block text-sm font-medium mb-3"
+                          style={{ color: "var(--text-secondary)" }}
+                        >
+                          Select the career category for this briefing
+                        </label>
+                        <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
+                          {careerCategories.map((cat) => (
+                            <button
+                              key={cat.id}
+                              onClick={() => update("selectedCategory", cat.id)}
+                              className="flex flex-col items-center gap-2 rounded-xl p-4 text-center transition-all duration-200 hover:scale-[1.02]"
+                              style={{
+                                background:
+                                  state.selectedCategory === cat.id
+                                    ? "rgba(242, 169, 0, 0.08)"
+                                    : "var(--bg-elevated)",
+                                border:
+                                  state.selectedCategory === cat.id
+                                    ? "1px solid var(--accent)"
+                                    : "1px solid var(--border-subtle)",
+                                color:
+                                  state.selectedCategory === cat.id
+                                    ? "var(--accent)"
+                                    : "var(--text-primary)",
+                              }}
+                            >
+                              {careerIcons[cat.icon] ?? <Briefcase className="w-5 h-5" />}
+                              <span className="text-sm font-medium">{cat.name}</span>
+                            </button>
+                          ))}
+                        </div>
+                      </div>
+
+                      {state.selectedCategory && (
+                        <div>
+                          <label
+                            className="block text-sm font-medium mb-3"
+                            style={{ color: "var(--text-secondary)" }}
+                          >
+                            What&apos;s your seniority level?
+                          </label>
+                          <div
+                            className="flex flex-wrap rounded-[10px] p-1 gap-1"
+                            style={{ background: "var(--bg-elevated)" }}
+                          >
+                            {seniorityLevels.map((level) => (
+                              <button
+                                key={level}
+                                onClick={() => update("seniority", level)}
+                                className="px-3 py-2 rounded-lg text-xs font-medium transition-all duration-200"
+                                style={{
+                                  background:
+                                    state.seniority === level
+                                      ? "var(--accent)"
+                                      : "transparent",
+                                  color:
+                                    state.seniority === level
+                                      ? "#0B0C10"
+                                      : "var(--text-secondary)",
+                                }}
+                              >
+                                {level}
+                              </button>
+                            ))}
+                          </div>
+                        </div>
+                      )}
+                    </>
                   )}
                 </div>
               )}
@@ -683,7 +805,7 @@ export default function OnboardingClient() {
                 cursor: canContinue ? "pointer" : "not-allowed",
               }}
             >
-              Analyze My Profile
+              Review My Profile
               <ArrowRight className="w-4 h-4" />
             </button>
           </div>
@@ -713,7 +835,7 @@ export default function OnboardingClient() {
                     style={{ background: "var(--accent)" }}
                   />
                   <p className="text-sm" style={{ color: "var(--text-secondary)" }}>
-                    Analyzing your profile...
+                    Preparing your correctable profile...
                   </p>
                 </div>
               </div>
@@ -723,7 +845,7 @@ export default function OnboardingClient() {
                   className="text-2xl font-semibold mb-6"
                   style={{ color: "var(--text-primary)" }}
                 >
-                  Here&apos;s What We Found
+                  Review Your Profile
                 </h2>
 
                 <div
@@ -1104,7 +1226,7 @@ export default function OnboardingClient() {
                       Free
                     </p>
                     <p className="text-xs" style={{ color: "var(--text-secondary)" }}>
-                      Daily briefing + weekly roundup
+                      Daily briefing + rolling 2-week archive
                     </p>
                   </div>
                 </div>
@@ -1165,7 +1287,7 @@ export default function OnboardingClient() {
                       </span>
                     </div>
                     <p className="text-xs" style={{ color: "var(--text-secondary)" }}>
-                      Everything in Free + full archive, deeper insights
+                      Everything in Free + full archive access, deeper insights
                     </p>
                   </div>
                 </div>
@@ -1193,10 +1315,10 @@ export default function OnboardingClient() {
                 }}
               >
                 {[
-                  "Full archive access (500+ past briefings)",
-                  "Deep-dive analysis pieces weekly",
-                  "Priority support & custom topic requests",
-                  "Exclusive AI tool discount codes",
+                  "Full archive access",
+                  "Friday Roundup deep-dive",
+                  "Tool and prompt extras",
+                  "Priority support",
                 ].map((f) => (
                   <div key={f} className="flex items-center gap-2">
                     <Check className="w-4 h-4 flex-shrink-0" style={{ color: "var(--accent)" }} />

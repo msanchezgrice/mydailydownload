@@ -30,4 +30,4 @@ Domain is registered in Vercel (team `miguel-sanchezgrices-projects`), nameserve
 - DMARC `_dmarc` TXT (`v=DMARC1; p=none; rua=mailto:dmarc@mydailydownload.com`) — ✅ added (monitor mode for warmup)
 
 Resend domain `d7f12968-…` → **status: verified · sending: enabled · receiving: enabled**. Phase 3 sending unblocked.
-Keys stored (gitignored): RESEND_API_KEY, TAVILY_API_KEY. Stripe: have account `acct_1Tf4DDPnLtm1veVC` — still need its `sk_test_` key to create the Pro product.
+Keys stored (gitignored): RESEND_API_KEY, TAVILY_API_KEY. Stripe: account `acct_1Tf4DDPnLtm1veVC`, product `prod_UeOZFv6cuF7xpv`, and Pro price `price_1Tf5maPnLtm1veVCknVonjFS` are recorded; Vercel Production env inventory shows encrypted `STRIPE_SECRET_KEY`, `STRIPE_PRO_PRICE_ID`, and `STRIPE_WEBHOOK_SECRET` for `mydailydownload-web`.

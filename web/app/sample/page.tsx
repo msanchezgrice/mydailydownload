@@ -48,12 +48,16 @@ export default function SamplePage() {
 
   // Honor ?career= on mount + compute date client-side (avoids hydration drift)
   useEffect(() => {
-    setTodayDate(getTodayDate());
-    const params = new URLSearchParams(window.location.search);
-    const careerParam = params.get("career");
-    if (careerParam && careers.includes(careerParam as Career)) {
-      setSelectedCareer(careerParam as Career);
-    }
+    const restore = setTimeout(() => {
+      setTodayDate(getTodayDate());
+      const params = new URLSearchParams(window.location.search);
+      const careerParam = params.get("career");
+      if (careerParam && careers.includes(careerParam as Career)) {
+        setSelectedCareer(careerParam as Career);
+      }
+    }, 0);
+
+    return () => clearTimeout(restore);
   }, []);
 
   const handleCareerChange = useCallback((career: Career) => {
@@ -261,10 +265,24 @@ export default function SamplePage() {
       </section>
 
       <footer className="py-8 px-6 border-t border-[rgba(255,255,255,0.06)] text-center">
-        <p className="text-[12px] text-[#8A91A0]">
-          © {new Date().getFullYear()} My Daily Download. Every item cites a real
-          source.
-        </p>
+        <div className="flex flex-wrap items-center justify-center gap-4 text-[12px] text-[#8A91A0]">
+          <span>
+            © {new Date().getFullYear()} My Daily Download. Every item cites a real
+            source.
+          </span>
+          <Link href="/privacy" className="hover:text-[#F2A900]">
+            Privacy
+          </Link>
+          <Link href="/terms" className="hover:text-[#F2A900]">
+            Terms
+          </Link>
+          <Link href="/contact" className="hover:text-[#F2A900]">
+            Contact
+          </Link>
+          <Link href="/refunds" className="hover:text-[#F2A900]">
+            Refunds
+          </Link>
+        </div>
       </footer>
     </div>
   );

@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="820" height="312" viewBox="0 0 820 312" role="img">
+  <rect width="820" height="312" fill="#0B0C10"/>
+  
+    <rect x="32.8" y="24.96" width="754.4" height="262.08" rx="14" fill="#14171D" stroke="rgba(255,255,255,0.08)"/>
+    <g>
+    <circle cx="73.8" cy="63.460800000000006" r="8" fill="#F2A900"/>
+    <text x="91.4" y="71.76" fill="#E6E8EE" font-family="Inter, Arial, sans-serif" font-size="23.712" font-weight="700" letter-spacing="0">My Daily Download</text>
+  </g>
+    
+    <text x="73.8" y="180.95999999999998" fill="#E6E8EE" font-family="Inter, Arial, sans-serif" font-size="31.823999999999998" font-weight="800" letter-spacing="0">
+    <tspan x="73.8" dy="0">AI news that actually</tspan>
+<tspan x="73.8" dy="33.4152">matters to your career.</tspan>
+  </text>
+    <text x="73.8" y="246.48000000000002" fill="#8A91A0" font-family="Inter, Arial, sans-serif" font-size="11.856" font-weight="500">Personalized by role + seniority. Real sources only.</text>
+    <g fill="none" stroke="#F2A900" stroke-linecap="round" stroke-linejoin="round">
+    <circle cx="680.6" cy="162.24" r="48.309677419354834" fill="rgba(242,169,0,0.16)" stroke="none"/>
+    <path d="M 680.6 130.0335483870968 L 680.6 175.32387096774195" stroke-width="11.070967741935483"/>
+    <path d="M 659.4645161290323 158.2141935483871 L 680.6 181.3625806451613 L 701.7354838709678 158.2141935483871" stroke-width="11.070967741935483"/>
+    <path d="M 645.3741935483871 200.4851612903226 H 715.825806451613" stroke-width="11.070967741935483"/>
+  </g>
+  
+</svg>

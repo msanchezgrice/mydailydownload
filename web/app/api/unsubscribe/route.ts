@@ -1,5 +1,6 @@
 import { NextResponse, type NextRequest } from "next/server";
 import { createClient } from "@supabase/supabase-js";
+import { dispatchAnalyticsEvent } from "../../lib/analyticsServer";
 
 /** GET (click) + RFC 8058 one-click POST unsubscribe. Self-contained. */
 
@@ -48,6 +49,12 @@ export async function GET(req: NextRequest) {
       page(`<h1 style="font-size:22px;">Invalid unsubscribe link.</h1>`)
     );
   }
+  await dispatchAnalyticsEvent({
+    eventName: "unsubscribe_completed",
+    url: req.url,
+    userAgent: req.headers.get("user-agent") ?? undefined,
+    properties: { method: "link" },
+  });
   return htmlResponse(
     200,
     page(
@@ -69,5 +76,13 @@ export async function POST(req: NextRequest) {
     }
   }
   const ok = await unsubscribe(token);
+  if (ok) {
+    await dispatchAnalyticsEvent({
+      eventName: "unsubscribe_completed",
+      url: req.url,
+      userAgent: req.headers.get("user-agent") ?? undefined,
+      properties: { method: "one_click" },
+    });
+  }
   return NextResponse.json({ ok }, { status: ok ? 200 : 400 });
 }
