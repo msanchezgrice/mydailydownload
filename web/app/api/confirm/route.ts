@@ -70,7 +70,7 @@ function welcomeEmail(careerName: string | null, unsubscribeUrl: string) {
       <h1 style="font-size:20px;margin:0 0 14px;color:#14171d;">You're in. Welcome to My Daily Download.</h1>
       <p style="margin:0 0 16px;color:#555;">Every morning you'll get a sharp, <strong>source-cited</strong> AI briefing${who} — the tools, releases, and moves that actually matter for your role. No fluff, no fabricated headlines: every item links to its original source.</p>
       <p style="margin:0 0 16px;color:#555;"><strong>What to expect:</strong> the big story + why it matters to you, quick hits, a tactical play, and a day-of-week rhythm (Tool Tuesday, Playbook Wednesday, and more).</p>
-      <p style="margin:0 0 24px;"><a href="${SITE}/sample" style="display:inline-block;background:#F2A900;color:#0B0C10;font-weight:600;font-size:15px;text-decoration:none;padding:13px 26px;border-radius:8px;">See a sample briefing →</a></p>
+      <p style="margin:0 0 24px;"><a href="${SITE}/sample" style="display:inline-block;background:#F2A900;color:#0B0C10;font-weight:600;font-size:15px;text-decoration:none;padding:13px 26px;border-radius:8px;">See an example guide →</a></p>
       <p style="margin:0;color:#888;font-size:13px;">Your first briefing arrives tomorrow morning.</p>
     </div>
     <div style="padding:20px 32px;background:#f8f9fa;color:#7A8194;font-size:12px;line-height:1.6;text-align:center;">
@@ -78,7 +78,7 @@ function welcomeEmail(careerName: string | null, unsubscribeUrl: string) {
       ${MAILING_ADDRESS}<br/>© ${new Date().getFullYear()} My Daily Download
     </div>
   </div></body></html>`;
-  const text = `Welcome to My Daily Download${who}! Every morning you'll get a source-cited AI briefing tailored to your role. Your first one arrives tomorrow.\nSample: ${SITE}/sample\nUnsubscribe: ${unsubscribeUrl}`;
+  const text = `Welcome to My Daily Download${who}! Every morning you'll get a source-cited AI briefing tailored to your role. Your first one arrives tomorrow.\nExample guide: ${SITE}/sample\nUnsubscribe: ${unsubscribeUrl}`;
   return { subject: "Welcome to My Daily Download", html, text };
 }
 

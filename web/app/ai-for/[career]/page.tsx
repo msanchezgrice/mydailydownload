@@ -1,7 +1,7 @@
 import Link from "next/link";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { careerCategories, sampleNewsletters } from "../../lib/careerContent";
+import { careerCategories } from "../../lib/careerContent";
 import { getArticlesForCareer } from "../../lib/seoArticles";
 import { getSupabaseAdmin } from "../../lib/supabaseServer";
 
@@ -156,7 +156,6 @@ export default async function CareerHubPage({
   if (!cat) notFound();
 
   const { blocks, date } = await fetchLatestBriefing(cat.id);
-  const sample = sampleNewsletters[cat.id];
   const seoArticles = getArticlesForCareer(cat.id);
 
   const topStory = blocks?.topStory ?? null;
@@ -334,42 +333,17 @@ export default async function CareerHubPage({
               )}
             </>
           ) : (
-            /* No live briefing yet for this category — honest placeholder using the
-               representative sample content. Still fully server-rendered + indexable. */
             <div>
               <p className="text-[#8A91A0] leading-relaxed mb-8">
-                We&apos;re publishing fresh {cat.name} briefings daily. Here&apos;s a
-                representative example of the format you&apos;ll get — the big story,
-                why it matters to your role, and quick hits, each with a real source.
+                We&apos;re publishing fresh {cat.name} briefings daily. This guide is
+                being refreshed from the latest source-cited briefing archive.
               </p>
-              {sample && (
-                <>
-                  <div className="mb-10">
-                    <p className="section-label mb-2">The Big Story (sample)</p>
-                    <h3 className="text-xl font-semibold text-[#E6E8EE] leading-snug">
-                      {sample.topStory.headline}
-                    </h3>
-                    <p className="mt-2 text-[#8A91A0] leading-relaxed">
-                      {sample.topStory.summary}
-                    </p>
-                  </div>
-                  <div>
-                    <p className="section-label mb-4">Quick Hits (sample)</p>
-                    <ul className="space-y-5">
-                      {sample.quickHits.map((h, i) => (
-                        <li key={i} className="border-l-2 border-white/[0.08] pl-5">
-                          <h4 className="text-[15px] font-semibold text-[#E6E8EE]">
-                            {h.headline}
-                          </h4>
-                          <p className="mt-1 text-sm text-[#8A91A0]">
-                            {h.description}
-                          </p>
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-                </>
-              )}
+              <Link
+                href={`/sample?career=${cat.id}`}
+                className="inline-block text-[#F2A900] text-sm font-medium hover:underline"
+              >
+                See the current profession guide →
+              </Link>
             </div>
           )}
         </div>

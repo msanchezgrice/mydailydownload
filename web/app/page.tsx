@@ -257,7 +257,7 @@ function HeroSection() {
               href="/sample"
               className="px-8 py-3.5 border border-white/[0.08] text-[#E6E8EE] font-medium rounded-lg hover:border-[#F2A900] hover:text-[#F2A900] transition-all duration-200"
             >
-              See a Sample
+              See a Guide
             </Link>
           </div>
           <p className="mt-6 text-sm text-[#8A91A0]">
@@ -423,7 +423,7 @@ function SamplePreviewSection() {
               href="/sample"
               className="inline-flex items-center gap-2 px-6 py-3 border border-white/[0.08] text-[#E6E8EE] font-medium rounded-lg hover:border-[#F2A900] hover:text-[#F2A900] transition-all duration-200"
             >
-              View Full Sample →
+              View Full Guide →
             </Link>
           </div>
 
@@ -598,7 +598,7 @@ function FinalCTASection() {
                 href="/sample"
                 className="text-sm text-[#8A91A0] hover:text-[#F2A900] transition-colors"
               >
-                Or view a sample first
+                Or view a guide first
               </Link>
             </div>
           </div>
@@ -619,7 +619,7 @@ function SiteFooter() {
         </div>
         <div className="flex flex-wrap items-center justify-center gap-6 text-sm text-[#8A91A0]">
           <Link href="/sample" className="hover:text-[#F2A900] transition-colors">
-            Sample
+            Guide
           </Link>
           <Link href="/blog" className="hover:text-[#F2A900] transition-colors">
             Guides

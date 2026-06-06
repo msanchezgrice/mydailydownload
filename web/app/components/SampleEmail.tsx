@@ -28,6 +28,28 @@ interface SampleEmailProps {
 
 const FALLBACK_ID: CareerId = "product-management";
 
+function stripPlaceholderLanguage(text: string): string {
+  return text
+    .replace(/\s+—\s+sample issue/gi, " — guide issue")
+    .replace(/\byour sample AI edge\b/gi, "your AI edge")
+    .replace(/\bSample Source\b/g, "Source")
+    .replace(/\bSample Tool\b/g, "AI Tool")
+    .replace(/\bSample date\b/g, "Date TBA")
+    .replace(/\bsample metric\b/gi, "role metric")
+    .replace(/\s*\((?:representative\s+)?sample[^)]*\)/gi, "")
+    .replace(/\bsample\b/gi, "guide")
+    .replace(/\s{2,}/g, " ")
+    .trim();
+}
+
+function sanitizeNewsletter(newsletter: SampleNewsletter): SampleNewsletter {
+  return JSON.parse(
+    JSON.stringify(newsletter),
+    (_key, value) =>
+      typeof value === "string" ? stripPlaceholderLanguage(value) : value
+  ) as SampleNewsletter;
+}
+
 function Eyebrow({ children }: { children: React.ReactNode }) {
   return (
     <div className="text-[11px] font-semibold uppercase tracking-[0.08em] text-[#B07A00] mb-2">
@@ -44,10 +66,11 @@ export default function SampleEmail({
   dayKey,
   className = "",
 }: SampleEmailProps) {
-  const data: SampleNewsletter =
+  const rawData: SampleNewsletter =
     content ??
     sampleNewsletters[careerId ?? FALLBACK_ID] ??
     sampleNewsletters[FALLBACK_ID];
+  const data = sanitizeNewsletter(rawData);
 
   const fmt = formatFor(data);
   const day: DayKey = dayKey ?? fmt.signatureDay ?? dayKeyForDate();
@@ -286,7 +309,7 @@ export default function SampleEmail({
           </span>
         </div>
         <p className="text-[11px] text-[#9aa0ad] text-center mt-3">
-          sample · {label} format · {rotation.theme} rotation
+          guide preview · {label} format · {rotation.theme} rotation
         </p>
       </div>
     </div>
