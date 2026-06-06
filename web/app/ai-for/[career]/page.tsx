@@ -2,6 +2,7 @@ import Link from "next/link";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { careerCategories, sampleNewsletters } from "../../lib/careerContent";
+import { getArticlesForCareer } from "../../lib/seoArticles";
 import { getSupabaseAdmin } from "../../lib/supabaseServer";
 
 /**
@@ -156,6 +157,7 @@ export default async function CareerHubPage({
 
   const { blocks, date } = await fetchLatestBriefing(cat.id);
   const sample = sampleNewsletters[cat.id];
+  const seoArticles = getArticlesForCareer(cat.id);
 
   const topStory = blocks?.topStory ?? null;
   const quickHits = (blocks?.quickHits ?? []).filter((h) => h && h.headline && h.url);
@@ -388,6 +390,28 @@ export default async function CareerHubPage({
             Subscribe Free
           </Link>
         </div>
+
+        {seoArticles.length > 0 && (
+          <div className="mt-16 pt-10 border-t border-white/[0.08]">
+            <p className="section-label mb-4">Guides for {cat.name}</p>
+            <div className="grid gap-4">
+              {seoArticles.map((article) => (
+                <Link
+                  key={article.slug}
+                  href={`/blog/${article.slug}`}
+                  className="block rounded-lg border border-white/[0.08] bg-[#14171D] p-5 hover:border-[#F2A900] transition-colors"
+                >
+                  <h2 className="text-lg font-semibold text-[#E6E8EE]">
+                    {article.title}
+                  </h2>
+                  <p className="mt-2 text-sm text-[#8A91A0] leading-relaxed">
+                    {article.description}
+                  </p>
+                </Link>
+              ))}
+            </div>
+          </div>
+        )}
 
         {/* Other hubs (internal links for SEO) */}
         <div className="mt-16 pt-10 border-t border-white/[0.08]">

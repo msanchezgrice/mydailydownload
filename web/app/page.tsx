@@ -112,6 +112,7 @@ function Navigation() {
   const navLinks = [
     { label: "How It Works", href: "#how-it-works" },
     { label: "Careers", href: "#careers" },
+    { label: "Guides", href: "/blog" },
     { label: "Pricing", href: "#pricing" },
     { label: "FAQ", href: "#faq" },
   ];
@@ -143,13 +144,23 @@ function Navigation() {
 
         <div className="hidden md:flex items-center gap-8">
           {navLinks.map((link) => (
-            <button
-              key={link.label}
-              onClick={() => scrollTo(link.href)}
-              className="text-sm text-[#8A91A0] hover:text-[#E6E8EE] transition-colors"
-            >
-              {link.label}
-            </button>
+            link.href.startsWith("#") ? (
+              <button
+                key={link.label}
+                onClick={() => scrollTo(link.href)}
+                className="text-sm text-[#8A91A0] hover:text-[#E6E8EE] transition-colors"
+              >
+                {link.label}
+              </button>
+            ) : (
+              <Link
+                key={link.label}
+                href={link.href}
+                className="text-sm text-[#8A91A0] hover:text-[#E6E8EE] transition-colors"
+              >
+                {link.label}
+              </Link>
+            )
           ))}
           <Link
             href="/onboarding"
@@ -180,13 +191,24 @@ function Navigation() {
         <div className="absolute top-16 right-0 w-64 bg-[#1A1D23] border border-white/[0.08] rounded-bl-xl shadow-2xl md:hidden">
           <div className="flex flex-col p-4 gap-4">
             {navLinks.map((link) => (
-              <button
-                key={link.label}
-                onClick={() => scrollTo(link.href)}
-                className="text-left text-sm text-[#8A91A0] hover:text-[#E6E8EE] transition-colors py-2"
-              >
-                {link.label}
-              </button>
+              link.href.startsWith("#") ? (
+                <button
+                  key={link.label}
+                  onClick={() => scrollTo(link.href)}
+                  className="text-left text-sm text-[#8A91A0] hover:text-[#E6E8EE] transition-colors py-2"
+                >
+                  {link.label}
+                </button>
+              ) : (
+                <Link
+                  key={link.label}
+                  href={link.href}
+                  onClick={() => setMobileOpen(false)}
+                  className="text-left text-sm text-[#8A91A0] hover:text-[#E6E8EE] transition-colors py-2"
+                >
+                  {link.label}
+                </Link>
+              )
             ))}
             <Link
               href="/onboarding"
@@ -598,6 +620,9 @@ function SiteFooter() {
         <div className="flex flex-wrap items-center justify-center gap-6 text-sm text-[#8A91A0]">
           <Link href="/sample" className="hover:text-[#F2A900] transition-colors">
             Sample
+          </Link>
+          <Link href="/blog" className="hover:text-[#F2A900] transition-colors">
+            Guides
           </Link>
           <Link href="/privacy" className="hover:text-[#F2A900] transition-colors">
             Privacy

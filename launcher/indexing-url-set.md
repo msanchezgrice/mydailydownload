@@ -10,7 +10,7 @@ Updated: 2026-06-06
 - IndexNow key URL: `https://mydailydownload.com/2503e097d56b9a4de0e2276c8ee22c58.txt`
 
 ## Indexing Policy
-- Submit/index: homepage, sample, onboarding, legal evergreen pages, and 15 career hubs.
+- Submit/index: homepage, sample, onboarding, legal evergreen pages, `/blog`, 15 career hubs, and the 20 evergreen article URLs below.
 - Do not submit/index: `/api/`, `/archive/`, `/briefing/`, daily issue variants, or seniority variants.
 - Public hubs are canonical at `/ai-for/[career]`.
 
@@ -20,6 +20,9 @@ Updated: 2026-06-06
 - `https://mydailydownload.com/onboarding`
 - `https://mydailydownload.com/privacy`
 - `https://mydailydownload.com/terms`
+- `https://mydailydownload.com/contact`
+- `https://mydailydownload.com/refunds`
+- `https://mydailydownload.com/blog`
 - `https://mydailydownload.com/ai-for/product-management`
 - `https://mydailydownload.com/ai-for/marketing`
 - `https://mydailydownload.com/ai-for/sales`
@@ -35,10 +38,31 @@ Updated: 2026-06-06
 - `https://mydailydownload.com/ai-for/legal`
 - `https://mydailydownload.com/ai-for/healthcare`
 - `https://mydailydownload.com/ai-for/entrepreneurship`
+- `https://mydailydownload.com/blog/best-ai-tools-for-marketers-2026`
+- `https://mydailydownload.com/blog/best-ai-tools-for-product-managers-2026`
+- `https://mydailydownload.com/blog/best-ai-tools-for-founders-2026`
+- `https://mydailydownload.com/blog/ai-newsletter-for-marketers`
+- `https://mydailydownload.com/blog/ai-newsletter-for-product-managers`
+- `https://mydailydownload.com/blog/ai-newsletter-for-founders`
+- `https://mydailydownload.com/blog/turn-one-ai-briefing-into-30-marketing-posts`
+- `https://mydailydownload.com/blog/turn-support-tickets-into-ranked-prd-with-ai`
+- `https://mydailydownload.com/blog/write-investor-updates-with-ai`
+- `https://mydailydownload.com/blog/ai-prompts-for-marketing-campaigns`
+- `https://mydailydownload.com/blog/ai-prompts-for-product-strategy`
+- `https://mydailydownload.com/blog/ai-prompts-for-founder-operations`
+- `https://mydailydownload.com/blog/ai-for-sales-teams-prospecting-workflow`
+- `https://mydailydownload.com/blog/ai-for-design-teams-prototype-reviews`
+- `https://mydailydownload.com/blog/ai-for-engineering-managers-code-review`
+- `https://mydailydownload.com/blog/ai-for-customer-success-retention-signals`
+- `https://mydailydownload.com/blog/ai-for-operations-teams-workflow-automation`
+- `https://mydailydownload.com/blog/ai-for-data-science-analysis-triage`
+- `https://mydailydownload.com/blog/ai-for-consultants-client-ready-synthesis`
+- `https://mydailydownload.com/blog/weekly-ai-roundup-template`
 
 ## Provider Status
 - IndexNow key file exists locally in `web/public/2503e097d56b9a4de0e2276c8ee22c58.txt`.
 - IndexNow submission completed on 2026-06-06 for all 20 URLs in this file; `https://api.indexnow.org/IndexNow` returned HTTP 200.
-- Search Console status is blocked on authenticated browser access: the Codex Chrome Extension route was unavailable in this session, so the `https://mydailydownload.com/` property could not be verified without Miguel/browser intervention.
-- Production alias status on 2026-06-06: `mydailydownload.com` points at deployment `dpl_9QfJzQh7Y3VcTSX6F3SWkUcPDY4e`; updated robots exclusions, 20-URL sitemap, and OG assets are live on the custom domain.
+- Search Console status on 2026-06-06: sitemap submitted successfully for `sc-domain:mydailydownload.com` and reported Success with 20 discovered pages before the article-cluster expansion.
+- Article cluster status on 2026-06-06: 20 `/blog/[slug]` guides are implemented locally and sitemap expands to 43 URLs in the production build. Deploy these changes, then resubmit `https://mydailydownload.com/sitemap.xml` in Search Console and rerun IndexNow for the expanded set.
+- Production alias status on 2026-06-06 before article deploy: `mydailydownload.com` points at deployment `dpl_9QfJzQh7Y3VcTSX6F3SWkUcPDY4e`; updated robots exclusions, previous sitemap, and OG assets are live on the custom domain.
 - Provider review, crawl processing, and coverage/query data can lag after sitemap submission.

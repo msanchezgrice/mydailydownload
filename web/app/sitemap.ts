@@ -1,5 +1,6 @@
 import type { MetadataRoute } from "next";
 import { careerCategories } from "./lib/careerContent";
+import { seoArticles } from "./lib/seoArticles";
 
 const SITE_URL = "https://mydailydownload.com";
 
@@ -14,6 +15,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { url: `${SITE_URL}/terms`, lastModified: now, changeFrequency: "yearly", priority: 0.3 },
     { url: `${SITE_URL}/contact`, lastModified: now, changeFrequency: "yearly", priority: 0.3 },
     { url: `${SITE_URL}/refunds`, lastModified: now, changeFrequency: "yearly", priority: 0.3 },
+    { url: `${SITE_URL}/blog`, lastModified: now, changeFrequency: "weekly", priority: 0.7 },
   ];
 
   const hubs: MetadataRoute.Sitemap = careerCategories.map((c) => ({
@@ -23,5 +25,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
     priority: 0.8,
   }));
 
-  return [...staticRoutes, ...hubs];
+  const articles: MetadataRoute.Sitemap = seoArticles.map((article) => ({
+    url: `${SITE_URL}/blog/${article.slug}`,
+    lastModified: new Date(article.updatedAt),
+    changeFrequency: "monthly",
+    priority: 0.65,
+  }));
+
+  return [...staticRoutes, ...hubs, ...articles];
 }
