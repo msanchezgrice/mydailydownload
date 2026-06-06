@@ -61,8 +61,9 @@ Updated: 2026-06-06
 
 ## Provider Status
 - IndexNow key file exists locally in `web/public/2503e097d56b9a4de0e2276c8ee22c58.txt`.
-- IndexNow submission completed on 2026-06-06 for all 20 URLs in this file; `https://api.indexnow.org/IndexNow` returned HTTP 200.
+- IndexNow submission completed on 2026-06-06 for the original 20 URLs in this file; `https://api.indexnow.org/IndexNow` returned HTTP 200.
+- IndexNow resubmission completed on 2026-06-06 after the article-cluster deploy for all 43 live sitemap URLs, including 20 article URLs; `https://api.indexnow.org/indexnow` returned HTTP 200.
 - Search Console status on 2026-06-06: sitemap submitted successfully for `sc-domain:mydailydownload.com` and reported Success with 20 discovered pages before the article-cluster expansion.
-- Article cluster status on 2026-06-06: 20 `/blog/[slug]` guides are implemented locally and sitemap expands to 43 URLs in the production build. Deploy these changes, then resubmit `https://mydailydownload.com/sitemap.xml` in Search Console and rerun IndexNow for the expanded set.
-- Production alias status on 2026-06-06 before article deploy: `mydailydownload.com` points at deployment `dpl_9QfJzQh7Y3VcTSX6F3SWkUcPDY4e`; updated robots exclusions, previous sitemap, and OG assets are live on the custom domain.
+- Article cluster status on 2026-06-06: 20 `/blog/[slug]` guides are live in production and the sitemap has 43 URLs.
+- Production alias status on 2026-06-06 after article deploy: `mydailydownload.com` points at deployment `dpl_7F3yF8uzT9b46bk8QcoKHT2f513o`; `/blog`, the sample article URL, expanded sitemap, and robots are live on the custom domain.
 - Provider review, crawl processing, and coverage/query data can lag after sitemap submission.

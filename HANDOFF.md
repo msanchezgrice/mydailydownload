@@ -77,7 +77,7 @@ A daily, career-personalized AI newsletter. Pivot from myaiskilltutor.com. The p
   - Web prod env now has: SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY, RESEND_API_KEY, **STRIPE_SECRET_KEY, STRIPE_PRO_PRICE_ID, STRIPE_WEBHOOK_SECRET**.
 - **GA4** `G-X27FVHNW9T` added to `web/app/layout.tsx` via `next/script` (verified in apex HTML).
 - **Backfill DONE** — Mid Level briefings generated for the 12 missing careers (`backend/backfill_hubs.py`); **all 15 careers now have a Mid Level briefing (2026-06-05)**, so every `/ai-for/[career]` hub is live-cited. Junior/Senior fill in on demand via `run_daily`.
-- **IndexNow** — key file `web/public/2503e097d56b9a4de0e2276c8ee22c58.txt` live; submitted 20 URLs (apex + 15 hubs + sample/onboarding/privacy/terms) → HTTP 202.
+- **IndexNow** — key file `web/public/2503e097d56b9a4de0e2276c8ee22c58.txt` live; original 20 URLs were submitted, then the expanded 43-URL sitemap including 20 `/blog/[slug]` articles was resubmitted on 2026-06-06 with HTTP 200.
 - **REMAINING (manual, needs your Google login):** submit `https://mydailydownload.com/sitemap.xml` in Google Search Console (domain already DNS-verified). robots.txt already advertises the sitemap, so Google will also auto-discover.
 - **Hub copy fix** — the SEO H1 + meta description were pluralizing the category name (`{name}s` → "saless", "marketings", "customer successs" on 14/15 hubs). Added a per-career `AUDIENCE` map in `web/app/ai-for/[career]/page.tsx`; H1 now reads "AI news that actually matters to marketers / founders / sales teams / product managers …". Verified live across hubs.
 - **Live browser smoke test** — home, `/ai-for/sales` (real briefing), `/onboarding`: all render correctly, **zero console errors**.
