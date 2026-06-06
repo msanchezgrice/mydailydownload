@@ -36,11 +36,20 @@ export const metadata: Metadata = {
     url: SITE_URL,
     siteName: "My Daily Download",
     type: "website",
+    images: [
+      {
+        url: "/brand-assets/og-default.png",
+        width: 1200,
+        height: 630,
+        alt: "My Daily Download - AI news that actually matters to your career",
+      },
+    ],
   },
   twitter: {
     card: "summary_large_image",
     title: "My Daily Download",
     description: "AI news that actually matters to your career.",
+    images: ["/brand-assets/og-default.png"],
   },
 };
 

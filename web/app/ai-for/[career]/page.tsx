@@ -77,6 +77,7 @@ export async function generateMetadata({
   const title = `AI for ${cat.name} — My Daily Download`;
   const description = `The AI news, tools, and tactics that matter for ${audienceFor(cat)} — personalized, source-cited, every morning. ${cat.description}`;
   const url = `${SITE_URL}/ai-for/${cat.id}`;
+  const image = `/brand-assets/og-ai-for-${cat.id}.png`;
   return {
     title,
     description,
@@ -87,8 +88,16 @@ export async function generateMetadata({
       url,
       siteName: "My Daily Download",
       type: "article",
+      images: [
+        {
+          url: image,
+          width: 1200,
+          height: 630,
+          alt: `My Daily Download - AI for ${cat.name}`,
+        },
+      ],
     },
-    twitter: { card: "summary_large_image", title, description },
+    twitter: { card: "summary_large_image", title, description, images: [image] },
   };
 }
 
