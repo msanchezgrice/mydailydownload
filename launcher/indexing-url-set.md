@@ -40,5 +40,5 @@ Updated: 2026-06-06
 - IndexNow key file exists locally in `web/public/2503e097d56b9a4de0e2276c8ee22c58.txt`.
 - IndexNow submission completed on 2026-06-06 for all 20 URLs in this file; `https://api.indexnow.org/IndexNow` returned HTTP 200.
 - Search Console status is blocked on authenticated browser access: the Codex Chrome Extension route was unavailable in this session, so the `https://mydailydownload.com/` property could not be verified without Miguel/browser intervention.
-- Production alias status on 2026-06-06: `mydailydownload-web.vercel.app` serves the updated robots exclusions and OG assets from deployment `dpl_9QfJzQh7Y3VcTSX6F3SWkUcPDY4e`; `mydailydownload.com` still points at old deployment `dpl_B9YdN9WSUvLw9KC4Q3E7egQCD9EC` until Miguel approves the domain alias update.
+- Production alias status on 2026-06-06: `mydailydownload.com` points at deployment `dpl_9QfJzQh7Y3VcTSX6F3SWkUcPDY4e`; updated robots exclusions, 20-URL sitemap, and OG assets are live on the custom domain.
 - Provider review, crawl processing, and coverage/query data can lag after sitemap submission.
