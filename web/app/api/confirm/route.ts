@@ -4,6 +4,7 @@ import {
   GA_MEASUREMENT_ID,
   GOOGLE_ADS_CONFIRMED_SUBSCRIBE_LABEL,
   GOOGLE_ADS_CONVERSION_ID,
+  GOOGLE_TAG_SCRIPT_ID,
   googleAdsSendTo,
 } from "../../lib/googleAds";
 import { dispatchAnalyticsEvent } from "../../lib/analyticsServer";
@@ -104,13 +105,17 @@ function googleAdsConversionSnippet(label: string): string {
       : "",
   ].filter(Boolean);
 
-  return `<script async src="https://www.googletagmanager.com/gtag/js?id=${encodeURIComponent(GA_MEASUREMENT_ID)}"></script>
+  return `<script async src="https://www.googletagmanager.com/gtag/js?id=${encodeURIComponent(GOOGLE_TAG_SCRIPT_ID)}"></script>
   <script>
 window.dataLayer = window.dataLayer || [];
 function gtag(){dataLayer.push(arguments);}
 gtag('js', new Date());
 ${configLines.join("\n")}
-gtag('event', 'conversion', {'send_to': '${escapeScriptValue(sendTo)}'});
+gtag('event', 'conversion', {
+  'send_to': '${escapeScriptValue(sendTo)}',
+  'value': 1.0,
+  'currency': 'USD'
+});
   </script>`;
 }
 

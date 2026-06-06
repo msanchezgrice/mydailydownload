@@ -4,7 +4,7 @@ import Script from "next/script";
 import {
   GA_MEASUREMENT_ID,
   GOOGLE_ADS_CONVERSION_ID,
-  googleTagIds,
+  GOOGLE_TAG_SCRIPT_ID,
 } from "./lib/googleAds";
 import "./globals.css";
 
@@ -70,9 +70,9 @@ export default function RootLayout({
     >
       <body className="min-h-full flex flex-col">
         {children}
-        {googleTagIds.length > 0 && (
+        {GOOGLE_TAG_SCRIPT_ID && (
           <Script
-            src={`https://www.googletagmanager.com/gtag/js?id=${googleTagIds[0]}`}
+            src={`https://www.googletagmanager.com/gtag/js?id=${GOOGLE_TAG_SCRIPT_ID}`}
             strategy="lazyOnload"
           />
         )}

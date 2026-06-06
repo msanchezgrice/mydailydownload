@@ -667,6 +667,8 @@ export default function Home() {
       attempts += 1;
       const sent = sendGoogleAdsConversion(GOOGLE_ADS_PURCHASE_LABEL, {
         dedupeKey,
+        value: 1.0,
+        currency: "USD",
       });
       if (sent) window.sessionStorage.setItem(dedupeKey, "1");
       if (sent || attempts >= 8) window.clearInterval(interval);
