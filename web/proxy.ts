@@ -8,6 +8,7 @@ const hasClerkServerConfig = Boolean(
 );
 
 const clerkProxy = clerkMiddleware({
+  frontendApiProxy: { enabled: true },
   signInUrl: CLERK_SIGN_IN_URL,
 });
 
@@ -21,6 +22,6 @@ export const config = {
   matcher: [
     "/((?!_next|[^?]*\\.(?:html?|css|js(?!on)|jpe?g|webp|png|gif|svg|ttf|woff2?|ico|csv|docx?|xlsx?|zip|webmanifest)).*)",
     "/(api|trpc)(.*)",
-    "/__clerk/(.*)",
+    "/__clerk/:path*",
   ],
 };
