@@ -23,6 +23,7 @@ import {
 import StepIndicator from "../components/StepIndicator";
 import TerminalTyping from "../components/TerminalTyping";
 import SampleEmail from "../components/SampleEmail";
+import { SignInTextButton } from "../components/AuthControls";
 import {
   GOOGLE_ADS_BEGIN_CHECKOUT_LABEL,
   navigateAfterGoogleAdsConversion,
@@ -1436,13 +1437,12 @@ export default function OnboardingClient() {
 
       <p className="mt-6 text-sm" style={{ color: "var(--text-secondary)" }}>
         Already subscribed?{" "}
-        <Link
-          href="/"
+        <SignInTextButton
           className="font-medium transition-colors hover:underline"
           style={{ color: "var(--accent)" }}
         >
           Sign in
-        </Link>
+        </SignInTextButton>
       </p>
     </div>
   );

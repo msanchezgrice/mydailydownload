@@ -13,6 +13,7 @@
     "test:stripe": "node --loader ./tests/stripe-route-loader.mjs --test tests/stripe-routes.test.mjs"
   },
   "dependencies": {
+    "@clerk/nextjs": "^7.5.2",
     "@supabase/supabase-js": "^2.107.0",
     "lucide-react": "^0.562.0",
     "next": "16.2.7",

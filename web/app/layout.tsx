@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { ClerkProvider } from "@clerk/nextjs";
 import { Inter, JetBrains_Mono } from "next/font/google";
 import Script from "next/script";
 import {
@@ -6,6 +7,11 @@ import {
   GOOGLE_ADS_CONVERSION_ID,
   GOOGLE_TAG_SCRIPT_ID,
 } from "./lib/googleAds";
+import {
+  CLERK_AFTER_SIGN_IN_URL,
+  CLERK_CLIENT_ENABLED,
+  CLERK_SIGN_IN_URL,
+} from "./lib/clerk";
 import "./globals.css";
 
 const META_PIXEL_ID = process.env.NEXT_PUBLIC_META_PIXEL_ID?.trim() ?? "";
@@ -23,6 +29,25 @@ const jetbrainsMono = JetBrains_Mono({
   weight: ["400", "500"],
   display: "swap",
 });
+
+const clerkLocalization = {
+  signIn: {
+    start: {
+      title: "Continue to My Daily Download",
+      titleCombined: "Continue to My Daily Download",
+      subtitle: "Sign in or create your account to manage your briefing.",
+      subtitleCombined: "Sign in or create your account to manage your briefing.",
+    },
+  },
+  signUp: {
+    start: {
+      title: "Create your My Daily Download account",
+      titleCombined: "Create your My Daily Download account",
+      subtitle: "Use the same email you subscribed with.",
+      subtitleCombined: "Use the same email you subscribed with.",
+    },
+  },
+};
 
 export const SITE_URL = "https://mydailydownload.com";
 
@@ -63,29 +88,25 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  return (
-    <html
-      lang="en"
-      className={`${inter.variable} ${jetbrainsMono.variable} h-full antialiased`}
-    >
-      <body className="min-h-full flex flex-col">
-        {children}
-        {GOOGLE_TAG_SCRIPT_ID && (
-          <Script
-            src={`https://www.googletagmanager.com/gtag/js?id=${GOOGLE_TAG_SCRIPT_ID}`}
-            strategy="lazyOnload"
-          />
-        )}
-        <Script id="ga4-init" strategy="lazyOnload">
-          {`window.dataLayer = window.dataLayer || [];
+  const bodyContent = (
+    <>
+      {children}
+      {GOOGLE_TAG_SCRIPT_ID && (
+        <Script
+          src={`https://www.googletagmanager.com/gtag/js?id=${GOOGLE_TAG_SCRIPT_ID}`}
+          strategy="lazyOnload"
+        />
+      )}
+      <Script id="ga4-init" strategy="lazyOnload">
+        {`window.dataLayer = window.dataLayer || [];
 function gtag(){dataLayer.push(arguments);}
 gtag('js', new Date());
 gtag('config', '${GA_MEASUREMENT_ID}');
 ${GOOGLE_ADS_CONVERSION_ID ? `gtag('config', '${GOOGLE_ADS_CONVERSION_ID}');` : ""}`}
-        </Script>
-        {META_PIXEL_ID && (
-          <Script id="meta-pixel-init" strategy="lazyOnload">
-            {`!function(f,b,e,v,n,t,s)
+      </Script>
+      {META_PIXEL_ID && (
+        <Script id="meta-pixel-init" strategy="lazyOnload">
+          {`!function(f,b,e,v,n,t,s)
 {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
 n.callMethod.apply(n,arguments):n.queue.push(arguments)};
 if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
@@ -95,7 +116,28 @@ s.parentNode.insertBefore(t,s)}(window, document,'script',
 'https://connect.facebook.net/en_US/fbevents.js');
 fbq('init', '${META_PIXEL_ID}');
 fbq('track', 'PageView');`}
-          </Script>
+        </Script>
+      )}
+    </>
+  );
+
+  return (
+    <html
+      lang="en"
+      className={`${inter.variable} ${jetbrainsMono.variable} h-full antialiased`}
+    >
+      <body className="min-h-full flex flex-col">
+        {CLERK_CLIENT_ENABLED ? (
+          <ClerkProvider
+            signInUrl={CLERK_SIGN_IN_URL}
+            signInFallbackRedirectUrl={CLERK_AFTER_SIGN_IN_URL}
+            signUpFallbackRedirectUrl={CLERK_AFTER_SIGN_IN_URL}
+            localization={clerkLocalization}
+          >
+            {bodyContent}
+          </ClerkProvider>
+        ) : (
+          bodyContent
         )}
       </body>
     </html>
