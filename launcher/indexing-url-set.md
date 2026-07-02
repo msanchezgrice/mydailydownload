@@ -60,6 +60,9 @@ Updated: 2026-06-06
 - `https://mydailydownload.com/blog/weekly-ai-roundup-template`
 
 ## Provider Status
+- Search Console resubmission completed on 2026-07-02 for `https://mydailydownload.com/sitemap.xml`; GSC reported `Success`, `Last read: Jul 2, 2026`, and `43` discovered pages.
+- Page indexing report on 2026-07-02 still reflected coverage data last updated 2026-06-11: `26` indexed and `20` not indexed. The main actionable lag bucket was `Discovered - currently not indexed` with 11 examples, all showing `Last crawled: N/A`; validation was started on 2026-07-02.
+- Non-indexed examples reviewed on 2026-07-02 were mostly expected noise: `/onboarding?...` parameter duplicates, `http://mydailydownload.com/` redirecting to HTTPS, and one `_next/static` JS chunk. Canonical pages in the discovered-not-indexed bucket included several `/ai-for/*` hubs plus `/onboarding`, `/privacy`, `/sample`, and `/terms`.
 - IndexNow key file exists locally in `web/public/2503e097d56b9a4de0e2276c8ee22c58.txt`.
 - IndexNow submission completed on 2026-06-06 for the original 20 URLs in this file; `https://api.indexnow.org/IndexNow` returned HTTP 200.
 - IndexNow resubmission completed on 2026-06-06 after the article-cluster deploy for all 43 live sitemap URLs, including 20 article URLs; `https://api.indexnow.org/indexnow` returned HTTP 200.

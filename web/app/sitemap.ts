@@ -4,6 +4,8 @@ import { seoArticles } from "./lib/seoArticles";
 
 const SITE_URL = "https://mydailydownload.com";
 
+export const revalidate = 86400;
+
 export default function sitemap(): MetadataRoute.Sitemap {
   const now = new Date();
 

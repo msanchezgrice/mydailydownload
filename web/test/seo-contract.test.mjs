@@ -23,6 +23,8 @@ test("sitemap includes evergreen pages, category hubs, and the SEO article clust
   const careerContent = read("app/lib/careerContent.ts");
   const articleContent = read("app/lib/seoArticles.ts");
 
+  assert.match(sitemap, /export const revalidate = 86400/);
+
   for (const route of ["/", "/sample", "/onboarding", "/privacy", "/terms", "/blog"]) {
     assert.match(sitemap, new RegExp(`\\$\\{SITE_URL\\}${route === "/" ? "\\/" : route}`));
   }
@@ -42,12 +44,20 @@ test("sitemap includes evergreen pages, category hubs, and the SEO article clust
   assert.doesNotMatch(sitemap, /archive|briefing|seniority/i);
 });
 
+test("parameter-heavy public pages declare canonical URLs", () => {
+  const onboardingPage = read("app/onboarding/page.tsx");
+  const samplePage = read("app/sample/page.tsx");
+
+  assert.match(onboardingPage, /alternates:\s*\{\s*canonical:\s*`\$\{SITE_URL\}\/onboarding`/);
+  assert.match(samplePage, /alternates:\s*\{\s*canonical:\s*`\$\{SITE_URL\}\/sample`/);
+});
+
 test("SEO article cluster has production routes, metadata, internal links, and honest-source guardrails", () => {
   const articleContent = read("app/lib/seoArticles.ts");
   const blogIndex = read("app/blog/page.tsx");
   const blogArticle = read("app/blog/[slug]/page.tsx");
   const careerPage = read("app/ai-for/[career]/page.tsx");
-  const homepage = read("app/page.tsx");
+  const homeClient = read("app/HomeClient.tsx");
 
   const articleSlugs = [...articleContent.matchAll(/slug:\s*"([^"]+)"/g)].map((match) => match[1]);
   assert.equal(articleSlugs.length, 20);
@@ -62,7 +72,7 @@ test("SEO article cluster has production routes, metadata, internal links, and h
   assert.match(blogArticle, /Related guides/);
   assert.match(blogArticle, /Get your daily briefing/);
   assert.match(careerPage, /seoArticles/);
-  assert.match(homepage, /href="\/blog"/);
+  assert.match(homeClient, /href="\/blog"/);
 
   for (const forbidden of [
     "zero competitors",

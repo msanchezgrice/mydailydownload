@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import { careerCategories, type CareerId } from "../lib/careerContent";
 import { getSupabaseAdmin } from "../lib/supabaseServer";
 import SampleGuideClient, {
@@ -5,7 +6,16 @@ import SampleGuideClient, {
   type BriefingGuideItem,
 } from "./SampleGuideClient";
 
+const SITE_URL = "https://mydailydownload.com";
+
 export const dynamic = "force-dynamic";
+
+export const metadata: Metadata = {
+  title: "Sample AI briefing format",
+  description:
+    "Preview how My Daily Download turns source-cited AI news into a role-specific daily briefing.",
+  alternates: { canonical: `${SITE_URL}/sample` },
+};
 
 interface BriefingBlocks {
   topStory?: BriefingGuideItem | null;
