@@ -126,13 +126,14 @@ fbq('track', 'PageView');`}
       lang="en"
       className={`${inter.variable} ${jetbrainsMono.variable} h-full antialiased`}
     >
-      <body className="min-h-full flex flex-col">
-        <Script
+      <head>
+        <script
           src="https://analytics.ahrefs.com/analytics.js"
           data-key="3HOyldboGt4zv2IDpiFwPQ"
-          strategy="beforeInteractive"
           async
         />
+      </head>
+      <body className="min-h-full flex flex-col">
         {CLERK_CLIENT_ENABLED ? (
           <ClerkProvider
             signInUrl={CLERK_SIGN_IN_URL}
