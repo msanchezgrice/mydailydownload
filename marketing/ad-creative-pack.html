@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>My Daily Download — Ad Creative Pack v1</title>
+<style>
+  :root{
+    --bg:#0B0C10; --card:#12141A; --card2:#171A22; --border:rgba(255,255,255,0.08);
+    --gold:#F2A900; --gold-dim:rgba(242,169,0,0.12); --text:#E6E8EE; --muted:#8A91A0;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Inter,Roboto,sans-serif;line-height:1.6;padding-bottom:80px}
+  .wrap{max-width:1060px;margin:0 auto;padding:0 24px}
+  header{padding:64px 0 40px;border-bottom:1px solid var(--border);background:radial-gradient(circle at 75% 20%, rgba(242,169,0,0.07) 0%, transparent 55%)}
+  .label{display:inline-block;font-size:12px;letter-spacing:0.14em;text-transform:uppercase;color:var(--gold);font-weight:600;margin-bottom:14px}
+  h1{font-size:clamp(30px,4.5vw,46px);line-height:1.12;letter-spacing:-0.02em;font-weight:700}
+  .sub{color:var(--muted);margin-top:14px;max-width:680px;font-size:17px}
+  nav{display:flex;flex-wrap:wrap;gap:10px;margin-top:28px}
+  nav a{color:var(--text);text-decoration:none;font-size:13px;border:1px solid var(--border);padding:7px 14px;border-radius:999px;transition:.15s}
+  nav a:hover{border-color:var(--gold);color:var(--gold)}
+  section{padding:52px 0 8px}
+  h2{font-size:26px;letter-spacing:-0.01em;margin-bottom:6px}
+  h2 .num{color:var(--gold);font-weight:700;margin-right:10px}
+  .sectionsub{color:var(--muted);margin-bottom:26px;max-width:760px;font-size:15px}
+  .grid{display:grid;gap:16px}
+  .grid.c2{grid-template-columns:repeat(auto-fit,minmax(340px,1fr))}
+  .card{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:22px}
+  .card h3{font-size:17px;margin-bottom:8px}
+  .badge{display:inline-block;font-size:11px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;background:var(--gold-dim);color:var(--gold);border-radius:999px;padding:3px 10px;margin-bottom:10px}
+  .badge.gray{background:rgba(255,255,255,0.06);color:var(--muted)}
+  .muted{color:var(--muted)}
+  .kv{font-size:14px;margin-top:10px}
+  .kv b{color:var(--gold);font-weight:600}
+  .prompt{position:relative;background:#0E1015;border:1px solid var(--border);border-left:3px solid var(--gold);border-radius:8px;padding:14px 16px;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:13px;color:#C9CEDA;margin-top:12px;white-space:pre-wrap}
+  .copybtn{position:absolute;top:8px;right:8px;background:rgba(255,255,255,0.06);border:1px solid var(--border);color:var(--muted);font-size:11px;border-radius:6px;padding:4px 10px;cursor:pointer}
+  .copybtn:hover{color:var(--gold);border-color:var(--gold)}
+  table{width:100%;border-collapse:collapse;margin-top:14px;font-size:14px}
+  th{text-align:left;color:var(--gold);font-size:11px;text-transform:uppercase;letter-spacing:.1em;padding:8px 10px;border-bottom:1px solid var(--border)}
+  td{padding:10px;border-bottom:1px solid rgba(255,255,255,0.05);vertical-align:top}
+  tr:last-child td{border-bottom:none}
+  .tagline-list{display:grid;gap:10px}
+  .tagline{display:flex;justify-content:space-between;align-items:center;gap:14px;background:var(--card);border:1px solid var(--border);border-radius:10px;padding:14px 18px;font-size:16px;font-weight:500}
+  .tagline .note{font-size:12px;color:var(--muted);font-weight:400}
+  .pill{font-size:11px;color:var(--muted);border:1px solid var(--border);border-radius:999px;padding:2px 9px;white-space:nowrap}
+  .vo{color:var(--text)}
+  .ost{color:var(--gold);font-weight:600}
+  .shot-time{color:var(--muted);white-space:nowrap;font-family:ui-monospace,Menlo,monospace;font-size:12px}
+  footer{margin-top:60px;padding-top:24px;border-top:1px solid var(--border);color:var(--muted);font-size:13px}
+  .toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:var(--gold);color:#0B0C10;font-weight:600;font-size:13px;padding:8px 18px;border-radius:999px;opacity:0;transition:.25s;pointer-events:none}
+  .toast.show{opacity:1}
+</style>
+</head>
+<body>
+<header>
+  <div class="wrap">
+    <span class="label">My Daily Download · mydailydownload.com</span>
+    <h1>Ad Creative Pack v1 — Higgsfield Test Set</h1>
+    <p class="sub">Messaging modeled on the ASL Tutor ad set that worked: <b style="color:var(--gold)">personalized to your exact skill set and career → your edge over everyone else in your field.</b> Everything below is paste-ready for Higgsfield (video + image) and Meta Ads Manager.</p>
+    <nav>
+      <a href="#strategy">Strategy</a><a href="#voice">Brand Voice</a><a href="#taglines">Taglines</a><a href="#pitch">Elevator Pitch</a><a href="#adcopy">Ad Copy Variants</a><a href="#video">Video Scripts</a><a href="#images">Image Prompts</a><a href="#testplan">Test Plan</a>
+    </nav>
+  </div>
+</header>
+
+<div class="wrap">
+
+<!-- ───────── STRATEGY ───────── -->
+<section id="strategy">
+  <h2><span class="num">01</span>Strategy Snapshot</h2>
+  <p class="sectionsub">Why the ASL Tutor messaging transfers: both products sell <i>personalized mastery of a fast-moving skill domain</i>. Here the domain is AI's impact on your specific job.</p>
+  <div class="grid c2">
+    <div class="card">
+      <span class="badge">Core promise</span>
+      <h3>"AI is changing your job. Know first."</h3>
+      <p class="muted">A daily 5-minute briefing personalized to your career (15 verticals) and seniority (3 tiers). Not generic tech news — your corner of the industry, every morning at 7 AM.</p>
+    </div>
+    <div class="card">
+      <span class="badge">Messaging pillars (in order)</span>
+      <p class="kv"><b>1. The Edge</b> — people who see AI changes first pull ahead of peers in their field. (Primary — mirrors ASL winner)</p>
+      <p class="kv"><b>2. Personalization</b> — built for your role + seniority; drop your LinkedIn and it knows your job.</p>
+      <p class="kv"><b>3. Trust</b> — every item cites a real primary source. Zero hype, zero fabricated facts.</p>
+      <p class="kv"><b>4. Effortless</b> — 5-minute read, 7 AM, free to start.</p>
+    </div>
+    <div class="card">
+      <span class="badge">Audience</span>
+      <p class="muted">Ambitious mid-career professionals (25–45) in the 15 verticals: Product, Marketing, Sales, Ops, HR, Design, Finance, Engineering, Data Science, Customer Success, Content, Consulting, Legal, Healthcare, Entrepreneurship. They feel AI FOMO but are tired of generic hype newsletters.</p>
+    </div>
+    <div class="card">
+      <span class="badge">Conversion event</span>
+      <p class="muted">Free signup (double opt-in) is the ad objective — don't sell the $19/mo Pro in cold creative. CTA language: <b style="color:var(--gold)">"Get Your Edge — Free."</b> Upsell happens in onboarding.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ───────── BRAND VOICE ───────── -->
+<section id="voice">
+  <h2><span class="num">02</span>Brand Voice</h2>
+  <p class="sectionsub">If the brand were a person: the sharpest, best-read colleague on your team — reads everything overnight, tells you only what matters, always shows their sources, never hypes.</p>
+  <div class="grid c2">
+    <div class="card"><span class="badge">Specific</span><p class="muted"><b style="color:var(--text)">We are:</b> concrete about roles, tools, outcomes ("a PM gets product news, a nurse gets clinical AI news").<br><b style="color:var(--text)">We're not:</b> vague ("stay informed about technology!").</p></div>
+    <div class="card"><span class="badge">Grounded</span><p class="muted"><b style="color:var(--text)">We are:</b> source-cited, factual, calm. "Every item cites a real source" is a product guarantee, not a slogan.<br><b style="color:var(--text)">We're not:</b> breathless, doom-y, "AI will replace you" clickbait.</p></div>
+    <div class="card"><span class="badge">Competitive</span><p class="muted"><b style="color:var(--text)">We are:</b> edge-framed — readers get ahead of peers. Confident, slightly provocative.<br><b style="color:var(--text)">We're not:</b> fear-mongering or putting other professionals down.</p></div>
+    <div class="card"><span class="badge">Direct</span><p class="muted"><b style="color:var(--text)">We are:</b> short sentences, active voice, "you" language, no filler.<br><b style="color:var(--text)">We're not:</b> jargon-heavy, exclamation-point salesy, emoji-stuffed.</p></div>
+  </div>
+</section>
+
+<!-- ───────── TAGLINES ───────── -->
+<section id="taglines">
+  <h2><span class="num">03</span>Taglines</h2>
+  <p class="sectionsub">★ = recommended starters. The first is the current site hero — keep ads consistent with it for message match on the landing page.</p>
+  <div class="tagline-list">
+    <div class="tagline">★ AI news that actually matters to your career. <span class="pill">site hero — message match</span></div>
+    <div class="tagline">★ Your edge, delivered daily at 7 AM. <span class="pill">edge + ritual</span></div>
+    <div class="tagline">★ The AI briefing built for your job — not everyone's. <span class="pill">anti-generic</span></div>
+    <div class="tagline">AI is changing your job. Read like it. <span class="pill">urgency</span></div>
+    <div class="tagline">See what's coming for your field — first. <span class="pill">FOMO</span></div>
+    <div class="tagline">Generic AI newsletters are noise. This one knows your job. <span class="pill">anti-generic</span></div>
+    <div class="tagline">15 careers. 3 seniority levels. 1 briefing made for you. <span class="pill">personalization proof</span></div>
+    <div class="tagline">Zero hype. Every item cites a real source. <span class="pill">trust</span></div>
+    <div class="tagline">While they scroll, you're already ahead. <span class="pill">edge</span></div>
+    <div class="tagline">Drop your LinkedIn. Get your edge. <span class="pill">how-it-works hook</span></div>
+  </div>
+</section>
+
+<!-- ───────── ELEVATOR PITCH ───────── -->
+<section id="pitch">
+  <h2><span class="num">04</span>Elevator Pitch</h2>
+  <div class="grid">
+    <div class="card">
+      <span class="badge">One-liner</span>
+      <p>My Daily Download is a daily AI briefing personalized to your exact career and seniority — the news, tools, and tactics that matter to <i>your</i> role, with every item cited to a real source.</p>
+    </div>
+    <div class="card">
+      <span class="badge">10 seconds</span>
+      <p>AI newsletters send the same email to a million people. We don't. Tell us your career — or just drop your LinkedIn — and every morning at 7 AM you get a 5-minute briefing about <i>your</i> field. Free to start.</p>
+    </div>
+    <div class="card">
+      <span class="badge">30 seconds</span>
+      <p>AI is reshaping every profession, but keeping up means wading through generic hype written for "tech people." My Daily Download fixes that: you drop your LinkedIn or pick your vertical, and our research engine reads your corner of the industry overnight — 38 feeds plus live search — then ranks what matters for your role and seniority. You get one curated email at 7 AM, five minutes long, and every single item cites a real primary source — that's a hard guarantee built into the engine. It's free; Pro is $19/mo for deeper briefings. The result: you walk into every meeting knowing what your field knows before your field knows it.</p>
+    </div>
+  </div>
+</section>
+<!-- ───────── AD COPY ───────── -->
+<section id="adcopy">
+  <h2><span class="num">05</span>Meta Ad Copy Variants</h2>
+  <p class="sectionsub">Six variants, one per angle. Primary text front-loads the hook (first 125 chars show before "See more"). Headlines ≤ 40 chars, descriptions ≤ 30 chars. Suggested button: <b style="color:var(--gold)">Sign Up</b>.</p>
+  <div class="grid">
+
+    <div class="card">
+      <span class="badge">A1 · The Edge (ASL-winner angle — start here)</span>
+      <div class="prompt"><button class="copybtn" onclick="cp(this)">Copy</button>Two people have the same job. One reads generic AI news. The other gets a briefing built for their exact role and seniority. Guess who gets ahead.
+
+My Daily Download finds the AI news, tools, and tactics that matter to YOUR career — and lands it in your inbox at 7 AM. Every item cites a real source. Free to start.</div>
+      <p class="kv"><b>Headline:</b> Your daily edge, built for your job</p>
+      <p class="kv"><b>Description:</b> Free · 7 AM · Real sources</p>
+    </div>
+
+    <div class="card">
+      <span class="badge">A2 · Anti-generic</span>
+      <div class="prompt"><button class="copybtn" onclick="cp(this)">Copy</button>Every AI newsletter sends the same email to a million people. Yours shouldn't be one of them.
+
+Tell us your career — or just drop your LinkedIn — and get a daily briefing that's actually about YOUR work. Marketing, product, sales, legal, healthcare + 10 more verticals, tuned to your seniority. 5 minutes at 7 AM. Free.</div>
+      <p class="kv"><b>Headline:</b> AI news that knows your job</p>
+      <p class="kv"><b>Description:</b> Personalized to 15 careers</p>
+    </div>
+
+    <div class="card">
+      <span class="badge">A3 · FOMO / field is moving</span>
+      <div class="prompt"><button class="copybtn" onclick="cp(this)">Copy</button>AI is changing your field whether you read about it or not.
+
+The people pulling ahead aren't smarter — they just see what's coming first. Get the 5-minute briefing personalized to your role and seniority, every morning at 7. Every item cites a real source. Free, cancel anytime.</div>
+      <p class="kv"><b>Headline:</b> See what your field sees — first</p>
+      <p class="kv"><b>Description:</b> 5-min read · Free</p>
+    </div>
+
+    <div class="card">
+      <span class="badge">A4 · Trust / zero hype</span>
+      <div class="prompt"><button class="copybtn" onclick="cp(this)">Copy</button>No hot takes. No hype threads. No "AI will replace you" clickbait.
+
+Just the news, tools, and tactics that actually matter for your career — and every single item cites a real primary source. That's a guarantee built into the product, not a slogan. One email, 7 AM, 5 minutes. Free.</div>
+      <p class="kv"><b>Headline:</b> Zero hype. Every item cited.</p>
+      <p class="kv"><b>Description:</b> AI news for serious operators</p>
+    </div>
+
+    <div class="card">
+      <span class="badge">A5 · Career-specific template (dynamic — one per vertical)</span>
+      <div class="prompt"><button class="copybtn" onclick="cp(this)">Copy</button>[Marketers]: while you were in meetings yesterday, AI shipped a dozen things that affect your job.
+
+We read everything overnight and send you only what matters for [marketing] — at your seniority level, with real sources cited. 5 minutes at 7 AM. Free.</div>
+      <p class="kv"><b>Headline:</b> AI news for [marketers], only</p>
+      <p class="kv"><b>Description:</b> Built for your role</p>
+      <p class="kv muted">Swap [bracket] terms per vertical: PMs, founders, sales teams, nurses, lawyers, designers… Pairs with the planned 5 vertical X accounts and the /ai-for/[career] SEO hubs as landing pages.</p>
+    </div>
+
+    <div class="card">
+      <span class="badge">A6 · How it works / LinkedIn hook</span>
+      <div class="prompt"><button class="copybtn" onclick="cp(this)">Copy</button>Drop your LinkedIn. That's it.
+
+Our AI works out your role and seniority, then researches your corner of the industry every night. You wake up to a briefing made for you — not for "tech people." Every item cites a real source. Free to start, 30-second setup.</div>
+      <p class="kv"><b>Headline:</b> Drop your LinkedIn. Get your edge.</p>
+      <p class="kv"><b>Description:</b> Setup in 30 seconds</p>
+    </div>
+
+  </div>
+</section>
+<!-- ───────── VIDEO SCRIPTS ───────── -->
+<section id="video">
+  <h2><span class="num">06</span>Video Ad Scripts — for Higgsfield</h2>
+  <p class="sectionsub">All 9:16 vertical, hook in the first 2 seconds. Each shot = one Higgsfield generation (~5s clips) — stitch in order, add VO + on-screen text (OST) in post. Don't ask the model to render UI text or words; overlay them yourself for crispness. End every video on the brand card: dark #0B0C10, gold #F2A900, "AI news that actually matters to your career — mydailydownload.com".</p>
+
+  <div class="card" style="margin-bottom:16px">
+    <span class="badge">V1 · "Same Job, Different Morning" — Edge angle · 20s · 4 shots</span>
+    <p class="kv"><b>Hook:</b> Visual contrast in 2s — chaos vs calm.</p>
+    <table>
+      <tr><th>Shot</th><th>Higgsfield video prompt</th><th>VO / OST</th></tr>
+      <tr><td class="shot-time">0–5s</td><td><div class="prompt" style="margin-top:0"><button class="copybtn" onclick="cp(this)">Copy</button>Vertical 9:16, cinematic realistic. A tired professional in their 30s lies in bed in a dark room, face lit only by cold blue phone light, thumb endlessly scrolling a chaotic feed, screen flicker reflecting on their face, restless energy, shallow depth of field, handheld feel.</div></td><td><span class="vo">VO: "Two people have the same job."</span><br><span class="ost">OST: SAME JOB.</span></td></tr>
+      <tr><td class="shot-time">5–10s</td><td><div class="prompt" style="margin-top:0"><button class="copybtn" onclick="cp(this)">Copy</button>Vertical 9:16, cinematic realistic. A calm confident professional in their 30s stands at a bright kitchen counter at sunrise, warm golden light through the window, sipping coffee while reading a single clean email on their phone, relaxed posture, slow gentle camera push-in.</div></td><td><span class="vo">VO: "One scrolls. One gets a briefing built for their exact role."</span><br><span class="ost">OST: DIFFERENT MORNING.</span></td></tr>
+      <tr><td class="shot-time">10–15s</td><td><div class="prompt" style="margin-top:0"><button class="copybtn" onclick="cp(this)">Copy</button>Vertical 9:16, cinematic realistic. A modern glass meeting room, a professional in their 30s speaks confidently at the table while four colleagues turn toward them and listen closely, morning light, subtle slow-motion, premium corporate look.</div></td><td><span class="vo">VO: "Guess who gets ahead."</span><br><span class="ost">OST: GUESS WHO GETS AHEAD.</span></td></tr>
+      <tr><td class="shot-time">15–20s</td><td>Brand end card (design in post — see Image #5).</td><td><span class="vo">VO: "My Daily Download. AI news that actually matters to your career. Free at mydailydownload.com."</span><br><span class="ost">OST: Get Your Edge — Free</span></td></tr>
+    </table>
+  </div>
+
+  <div class="card" style="margin-bottom:16px">
+    <span class="badge">V2 · "7 AM" — Ritual / premium lifestyle · 15s · 3 shots</span>
+    <p class="kv"><b>Hook:</b> Alarm flips 6:59 → 7:00.</p>
+    <table>
+      <tr><th>Shot</th><th>Higgsfield video prompt</th><th>VO / OST</th></tr>
+      <tr><td class="shot-time">0–5s</td><td><div class="prompt" style="margin-top:0"><button class="copybtn" onclick="cp(this)">Copy</button>Vertical 9:16, cinematic macro shot. A minimalist digital alarm clock on a dark wooden nightstand flips from 6:59 to 7:00, soft dawn light entering the room, warm amber glow, extreme close-up, shallow depth of field, premium calm mood.</div></td><td><span class="vo">VO: "Every morning at 7…"</span><br><span class="ost">OST: 7:00 AM</span></td></tr>
+      <tr><td class="shot-time">5–10s</td><td><div class="prompt" style="margin-top:0"><button class="copybtn" onclick="cp(this)">Copy</button>Vertical 9:16, cinematic. Slow-motion espresso pouring into a ceramic cup on a dark desk next to a glowing smartphone, steam rising through a beam of golden morning sunlight, moody dark background, rich amber tones.</div></td><td><span class="vo">VO: "…the AI news that matters to your career — your role, your level, your industry…"</span><br><span class="ost">OST: BUILT FOR YOUR JOB</span></td></tr>
+      <tr><td class="shot-time">10–15s</td><td><div class="prompt" style="margin-top:0"><button class="copybtn" onclick="cp(this)">Copy</button>Vertical 9:16, cinematic over-the-shoulder shot. Hands holding a smartphone with a softly glowing warm screen, person reading calmly by a window at sunrise, golden light flares, city skyline blurred in the background, peaceful confident mood.</div></td><td><span class="vo">VO: "…lands in your inbox. Five minutes. Every item cites a real source. Free."</span><br><span class="ost">OST: mydailydownload.com</span></td></tr>
+    </table>
+  </div>
+
+  <div class="card" style="margin-bottom:16px">
+    <span class="badge">V3 · "Your Feed vs Your Field" — Anti-noise · 20s · 4 shots</span>
+    <p class="kv"><b>Hook:</b> Aggressive glitch montage, then silence.</p>
+    <table>
+      <tr><th>Shot</th><th>Higgsfield video prompt</th><th>VO / OST</th></tr>
+      <tr><td class="shot-time">0–5s</td><td><div class="prompt" style="margin-top:0"><button class="copybtn" onclick="cp(this)">Copy</button>Vertical 9:16, fast chaotic montage style. Rapid flashing collage of dozens of overlapping glowing screens, news tickers, notification pop-ups and red alert badges swirling around a stressed professional's silhouette in a dark room, glitch effects, overwhelming digital noise, high contrast.</div></td><td><span class="vo">VO (fast, layered): "AI just changed everything—again—breaking—you're falling behind—"</span><br><span class="ost">OST: THE NOISE</span></td></tr>
+      <tr><td class="shot-time">5–10s</td><td><div class="prompt" style="margin-top:0"><button class="copybtn" onclick="cp(this)">Copy</button>Vertical 9:16, cinematic. Sudden calm: all screens fade to black except one smartphone floating in darkness glowing with a warm golden light, slow gentle rotation, dust particles in a single light beam, silence and stillness, premium minimalist.</div></td><td><span class="vo">VO (calm, after a beat): "Or… one email."</span><br><span class="ost">OST: THE SIGNAL</span></td></tr>
+      <tr><td class="shot-time">10–15s</td><td><div class="prompt" style="margin-top:0"><button class="copybtn" onclick="cp(this)">Copy</button>Vertical 9:16, cinematic realistic. A focused professional at a tidy desk in warm morning light reads their phone and nods slightly, then looks up with quiet confidence, plants and notebooks on the desk, golden hour tones, slow push-in.</div></td><td><span class="vo">VO: "Curated for your career. Your seniority. Every item cites a real source."</span><br><span class="ost">OST: YOUR FIELD. NOT THE FEED.</span></td></tr>
+      <tr><td class="shot-time">15–20s</td><td>Brand end card.</td><td><span class="vo">VO: "My Daily Download. Get your edge — free."</span></td></tr>
+    </table>
+  </div>
+
+  <div class="card" style="margin-bottom:16px">
+    <span class="badge">V4 · "Roll Call" — Personalization breadth · 20s · 4 shots</span>
+    <p class="kv"><b>Hook:</b> Rapid match-cuts across professions, same gesture (glancing at phone).</p>
+    <table>
+      <tr><th>Shot</th><th>Higgsfield video prompt</th><th>VO / OST</th></tr>
+      <tr><td class="shot-time">0–5s</td><td><div class="prompt" style="margin-top:0"><button class="copybtn" onclick="cp(this)">Copy</button>Vertical 9:16, cinematic realistic. A marketing professional at a colorful creative studio desk with mood boards glances at her phone which glows with a warm golden light, smiles slightly, dynamic but smooth camera, morning light.</div></td><td><span class="vo">VO: "Marketing."</span><br><span class="ost">OST: MARKETERS</span></td></tr>
+      <tr><td class="shot-time">5–10s</td><td><div class="prompt" style="margin-top:0"><button class="copybtn" onclick="cp(this)">Copy</button>Vertical 9:16, cinematic realistic. A nurse in scrubs walking down a bright hospital corridor pauses and checks her phone glowing with warm golden light, calm confident expression, clean clinical environment, steadicam follow shot.</div></td><td><span class="vo">VO: "Healthcare."</span><br><span class="ost">OST: NURSES & CLINICIANS</span></td></tr>
+      <tr><td class="shot-time">10–15s</td><td><div class="prompt" style="margin-top:0"><button class="copybtn" onclick="cp(this)">Copy</button>Vertical 9:16, cinematic realistic. Quick sequence feel: a lawyer in a wood-paneled office with case files checks a phone glowing warm gold; premium professional look, dramatic window light, slow-motion.</div></td><td><span class="vo">VO: "Legal. Sales. Product. Fifteen careers."</span><br><span class="ost">OST: 15 CAREERS · 3 LEVELS</span></td></tr>
+      <tr><td class="shot-time">15–20s</td><td>Brand end card.</td><td><span class="vo">VO: "One briefing — built for yours. My Daily Download. Free."</span><br><span class="ost">OST: AI news for YOUR job, not everyone's</span></td></tr>
+    </table>
+  </div>
+
+  <div class="card">
+    <span class="badge">V5 · UGC Testimonial — Social proof · 25s · 1 talking-head generation</span>
+    <p class="kv"><b>Format:</b> Use Higgsfield's avatar/talking-head ("Speak"-style) generation, or shoot on a phone. Casual selfie framing converts best on Meta.</p>
+    <div class="prompt"><button class="copybtn" onclick="cp(this)">Copy</button>Vertical 9:16 selfie-style UGC. A friendly professional in their early 30s talks directly to camera in a bright home office, natural daylight, slightly imperfect handheld framing, authentic casual energy, no background music feel.</div>
+    <p class="kv" style="margin-top:14px"><b>Script (VO / dialogue):</b></p>
+    <div class="prompt"><button class="copybtn" onclick="cp(this)">Copy</button>"Okay so I used to have five AI newsletters in my inbox and I read… none of them. They're all written for, like, 'tech people' — not for what I actually do.
+
+So this one — My Daily Download — asked for my LinkedIn, figured out my role and my level, and now every morning at 7 I get five minutes of AI news that's literally about MY job. With real sources linked, not hot takes.
+
+Honestly the unfair advantage is that my coworkers don't have it yet. It's free — link's below."</div>
+  </div>
+</section>
+
+<!-- ───────── IMAGE PROMPTS ───────── -->
+<section id="images">
+  <h2><span class="num">07</span>Single-Image Ads — Higgsfield Prompts</h2>
+  <p class="sectionsub">Generate at 1:1 (feed) and 9:16 (Stories/Reels). Keep prompts text-free — overlay the headline in post using brand type (bold, white #E6E8EE + gold #F2A900 accent on dark). Suggested overlay copy included per concept.</p>
+  <div class="grid c2">
+
+    <div class="card">
+      <span class="badge">IMG 1 · The 7 AM Briefing (hero — pairs with A1/A3)</span>
+      <div class="prompt"><button class="copybtn" onclick="cp(this)">Copy</button>Cinematic photo, dark moody home office desk at dawn. Hands holding a smartphone with a softly glowing warm golden screen above a cup of black coffee, steam curling through a beam of sunrise light, deep charcoal-black background, amber and gold tones, premium minimalist composition, shallow depth of field, space at top for headline text.</div>
+      <p class="kv"><b>Overlay:</b> "AI news that actually matters to your career." + Get Your Edge — Free</p>
+    </div>
+
+    <div class="card">
+      <span class="badge">IMG 2 · Everyone's Feed / Your Briefing (pairs with A2)</span>
+      <div class="prompt"><button class="copybtn" onclick="cp(this)">Copy</button>Split-composition editorial photo. Left half: chaotic cool-blue collage of dozens of overlapping screens, pop-ups and notifications in cluttered darkness. Right half: a single elegant smartphone on a clean dark desk glowing calm warm gold, one beam of morning light. Strong visual contrast between chaos and calm, premium ad photography, dark background.</div>
+      <p class="kv"><b>Overlay:</b> left "Everyone's feed" / right "Your briefing"</p>
+    </div>
+
+    <div class="card">
+      <span class="badge">IMG 3 · The Edge (pairs with A1)</span>
+      <div class="prompt"><button class="copybtn" onclick="cp(this)">Copy</button>Cinematic photo at golden hour. A confident professional strides ahead on a city street at sunrise, several blurred silhouettes of commuters lagging behind in soft focus, long warm shadows, dramatic golden rim light, dark moody grade with amber highlights, editorial sports-campaign energy.</div>
+      <p class="kv"><b>Overlay:</b> "While they scroll, you're already ahead." + mydailydownload.com</p>
+    </div>
+
+    <div class="card">
+      <span class="badge">IMG 4 · Role Series template (pairs with A5 — one per vertical)</span>
+      <div class="prompt"><button class="copybtn" onclick="cp(this)">Copy</button>Cinematic portrait of a [marketing professional at a creative studio desk with mood boards], looking at a phone that glows warm golden against a dark moody environment, single dramatic light source, premium editorial photography, amber-and-charcoal palette, negative space on the upper third for headline text.</div>
+      <p class="kv"><b>Swap bracket per role:</b> nurse in scrubs in a hospital corridor · lawyer in a wood-paneled office · founder in a late-night garage office · sales rep with a headset · data scientist with dual monitors…</p>
+      <p class="kv"><b>Overlay:</b> "AI news for [marketers], only."</p>
+    </div>
+
+    <div class="card">
+      <span class="badge">IMG 5 · Brand typographic card (end card for all videos)</span>
+      <div class="prompt"><button class="copybtn" onclick="cp(this)">Copy</button>Minimalist abstract background, deep charcoal black #0B0C10 with a soft radial glow of warm gold light in the upper right corner, extremely subtle fine grain texture, no objects, no text, premium tech-brand aesthetic, clean negative space.</div>
+      <p class="kv"><b>Overlay (in post):</b> "AI news that actually matters to your career." / Get Your Edge — Free / mydailydownload.com</p>
+    </div>
+
+    <div class="card">
+      <span class="badge">IMG 6 · While You Slept (pairs with A3/A4)</span>
+      <div class="prompt"><button class="copybtn" onclick="cp(this)">Copy</button>Cinematic photo of a tidy desk just before sunrise: closed laptop, notebook and glasses in deep blue pre-dawn shadow, while a smartphone screen glows warm amber-gold as the first ray of sun breaks through the window behind it, dramatic light transition from cold night to golden morning across the frame, premium moody ad photography.</div>
+      <p class="kv"><b>Overlay:</b> "AI changed your job overnight. Catch up in 5 minutes."</p>
+    </div>
+
+  </div>
+</section>
+
+<!-- ───────── TEST PLAN ───────── -->
+<section id="testplan">
+  <h2><span class="num">08</span>How to Run the Test</h2>
+  <div class="card">
+    <p class="kv"><b>Structure:</b> 1 campaign → 3 ad sets by angle (Edge A1+V1+IMG1/3 · Anti-generic A2+V3+IMG2 · Personalization A5+V4+IMG4). Add V5 UGC into whichever angle wins.</p>
+    <p class="kv"><b>Landing pages:</b> message-match — generic angles → mydailydownload.com; career-specific A5/IMG4 → /ai-for/[career] hubs (already server-rendered with real cited briefings).</p>
+    <p class="kv"><b>Conversion:</b> optimize for free signup (double opt-in confirm). GA4 G-X27FVHNW9T is live; tag links with UTMs per variant (utm_campaign=hf-test-v1, utm_content=A1-V1…).</p>
+    <p class="kv"><b>Creative rules:</b> hook in 2s · captions always on · 9:16 for Reels/Stories, 1:1 for feed · keep "Every item cites a real source" in at least one frame of every asset — it's the trust differentiator.</p>
+  </div>
+</section>
+
+
+</div>
+<div class="toast" id="toast">Copied ✓</div>
+<script>
+function cp(btn){const t=btn.parentElement.innerText.replace(/^Copy\s*/,'');navigator.clipboard.writeText(t.trim()).then(()=>{const x=document.getElementById('toast');x.classList.add('show');setTimeout(()=>x.classList.remove('show'),1200);});}
+</script>
+</body>
+</html>

@@ -70,7 +70,11 @@ test("SEO article cluster has production routes, metadata, internal links, and h
   assert.match(blogArticle, /alternates:\s*\{\s*canonical:/);
   assert.match(blogArticle, /"@type":\s*"Article"/);
   assert.match(blogArticle, /Related guides/);
-  assert.match(blogArticle, /Get your daily briefing/);
+  // MDD is now part of My AI Skill Tutor: signup CTAs funnel to the free
+  // MAST assessment with per-career utm_content.
+  assert.match(blogArticle, /Get your free AI-readiness score/);
+  assert.match(blogArticle, /mastAssessmentUrl\("career_hub", article\.careerId\)/);
+  assert.match(careerPage, /mastAssessmentUrl\("career_hub", cat\.id\)/);
   assert.match(careerPage, /seoArticles/);
   assert.match(homeClient, /href="\/blog"/);
 

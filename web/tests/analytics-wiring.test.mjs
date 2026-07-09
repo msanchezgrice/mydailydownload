@@ -41,8 +41,10 @@ test("Meta pixel and client analytics are env-gated without personal identifiers
 });
 
 test("key funnel surfaces call the shared analytics event route", () => {
-  assert.match(read("app/page.tsx"), /trackAnalyticsEvent\("landing_viewed"/);
-  assert.match(read("app/page.tsx"), /trackAnalyticsEvent\("pro_purchase_completed"/);
+  // Landing analytics live in the HomeClient client component (app/page.tsx
+  // is the server wrapper that renders it).
+  assert.match(read("app/HomeClient.tsx"), /trackAnalyticsEvent\("landing_viewed"/);
+  assert.match(read("app/HomeClient.tsx"), /trackAnalyticsEvent\("pro_purchase_completed"/);
   assert.match(read("app/onboarding/OnboardingClient.tsx"), /trackAnalyticsEvent\("onboarding_started"/);
   assert.match(read("app/onboarding/OnboardingClient.tsx"), /trackAnalyticsEvent\("subscribe_submitted"/);
   assert.match(read("app/onboarding/OnboardingClient.tsx"), /trackAnalyticsEvent\("checkout_started"/);

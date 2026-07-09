@@ -1,6 +1,7 @@
 import Link from "next/link";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
+import { mastAssessmentUrl } from "../../lib/mastFunnel";
 import {
   getCareerName,
   getRelatedArticles,
@@ -72,6 +73,7 @@ export default async function BlogArticlePage({
 
   const careerName = getCareerName(article.careerId);
   const relatedArticles = getRelatedArticles(article);
+  const assessmentHref = mastAssessmentUrl("career_hub", article.careerId);
   const url = `${SITE_URL}/blog/${article.slug}`;
   const jsonLd = {
     "@context": "https://schema.org",
@@ -104,12 +106,12 @@ export default async function BlogArticlePage({
             <span className="w-2 h-2 rounded-full bg-[#F2A900]" aria-hidden />
             My Daily Download
           </Link>
-          <Link
-            href={`/onboarding?career=${article.careerId}`}
+          <a
+            href={assessmentHref}
             className="text-sm font-semibold bg-[#F2A900] text-[#0B0C10] px-5 py-2 rounded-lg hover:bg-[#D49500] transition-colors"
           >
-            Get this daily
-          </Link>
+            Get your free AI score
+          </a>
         </div>
       </nav>
 
@@ -180,20 +182,21 @@ export default async function BlogArticlePage({
         </section>
 
         <section className="mt-12 rounded-lg border border-[#F2A900]/30 bg-[#14171D] p-7 text-center">
-          <p className="section-label mb-3">Get your daily briefing</p>
+          <p className="section-label mb-3">Get your free AI-readiness score</p>
           <h2 className="text-2xl font-bold text-[#E6E8EE]">
-            AI news for {article.audience.toLowerCase()}, every morning
+            How ready are you for AI as {article.audience.toLowerCase()}?
           </h2>
           <p className="mt-3 text-[#8A91A0] leading-relaxed">
-            My Daily Download turns role-specific AI news into a short daily email.
-            Every item cites a real source and routes back to the original context.
+            My Daily Download is now part of My AI Skill Tutor. Take the free
+            assessment to get a 0-100 AI-readiness score for your role plus a
+            skill-gap report — about 2 minutes, no account required.
           </p>
-          <Link
-            href={`/onboarding?career=${article.careerId}`}
+          <a
+            href={assessmentHref}
             className="inline-block mt-6 px-8 py-3.5 bg-[#F2A900] text-[#0B0C10] font-semibold rounded-lg hover:bg-[#D49500] transition-colors"
           >
-            Subscribe free
-          </Link>
+            Take the free assessment
+          </a>
         </section>
 
         <section className="mt-14 pt-10 border-t border-white/[0.08]">

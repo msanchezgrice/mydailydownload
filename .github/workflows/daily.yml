@@ -1,12 +1,13 @@
 name: Daily Send — My Daily Download
 
-# Runs the automated daily briefing send.
-#   - schedule: 11:00 UTC daily (~7:00am ET) — note GitHub cron is UTC-only and
-#     can be delayed a few minutes under load.
-#   - workflow_dispatch: lets you trigger a run by hand from the Actions tab.
+# RETIRED as a scheduled cron (2026-07-09): the briefing engine was ported to
+# MAST (PersonalAITutor monorepo, packages/daily-content) and MAST's own daily
+# crons were verified running on 2026-07-08 and 2026-07-09 (2 consecutive
+# scheduled runs). This workflow is retained for manual/emergency use only —
+# trigger it by hand from the Actions tab (workflow_dispatch).
+#
+# (Former schedule: "0 11 * * *" — 11:00 UTC daily, ~7:00am ET.)
 on:
-  schedule:
-    - cron: "0 11 * * *"
   workflow_dispatch: {}
 
 # Never run two daily sends at once (manual + cron overlap). The sends table's

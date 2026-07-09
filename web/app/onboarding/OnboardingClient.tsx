@@ -40,6 +40,7 @@ import {
   linkedInSlugToCareer,
   careerNewsletters,
 } from "../lib/careerContent";
+import { mastAssessmentUrl } from "../lib/mastFunnel";
 
 interface OnboardingState {
   step: 1 | 2 | 3;
@@ -380,6 +381,30 @@ export default function OnboardingClient() {
         <span className="w-2 h-2 rounded-full bg-[#F2A900]" aria-hidden />
         My Daily Download
       </Link>
+
+      {/* MDD → MAST funnel: new arrivals should start with the free assessment.
+          The signup flow below stays fully functional for anyone mid-flow. */}
+      <div
+        className="w-full max-w-[640px] mb-8 rounded-xl px-5 py-4 text-sm leading-relaxed"
+        style={{
+          background: "rgba(242, 169, 0, 0.06)",
+          border: "1px solid rgba(242, 169, 0, 0.35)",
+          color: "var(--text-secondary)",
+        }}
+      >
+        <span className="font-semibold" style={{ color: "var(--text-primary)" }}>
+          My Daily Download is now part of My AI Skill Tutor.
+        </span>{" "}
+        New here? Get a free 0-100 AI-readiness score for your role plus a
+        skill-gap report — about 2 minutes, no account required.{" "}
+        <a
+          href={mastAssessmentUrl("homepage", searchParams.get("career"))}
+          className="font-semibold hover:underline"
+          style={{ color: "var(--accent)" }}
+        >
+          Take the free assessment →
+        </a>
+      </div>
 
       <StepIndicator currentStep={state.step} />
 

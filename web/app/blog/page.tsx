@@ -1,6 +1,7 @@
 import Link from "next/link";
 import type { Metadata } from "next";
 import { careerCategories } from "../lib/careerContent";
+import { mastAssessmentUrl } from "../lib/mastFunnel";
 import { seoArticles } from "../lib/seoArticles";
 
 const SITE_URL = "https://mydailydownload.com";
@@ -74,12 +75,12 @@ export default function BlogIndexPage() {
             <span className="w-2 h-2 rounded-full bg-[#F2A900]" aria-hidden />
             My Daily Download
           </Link>
-          <Link
-            href="/onboarding"
+          <a
+            href={mastAssessmentUrl("career_hub")}
             className="text-sm font-semibold bg-[#F2A900] text-[#0B0C10] px-5 py-2 rounded-lg hover:bg-[#D49500] transition-colors"
           >
-            Get started
-          </Link>
+            Get your free AI score
+          </a>
         </div>
       </nav>
 

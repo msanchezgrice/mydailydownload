@@ -37,6 +37,7 @@ import {
   sampleNewsletters,
   type CareerId,
 } from "./lib/careerContent";
+import { mastAssessmentUrl } from "./lib/mastFunnel";
 import {
   GOOGLE_ADS_PURCHASE_LABEL,
   sendGoogleAdsConversion,
@@ -80,6 +81,12 @@ type HomeClientProps = {
 };
 
 const defaultCareerId: CareerId = "product-management";
+
+/**
+ * My Daily Download is now part of My AI Skill Tutor: homepage signup CTAs
+ * funnel to MAST's free AI-readiness assessment (utm_campaign=homepage).
+ */
+const ASSESSMENT_HREF = mastAssessmentUrl("homepage");
 
 const faqData = [
   {
@@ -192,12 +199,12 @@ function Navigation() {
               </Link>
             )
           ))}
-          <Link
-            href="/onboarding"
+          <a
+            href={ASSESSMENT_HREF}
             className="text-sm font-semibold bg-[#F2A900] text-[#0B0C10] px-5 py-2.5 rounded-lg hover:bg-[#D49500] hover:shadow-[0_0_20px_rgba(242,169,0,0.3)] hover:-translate-y-0.5 transition-all duration-200"
           >
-            Get Started
-          </Link>
+            Get your free AI score
+          </a>
         </div>
 
         <button
@@ -240,13 +247,13 @@ function Navigation() {
                 </Link>
               )
             ))}
-            <Link
-              href="/onboarding"
+            <a
+              href={ASSESSMENT_HREF}
               onClick={() => setMobileOpen(false)}
               className="text-sm font-semibold bg-[#F2A900] text-[#0B0C10] px-5 py-2.5 rounded-lg hover:bg-[#D49500] transition-colors text-center"
             >
-              Get Started
-            </Link>
+              Get your free AI score
+            </a>
           </div>
         </div>
       )}
@@ -367,6 +374,19 @@ function SignedInHome({ user }: { user: SignedInHomeUser }) {
     <div className="min-h-[100dvh] bg-[#0B0C10] text-[#E6E8EE]">
       <SignedInNavigation />
       <main className="px-4 pb-20">
+        <div className="max-w-[1200px] mx-auto mt-6 rounded-xl border border-[#F2A900]/30 bg-[#F2A900]/[0.06] px-5 py-4 text-sm text-[#8A91A0] leading-relaxed">
+          <span className="font-semibold text-[#E6E8EE]">
+            My Daily Download is now part of My AI Skill Tutor.
+          </span>{" "}
+          Your subscription keeps working — and you can now{" "}
+          <a
+            href={ASSESSMENT_HREF}
+            className="font-semibold text-[#F2A900] hover:underline"
+          >
+            get a free 0-100 AI-readiness score for your role
+          </a>{" "}
+          plus a skill-gap report (about 2 minutes, no account required).
+        </div>
         <section className="max-w-[1200px] mx-auto pt-16 md:pt-20">
           <div className="grid lg:grid-cols-[1fr_420px] gap-10 items-start">
             <div className="max-w-[680px]">
@@ -492,12 +512,12 @@ function HeroSection() {
             industry — curated for your specific role, not generic tech hype.
           </p>
           <div className="flex flex-wrap gap-4 mt-10">
-            <Link
-              href="/onboarding"
+            <a
+              href={ASSESSMENT_HREF}
               className="px-8 py-3.5 bg-[#F2A900] text-[#0B0C10] font-semibold rounded-lg hover:bg-[#D49500] hover:shadow-[0_0_20px_rgba(242,169,0,0.3)] hover:-translate-y-0.5 transition-all duration-200"
             >
-              Get Your Edge — Free
-            </Link>
+              Get your free AI-readiness score
+            </a>
             <Link
               href="/sample"
               className="px-8 py-3.5 border border-white/[0.08] text-[#E6E8EE] font-medium rounded-lg hover:border-[#F2A900] hover:text-[#F2A900] transition-all duration-200"
@@ -506,7 +526,9 @@ function HeroSection() {
             </Link>
           </div>
           <p className="mt-6 text-sm text-[#8A91A0]">
-            Every item cites a real source.
+            My Daily Download is now part of My AI Skill Tutor. The free
+            assessment gives you a 0-100 AI-readiness score for your role plus a
+            skill-gap report — about 2 minutes, no account required.
           </p>
         </div>
 
@@ -647,6 +669,21 @@ function SamplePreviewSection() {
               your role. No fluff. No generic roundups. Just your edge.
             </p>
 
+            <div className="mb-6 max-w-[440px] rounded-xl border border-[#F2A900]/30 bg-[#F2A900]/[0.06] p-4 text-sm text-[#8A91A0] leading-relaxed">
+              <span className="font-semibold text-[#E6E8EE]">
+                My Daily Download is now part of My AI Skill Tutor.
+              </span>{" "}
+              Start with{" "}
+              <a
+                href={ASSESSMENT_HREF}
+                className="font-semibold text-[#F2A900] hover:underline"
+              >
+                the free AI-readiness assessment
+              </a>{" "}
+              — a 0-100 score for your role plus a skill-gap report, in about 2
+              minutes with no account.
+            </div>
+
             <div className="mb-6">
               <label className="text-xs text-[#8A91A0] mb-2 block">
                 Preview for:
@@ -708,6 +745,10 @@ function PricingSection() {
           <p className="mt-4 text-base text-[#8A91A0]">
             No credit card required. Cancel anytime.
           </p>
+          <p className="mt-2 text-sm text-[#8A91A0]">
+            My Daily Download is now part of My AI Skill Tutor — new signups
+            start with the free AI-readiness assessment.
+          </p>
         </div>
 
         <div className="grid md:grid-cols-2 gap-8">
@@ -726,12 +767,12 @@ function PricingSection() {
                 </li>
               ))}
             </ul>
-            <Link
-              href="/onboarding"
+            <a
+              href={ASSESSMENT_HREF}
               className="block text-center w-full py-3.5 border border-white/[0.08] text-[#E6E8EE] font-semibold rounded-lg hover:border-[#F2A900] hover:text-[#F2A900] transition-all duration-200"
             >
-              Get Started
-            </Link>
+              Get your free AI score
+            </a>
           </div>
 
           <div className="relative bg-[#0B0C10] border-2 border-[#F2A900] rounded-2xl p-8 md:p-10">
@@ -754,12 +795,12 @@ function PricingSection() {
                 </li>
               ))}
             </ul>
-            <Link
-              href="/onboarding?plan=pro"
+            <a
+              href={ASSESSMENT_HREF}
               className="block text-center w-full py-3.5 bg-[#F2A900] text-[#0B0C10] font-semibold rounded-lg hover:bg-[#D49500] hover:shadow-[0_0_20px_rgba(242,169,0,0.3)] hover:-translate-y-0.5 transition-all duration-200"
             >
-              Subscribe to Pro
-            </Link>
+              Start with the free assessment
+            </a>
           </div>
         </div>
       </div>
@@ -828,15 +869,17 @@ function FinalCTASection() {
               Stay ahead of AI. Stay ahead of your peers.
             </h2>
             <p className="mt-6 text-lg text-[#8A91A0] max-w-[480px] mx-auto">
-              Start your day with an AI edge tailored to your role.
+              My Daily Download is now part of My AI Skill Tutor. Start with a
+              free 0-100 AI-readiness score for your role plus a skill-gap
+              report — about 2 minutes, no account required.
             </p>
             <div className="mt-10">
-              <Link
-                href="/onboarding"
+              <a
+                href={ASSESSMENT_HREF}
                 className="inline-block px-12 py-4 bg-[#F2A900] text-[#0B0C10] font-semibold text-lg rounded-lg hover:bg-[#D49500] hover:shadow-[0_0_20px_rgba(242,169,0,0.3)] hover:-translate-y-0.5 transition-all duration-200"
               >
-                Get Your Edge — Free
-              </Link>
+                Get your free AI-readiness score
+              </a>
             </div>
             <div className="mt-4">
               <Link

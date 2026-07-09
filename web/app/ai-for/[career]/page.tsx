@@ -2,6 +2,7 @@ import Link from "next/link";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { careerCategories } from "../../lib/careerContent";
+import { mastAssessmentUrl } from "../../lib/mastFunnel";
 import { getArticlesForCareer } from "../../lib/seoArticles";
 import { getSupabaseAdmin } from "../../lib/supabaseServer";
 
@@ -157,6 +158,7 @@ export default async function CareerHubPage({
 
   const { blocks, date } = await fetchLatestBriefing(cat.id);
   const seoArticles = getArticlesForCareer(cat.id);
+  const assessmentHref = mastAssessmentUrl("career_hub", cat.id);
 
   const topStory = blocks?.topStory ?? null;
   const quickHits = (blocks?.quickHits ?? []).filter((h) => h && h.headline && h.url);
@@ -205,12 +207,12 @@ export default async function CareerHubPage({
             <span className="w-2 h-2 rounded-full bg-[#F2A900]" aria-hidden />
             My Daily Download
           </Link>
-          <Link
-            href={`/onboarding?career=${cat.id}`}
+          <a
+            href={assessmentHref}
             className="text-sm font-semibold bg-[#F2A900] text-[#0B0C10] px-5 py-2 rounded-lg hover:bg-[#D49500] transition-colors"
           >
-            Get this daily
-          </Link>
+            Get your free AI score
+          </a>
         </div>
       </nav>
 
@@ -222,18 +224,19 @@ export default async function CareerHubPage({
         </h1>
         <p className="mt-5 text-lg text-[#8A91A0] leading-relaxed max-w-[620px]">
           {cat.description} Below is the most recent briefing — the real, source-cited
-          AI moves shaping {cat.name.toLowerCase()} work right now. We send a fresh one
-          every morning, personalized to your role and seniority. Every item links to
-          its original source.
+          AI moves shaping {cat.name.toLowerCase()} work right now. Every item links to
+          its original source. My Daily Download is now part of My AI Skill Tutor,
+          where you can get a free 0-100 AI-readiness score for your role plus a
+          skill-gap report — about 2 minutes, no account required.
         </p>
 
         <div className="mt-8 flex flex-wrap gap-4">
-          <Link
-            href={`/onboarding?career=${cat.id}`}
+          <a
+            href={assessmentHref}
             className="px-7 py-3 bg-[#F2A900] text-[#0B0C10] font-semibold rounded-lg hover:bg-[#D49500] hover:-translate-y-0.5 transition-all duration-200"
           >
-            Get the {cat.name} briefing — Free
-          </Link>
+            Get your free {cat.name} AI score
+          </a>
           <Link
             href={`/sample?career=${cat.id}`}
             className="px-7 py-3 border border-white/[0.08] text-[#E6E8EE] font-medium rounded-lg hover:border-[#F2A900] hover:text-[#F2A900] transition-all duration-200"
@@ -350,19 +353,22 @@ export default async function CareerHubPage({
 
         {/* Bottom CTA */}
         <div className="mt-16 rounded-2xl border border-white/[0.08] bg-[#14171D] p-8 md:p-10 text-center">
+          <p className="section-label mb-3">
+            My Daily Download is now part of My AI Skill Tutor
+          </p>
           <h2 className="text-2xl font-bold text-[#E6E8EE]">
-            Get the {cat.name} AI briefing every morning
+            Get your free {cat.name} AI-readiness score
           </h2>
           <p className="mt-3 text-[#8A91A0] max-w-[460px] mx-auto">
-            Personalized to your role and seniority. Free. Every item cites a real
-            source.
+            A free 0-100 AI-readiness score for your role plus a skill-gap report.
+            Takes about 2 minutes — no account required.
           </p>
-          <Link
-            href={`/onboarding?career=${cat.id}`}
+          <a
+            href={assessmentHref}
             className="inline-block mt-6 px-8 py-3.5 bg-[#F2A900] text-[#0B0C10] font-semibold rounded-lg hover:bg-[#D49500] hover:-translate-y-0.5 transition-all duration-200"
           >
-            Subscribe Free
-          </Link>
+            Take the free assessment
+          </a>
         </div>
 
         {seoArticles.length > 0 && (

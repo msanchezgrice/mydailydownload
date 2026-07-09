@@ -16,6 +16,7 @@ import {
   type Career,
   type CareerId,
 } from "../lib/careerContent";
+import { mastAssessmentUrl } from "../lib/mastFunnel";
 
 export interface BriefingGuideItem {
   headline: string;
@@ -379,12 +380,12 @@ function GuidePreview({
         )}
 
         <div className="mt-6 rounded-lg bg-[#0B0C10] px-4 py-3 text-center">
-          <Link
-            href={`/onboarding?career=${careerId}`}
+          <a
+            href={mastAssessmentUrl("career_hub", careerId)}
             className="text-[13px] font-semibold text-[#F2A900] hover:underline"
           >
-            Get the {guide.careerName} briefing daily →
-          </Link>
+            Get your free {guide.careerName} AI-readiness score →
+          </a>
         </div>
       </div>
     </div>
@@ -440,6 +441,7 @@ export default function SampleGuideClient({
 
   const selectedGuide = guides[selectedCareer];
   const selectedCategory = careerCategories.find((career) => career.id === selectedCareer);
+  const assessmentHref = mastAssessmentUrl("career_hub", selectedCareer);
 
   return (
     <div className="min-h-screen bg-[#0B0C10]">
@@ -452,12 +454,12 @@ export default function SampleGuideClient({
             <span className="h-2 w-2 rounded-full bg-[#F2A900]" aria-hidden />
             My Daily Download
           </Link>
-          <Link
-            href={`/onboarding?career=${selectedCareer}`}
+          <a
+            href={assessmentHref}
             className="rounded-lg bg-[#F2A900] px-5 py-2 text-sm font-semibold text-[#0B0C10] transition-all duration-200 hover:-translate-y-0.5 hover:bg-[#D49500]"
           >
-            Get Started
-          </Link>
+            Get your free AI score
+          </a>
         </div>
       </nav>
 
@@ -469,6 +471,20 @@ export default function SampleGuideClient({
           >
             ← Back to Home
           </Link>
+
+          <div className="mx-auto mb-8 max-w-[640px] rounded-xl border border-[#F2A900]/30 bg-[#F2A900]/[0.06] px-5 py-4 text-left text-sm leading-relaxed text-[#8A91A0]">
+            <span className="font-semibold text-[#E6E8EE]">
+              My Daily Download is now part of My AI Skill Tutor.
+            </span>{" "}
+            Get a free 0-100 AI-readiness score for your role plus a skill-gap
+            report — about 2 minutes, no account required.{" "}
+            <a
+              href={assessmentHref}
+              className="font-semibold text-[#F2A900] hover:underline"
+            >
+              Take the free assessment →
+            </a>
+          </div>
 
           <div className="section-label mb-4">Profession Guide</div>
 
@@ -518,25 +534,21 @@ export default function SampleGuideClient({
       <section className="px-6 py-[80px] text-center">
         <div className="mx-auto max-w-[560px]">
           <h2 className="text-[clamp(28px,4vw,40px)] font-bold text-[#E6E8EE]">
-            Get this in your inbox every morning
+            Find out where you stand with AI
           </h2>
           <p className="mt-4 text-base text-[#8A91A0]">
-            Free. Personalized. 2-minute read.
+            My Daily Download is now part of My AI Skill Tutor. Get a free 0-100
+            AI-readiness score for your role plus a skill-gap report — about 2
+            minutes, no account required.
           </p>
           <div className="mt-8 flex flex-wrap items-center justify-center gap-4">
-            <Link
-              href={`/onboarding?career=${selectedCareer}`}
+            <a
+              href={assessmentHref}
               className="inline-flex items-center gap-2 rounded-lg bg-[#F2A900] px-8 py-3.5 font-semibold text-[#0B0C10] transition-all duration-200 hover:-translate-y-0.5 hover:bg-[#D49500]"
             >
-              Subscribe Free
+              Take the free assessment
               <ArrowRight className="h-4 w-4" />
-            </Link>
-            <Link
-              href={`/onboarding?career=${selectedCareer}&plan=pro`}
-              className="inline-flex items-center gap-2 rounded-lg border border-[rgba(255,255,255,0.08)] bg-transparent px-8 py-3.5 font-semibold text-[#E6E8EE] transition-all duration-200 hover:border-[#F2A900] hover:text-[#F2A900]"
-            >
-              Upgrade to Pro
-            </Link>
+            </a>
           </div>
         </div>
       </section>
@@ -598,19 +610,20 @@ export default function SampleGuideClient({
       <section className="px-6 py-[120px] text-center">
         <div className="mx-auto max-w-[560px]">
           <h2 className="text-[clamp(28px,4vw,44px)] font-bold text-[#E6E8EE]">
-            This Could Be Your Inbox Tomorrow.
+            How Ready Are You for AI?
           </h2>
           <p className="mt-4 text-base text-[#8A91A0]">
-            Free, personalized, and ready in 60 seconds.
+            A free 0-100 AI-readiness score for your role plus a skill-gap
+            report — about 2 minutes, no account required.
           </p>
           <div className="mt-8">
-            <Link
-              href={`/onboarding?career=${selectedCareer}`}
+            <a
+              href={assessmentHref}
               className="inline-flex items-center gap-2 rounded-lg bg-[#F2A900] px-10 py-4 text-base font-semibold text-[#0B0C10] transition-all duration-200 hover:-translate-y-0.5 hover:bg-[#D49500]"
             >
-              Get My Daily Edge
+              Get My Free AI Score
               <ArrowRight className="h-5 w-5" />
-            </Link>
+            </a>
           </div>
           <Link
             href="/"
