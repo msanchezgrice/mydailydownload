@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import { currentUser } from "@clerk/nextjs/server";
 import HomeClient, { type SignedInHomeUser } from "./HomeClient";
 import { CLERK_SERVER_ENABLED } from "./lib/clerk";
@@ -5,6 +6,10 @@ import { careerCategories, type CareerId } from "./lib/careerContent";
 import { getSupabaseAdmin } from "./lib/supabaseServer";
 
 export const dynamic = "force-dynamic";
+
+export const metadata: Metadata = {
+  alternates: { canonical: "https://mydailydownload.com/" },
+};
 
 type SubscriberProfile = {
   career_id: string | null;

@@ -14,8 +14,18 @@ test("robots advertises the sitemap and excludes non-indexable private surfaces"
 
   assert.match(robots, /sitemap:\s*`\$\{SITE_URL\}\/sitemap\.xml`/);
   assert.match(robots, /disallow:\s*\[[\s\S]*"\/api\/"/);
-  assert.match(robots, /disallow:\s*\[[\s\S]*"\/archive\/"/);
-  assert.match(robots, /disallow:\s*\[[\s\S]*"\/briefing\/"/);
+  assert.doesNotMatch(robots, /"\/archive\/"/);
+  assert.doesNotMatch(robots, /"\/briefing\/"/);
+});
+
+test("homepage declares the production root as its canonical URL", () => {
+  const homePage = read("app/page.tsx");
+
+  assert.match(homePage, /export const metadata:\s*Metadata/);
+  assert.match(
+    homePage,
+    /alternates:\s*\{\s*canonical:\s*"https:\/\/mydailydownload\.com\/"\s*\}/,
+  );
 });
 
 test("sitemap includes evergreen pages, category hubs, and the SEO article cluster", () => {
