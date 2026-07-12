@@ -45,8 +45,8 @@ test("sitemap includes evergreen pages, category hubs, and the SEO article clust
   assert.match(sitemap, /seoArticles\.map/);
 
   const articleSlugs = [...articleContent.matchAll(/slug:\s*"([^"]+)"/g)].map((match) => match[1]);
-  assert.equal(articleSlugs.length, 20);
-  assert.equal(new Set(articleSlugs).size, 20);
+  assert.equal(articleSlugs.length, 23);
+  assert.equal(new Set(articleSlugs).size, 23);
   for (const slug of articleSlugs) {
     assert.match(sitemap, new RegExp(`\\$\\{SITE_URL\\}/blog/\\$\\{article\\.slug\\}`));
     assert.ok(!slug.includes("_"), `${slug} should be URL-safe`);
@@ -70,8 +70,8 @@ test("SEO article cluster has production routes, metadata, internal links, and h
   const homeClient = read("app/HomeClient.tsx");
 
   const articleSlugs = [...articleContent.matchAll(/slug:\s*"([^"]+)"/g)].map((match) => match[1]);
-  assert.equal(articleSlugs.length, 20);
-  assert.equal(new Set(articleSlugs).size, 20);
+  assert.equal(articleSlugs.length, 23);
+  assert.equal(new Set(articleSlugs).size, 23);
 
   assert.match(blogIndex, /seoArticles/);
   assert.match(blogIndex, /Latest AI career guides/);
@@ -79,6 +79,12 @@ test("SEO article cluster has production routes, metadata, internal links, and h
   assert.match(blogArticle, /generateMetadata/);
   assert.match(blogArticle, /alternates:\s*\{\s*canonical:/);
   assert.match(blogArticle, /"@type":\s*"Article"/);
+  assert.match(blogArticle, /"@type":\s*"BreadcrumbList"/);
+  assert.match(blogArticle, /"@type":\s*"FAQPage"/);
+  assert.match(blogArticle, /Frequently asked questions/);
+  assert.match(blogArticle, /Related marketing workflows/);
+  assert.match(blogArticle, /article\.contextualLinks\.map/);
+  assert.match(blogArticle, /replace\(\/<\/g,\s*"\\\\u003c"\)/);
   assert.match(blogArticle, /Related guides/);
   // MDD is now part of My AI Skill Tutor: signup CTAs funnel to the free
   // MAST assessment with per-career utm_content.
@@ -98,6 +104,42 @@ test("SEO article cluster has production routes, metadata, internal links, and h
     "38% higher",
   ]) {
     assert.doesNotMatch(articleContent, new RegExp(forbidden.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"), "i"));
+  }
+});
+
+test("marketing workflow cluster is deep, current, and contextually interlinked", () => {
+  const articleContent = read("app/lib/seoArticles.ts");
+
+  assert.match(articleContent, /faq\?:\s*SeoArticleFaq\[\]/);
+  assert.match(articleContent, /contextualLinks\?:\s*SeoArticleContextualLink\[\]/);
+
+  const clusterSlugs = [
+    "best-ai-tools-for-marketers-2026",
+    "how-to-write-a-content-brief-with-ai",
+    "how-to-summarize-marketing-performance-with-ai",
+    "how-to-turn-customer-reviews-into-marketing-copy-with-ai",
+  ];
+
+  for (const slug of clusterSlugs) {
+    const start = articleContent.indexOf(`slug: "${slug}"`);
+    assert.notEqual(start, -1, `missing marketing cluster page: ${slug}`);
+
+    const next = articleContent.indexOf("\n  {\n    slug:", start + 1);
+    const articleBlock = articleContent.slice(start, next === -1 ? undefined : next);
+
+    assert.match(articleBlock, /updatedAt:\s*CONTENT_REFRESH_AT/);
+    assert.ok(
+      (articleBlock.match(/question:\s*"/g) ?? []).length >= 4,
+      `${slug} needs at least four useful FAQs`,
+    );
+    assert.ok(
+      (articleBlock.match(/href:\s*"\/blog\//g) ?? []).length >= 3,
+      `${slug} needs at least three contextual article links`,
+    );
+    assert.ok(
+      articleBlock.split(/\s+/).length >= 650,
+      `${slug} needs substantive workflow content, not a thin landing page`,
+    );
   }
 });
 

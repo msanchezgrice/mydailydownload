@@ -1,6 +1,6 @@
 # My Daily Download Indexing URL Set
 
-Updated: 2026-06-06
+Updated: 2026-07-12
 
 ## Canonical Property
 - Domain: `mydailydownload.com`
@@ -10,7 +10,7 @@ Updated: 2026-06-06
 - IndexNow key URL: `https://mydailydownload.com/2503e097d56b9a4de0e2276c8ee22c58.txt`
 
 ## Indexing Policy
-- Submit/index: homepage, sample, onboarding, legal evergreen pages, `/blog`, 15 career hubs, and the 20 evergreen article URLs below.
+- Submit/index: homepage, sample, onboarding, legal evergreen pages, `/blog`, 15 career hubs, and the 23 evergreen article URLs below.
 - Do not submit/index: `/api/`, `/archive/`, `/briefing/`, daily issue variants, or seniority variants.
 - Public hubs are canonical at `/ai-for/[career]`.
 
@@ -58,8 +58,12 @@ Updated: 2026-06-06
 - `https://mydailydownload.com/blog/ai-for-data-science-analysis-triage`
 - `https://mydailydownload.com/blog/ai-for-consultants-client-ready-synthesis`
 - `https://mydailydownload.com/blog/weekly-ai-roundup-template`
+- `https://mydailydownload.com/blog/how-to-write-a-content-brief-with-ai`
+- `https://mydailydownload.com/blog/how-to-summarize-marketing-performance-with-ai`
+- `https://mydailydownload.com/blog/how-to-turn-customer-reviews-into-marketing-copy-with-ai`
 
 ## Provider Status
+- Marketing workflow cluster prepared on 2026-07-12: the existing `best-ai-tools-for-marketers-2026` pillar was materially refreshed and three source-aware workflow guides were added. The production build generates 46 sitemap URLs; provider recrawl and Search Console processing remain pending until the deployment is live and resubmitted.
 - Search Console resubmission completed on 2026-07-02 for `https://mydailydownload.com/sitemap.xml`; GSC reported `Success`, `Last read: Jul 2, 2026`, and `43` discovered pages.
 - Page indexing report on 2026-07-02 still reflected coverage data last updated 2026-06-11: `26` indexed and `20` not indexed. The main actionable lag bucket was `Discovered - currently not indexed` with 11 examples, all showing `Last crawled: N/A`; validation was started on 2026-07-02.
 - Non-indexed examples reviewed on 2026-07-02 were mostly expected noise: `/onboarding?...` parameter duplicates, `http://mydailydownload.com/` redirecting to HTTPS, and one `_next/static` JS chunk. Canonical pages in the discovered-not-indexed bucket included several `/ai-for/*` hubs plus `/onboarding`, `/privacy`, `/sample`, and `/terms`.

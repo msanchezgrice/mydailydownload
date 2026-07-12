@@ -5,6 +5,17 @@ export interface SeoArticleSection {
   body: string[];
 }
 
+export interface SeoArticleFaq {
+  question: string;
+  answer: string;
+}
+
+export interface SeoArticleContextualLink {
+  href: string;
+  label: string;
+  description: string;
+}
+
 export interface SeoArticle {
   slug: string;
   title: string;
@@ -18,64 +29,565 @@ export interface SeoArticle {
   intro: string;
   sections: SeoArticleSection[];
   takeaways: string[];
+  faq?: SeoArticleFaq[];
+  contextualLinks?: SeoArticleContextualLink[];
   relatedSlugs: string[];
 }
 
 const PUBLISHED_AT = "2026-06-06";
+const CONTENT_REFRESH_AT = "2026-07-12";
 
 export const seoArticles: SeoArticle[] = [
   {
     slug: "best-ai-tools-for-marketers-2026",
-    title: "Best AI tools for marketers in 2026",
+    title: "Best AI tools for marketers in 2026: build a practical stack",
     description:
-      "A practical framework for choosing AI marketing tools by workflow, not hype: research, creative, lifecycle, analytics, and repurposing.",
+      "Choose the best AI marketing tools for research, content briefs, campaign production, reporting, and customer insight with this practical workflow-first guide.",
     careerId: "marketing",
     audience: "Marketers",
     publishedAt: PUBLISHED_AT,
-    updatedAt: PUBLISHED_AT,
-    readingTime: "7 min read",
+    updatedAt: CONTENT_REFRESH_AT,
+    readingTime: "12 min read",
     tags: ["Marketing", "AI tools", "Workflow"],
     intro:
-      "The best AI marketing stack is not the longest list of apps. It is the smallest set of tools that helps a marketer research faster, produce cleaner creative, learn from performance, and reuse winning ideas without losing brand voice.",
+      "The best AI tools for marketers are the ones that remove friction from a real campaign workflow. Start with five jobs—research, briefing, production, review, and reporting—then choose the smallest stack that improves those jobs without weakening accuracy, customer privacy, or brand judgment.",
     sections: [
       {
-        heading: "Start with the job, not the tool category",
+        heading: "Use this short answer before comparing tools",
         body: [
-          "Most teams shop by logo and end up with overlapping tools. A better starting point is the weekly marketing workflow: audience research, message testing, creative production, channel adaptation, reporting, and next-action planning.",
-          "For each workflow, define the decision the tool should improve. If a tool cannot help you decide which audience, message, channel, or experiment deserves focus, it is probably a nice demo rather than a core marketing system.",
+          "A practical AI marketing stack needs one secure general assistant for analysis and drafting, one system that can work with approved source material, the creative tools your team already uses, and your existing analytics platform. Add a specialist only when it solves a measured bottleneck that those tools cannot solve.",
+          "That answer is intentionally less exciting than a list of fifty logos. Most marketing teams lose time when separate tools own research, briefs, copy, design variants, approvals, and reporting. A smaller stack makes the source trail, feedback, and final decision easier to preserve.",
+          "Before a trial, write the job in one sentence: for example, turn five approved customer interviews into a content brief that a writer can verify, or turn a campaign export into a plain-language performance review with calculation checks. A tool that cannot improve that job does not belong in the stack.",
         ],
       },
       {
-        heading: "Use a five-part evaluation map",
+        heading: "Map the five marketing jobs AI can improve",
         body: [
-          "A useful AI marketing stack usually covers five functions: research synthesis, copy and creative drafting, asset variation, campaign QA, and performance explanation. The exact vendor matters less than whether the team can move from brief to testable asset with fewer handoffs.",
-          "Rate every candidate on source handling, brand controls, review workflow, export format, and analytics fit. If the output cannot be checked or routed into the channels you already use, the tool will create more operational work than it removes.",
+          "Research tools should help organize interviews, reviews, sales notes, search questions, and competitor material while keeping citations attached. The useful output is not a generic audience summary. It is a set of supported pains, exact language, objections, and open questions that a marketer can inspect.",
+          "Briefing tools should turn those inputs into an audience, problem, promise, proof, channel, constraints, and measurement plan. Production tools can then draft channel-specific variants. Review tools should check claims, tone, accessibility, links, tracking parameters, and required approvals. Reporting tools should explain what changed and recommend a bounded next test.",
+          "These five jobs form a chain. If the research step drops its sources, every downstream asset becomes harder to trust. If the reporting step cannot connect results back to the original hypothesis, the team produces content but does not learn.",
         ],
       },
       {
-        heading: "Keep humans in the high-risk steps",
+        heading: "Score each candidate with the same evaluation sheet",
         body: [
-          "AI can speed up message angles, hooks, and variants, but campaign claims still need human review. Do not let a tool invent customer stats, performance benchmarks, awards, or competitive claims.",
-          "The clean handoff is simple: AI drafts options, a marketer picks the strongest angle, and the final proof step checks audience fit, legal risk, channel rules, and measurement tags before launch.",
+          "Give every tool a one-to-five score for source visibility, output control, privacy fit, review workflow, integrations, and measurable time saved. Source visibility asks whether a reviewer can trace a claim to an approved input. Output control asks whether the team can specify audience, tone, format, exclusions, and required evidence rather than accepting a polished black box.",
+          "Privacy fit is a hard gate, not a bonus point. Confirm what data may be uploaded, how it is retained, whether it trains shared models, and which teammates can access it. Use anonymized or synthetic examples during evaluation; do not paste a real customer list, private call transcript, or unreleased campaign plan into an unapproved product.",
+          "For time saved, compare the complete task, including cleanup and review. A draft that appears in thirty seconds but needs forty minutes of fact checking is not faster than a careful first draft created inside the existing workflow.",
         ],
       },
       {
-        heading: "Turn daily inputs into a weekly learning loop",
+        heading: "Run a two-week pilot with real marketing artifacts",
         body: [
-          "The strongest marketers use AI to tighten the loop between what changed in the market and what gets tested in the next campaign. A daily role-specific briefing can feed fresh hooks, objections, platform changes, and customer education themes.",
-          "Archive the prompts, winning variants, and lessons in one place. Over time, your AI stack becomes less about producing more copy and more about building a reusable marketing memory.",
+          "Choose one repeated workflow and collect a small, approved input set. For a content pilot, that might be five customer quotes, the product positioning, one prior high-performing page, brand rules, and the desired conversion. Run the same task with the current process and with the candidate tool.",
+          "Measure elapsed time, reviewer corrections, unsupported claims, usable output rate, and whether the artifact was actually shipped. Keep the winning prompt, source packet, and review checklist. A pilot is successful when it improves the final artifact and the handoff—not when it generates the largest number of variants.",
+          "Example: a demand-generation team asks for three landing-page angles. The AI returns one pain-led angle, one outcome-led angle, and one switching-cost angle. The marketer rejects the unsupported outcome claim, keeps customer language attached to the pain angle, and records which hypothesis will be measured. That is a useful AI workflow because the output ends in a testable decision.",
+        ],
+      },
+      {
+        heading: "Build a stack for a small marketing team",
+        body: [
+          "A small team can begin with four layers. The source layer stores approved interviews, research, product facts, and brand guidance. The thinking layer helps synthesize and draft. The production layer is the team's existing document, design, email, and ad software. The measurement layer remains the analytics and channel systems that record actual performance.",
+          "Do not create a new source of truth just because an AI tool includes a document area. Link back to the approved research and keep final assets in the systems teammates already review. This prevents campaign history from being stranded when a trial ends or a vendor changes.",
+          "The first specialist worth adding is usually the one attached to the largest repeated cost: interview synthesis, content briefing, approved asset variation, or reporting. Document the reason for each addition so the stack can be pruned quarterly.",
+        ],
+      },
+      {
+        heading: "Build a stack for a larger marketing organization",
+        body: [
+          "Larger teams need the same workflow with stronger governance. Define approved use cases by data sensitivity, name the human approver for each channel, log which source set produced an asset, and make the final campaign owner visible. Procurement should evaluate retention, access controls, export, and deletion alongside feature fit.",
+          "Create reusable input packets rather than a single enormous prompt. A product packet contains verified capabilities and exclusions. A customer packet contains consented, de-identified language. A brand packet contains voice, examples, and forbidden claims. A campaign packet contains the audience, offer, channels, and measurement plan.",
+          "This modular setup improves both consistency and diagnosis. When an output is wrong, the team can determine whether the issue came from a bad source, a weak instruction, an unsuitable tool, or a missed review step.",
+        ],
+      },
+      {
+        heading: "Keep humans in the decisions that carry risk",
+        body: [
+          "AI can offer angles, outlines, variations, and explanations. A marketer must still approve positioning, claims, customer references, legal language, targeting, budget, and the interpretation of results. Those decisions affect trust and cannot be delegated to a fluent draft.",
+          "Use a risk-based review. Low-risk internal summaries may need a quick source check. Public claims, regulated topics, customer stories, competitor comparisons, and performance promises need evidence and the appropriate specialist review. If the evidence is missing, rewrite the claim or remove it.",
+          "The clean handoff is: AI produces options tied to approved inputs, a marketer selects and edits the best option, and the owner checks claims, consent, channel rules, links, and tracking before launch.",
+        ],
+      },
+      {
+        heading: "Turn the stack into a weekly learning system",
+        body: [
+          "Save the inputs, prompt version, selected output, human edits, campaign result, and next decision for important workflows. This record shows where AI actually helps and where it simply creates more text. It also gives future work grounded examples instead of vague brand instructions.",
+          "At the weekly review, ask four questions: what did the tool accelerate, what did reviewers repeatedly correct, what new customer or performance signal appeared, and what single change should the next workflow test? Retire prompts and tools that do not improve a real marketing metric or a clearly defined production cost.",
+          "Over time, the useful advantage is not access to a particular model. It is a marketing memory that connects customer evidence, campaign decisions, final assets, and measured outcomes.",
         ],
       },
     ],
     takeaways: [
-      "Choose tools by workflow coverage, not by the longest feature list.",
-      "Reject outputs that cannot be verified, reviewed, or exported cleanly.",
-      "Use AI for speed, but keep humans responsible for claims and final campaign judgment.",
+      "Start with a repeated marketing job and a measurable bottleneck before comparing tools.",
+      "Use source visibility, control, privacy, review fit, integrations, and total time saved as the evaluation scorecard.",
+      "Keep humans responsible for positioning, claims, consent, spend, and performance interpretation.",
+      "Save the source-to-result trail so every campaign improves the next workflow.",
+    ],
+    faq: [
+      {
+        question: "What is the best AI tool for marketing?",
+        answer:
+          "There is no single best tool for every marketing team. The best first choice is a secure general assistant that works with approved sources and fits your review process. Add specialist tools only for measured gaps such as interview synthesis, content briefing, asset variation, or reporting.",
+      },
+      {
+        question: "How many AI tools does a small marketing team need?",
+        answer:
+          "Most small teams can begin with one approved assistant plus the document, creative, channel, and analytics systems they already use. A new specialist should earn its place by improving a repeated workflow enough to offset setup, review, and subscription cost.",
+      },
+      {
+        question: "How should marketers test an AI tool before buying it?",
+        answer:
+          "Run the same approved task with the existing process and the candidate for two weeks. Compare total time, reviewer corrections, unsupported claims, usable output, and whether the work shipped. Do not judge the tool by draft speed alone.",
+      },
+      {
+        question: "What marketing data should not be pasted into an AI tool?",
+        answer:
+          "Do not upload personal customer data, private call transcripts, unreleased plans, credentials, confidential contracts, or regulated data unless the product is explicitly approved for that use. Start evaluations with anonymized or synthetic inputs.",
+      },
+      {
+        question: "Can AI replace a marketing team?",
+        answer:
+          "AI can accelerate research, drafts, variations, checks, and summaries. People still own customer understanding, positioning, creative judgment, claims, consent, budgets, channel decisions, and interpretation of performance.",
+      },
+    ],
+    contextualLinks: [
+      {
+        href: "/blog/how-to-write-a-content-brief-with-ai",
+        label: "Write a content brief with AI",
+        description:
+          "Turn approved customer evidence and product facts into a source-aware brief a writer can actually use.",
+      },
+      {
+        href: "/blog/how-to-summarize-marketing-performance-with-ai",
+        label: "Summarize marketing performance with AI",
+        description:
+          "Build a reporting workflow that checks calculations and ends with a bounded next test.",
+      },
+      {
+        href: "/blog/how-to-turn-customer-reviews-into-marketing-copy-with-ai",
+        label: "Turn customer reviews into marketing copy",
+        description:
+          "Extract usable language without inventing claims, exposing identities, or flattening customer nuance.",
+      },
     ],
     relatedSlugs: [
-      "turn-one-ai-briefing-into-30-marketing-posts",
-      "ai-prompts-for-marketing-campaigns",
-      "ai-newsletter-for-marketers",
+      "how-to-write-a-content-brief-with-ai",
+      "how-to-summarize-marketing-performance-with-ai",
+      "how-to-turn-customer-reviews-into-marketing-copy-with-ai",
+    ],
+  },
+  {
+    slug: "how-to-write-a-content-brief-with-ai",
+    title: "How to write a content brief with AI: a source-first workflow",
+    description:
+      "Create an AI-assisted content brief from approved customer evidence, search intent, product facts, and a measurable conversion goal without inventing claims.",
+    careerId: "marketing",
+    audience: "Content marketers",
+    publishedAt: CONTENT_REFRESH_AT,
+    updatedAt: CONTENT_REFRESH_AT,
+    readingTime: "11 min read",
+    tags: ["Marketing", "Content brief", "AI workflow"],
+    intro:
+      "To write a useful content brief with AI, give the model a small approved source packet, define the reader's decision, request a structured draft, and require every claim to be labeled as supported, inferred, or missing evidence. The marketer then verifies the sources and chooses the angle before a writer starts.",
+    sections: [
+      {
+        heading: "Start with the decision the page must help a reader make",
+        body: [
+          "A content brief should not begin with a keyword and end with a word count. Begin with the reader: what situation brought them here, what decision are they trying to make, what is stopping them, and what useful next step can the page support? This produces a clearer brief than asking AI to create an outline about a broad topic.",
+          "Write a one-sentence job for the page. For example: help a small marketing team decide how to evaluate an AI content workflow without exposing customer data. That sentence constrains the angle, the evidence, the examples, and the call to action.",
+          "If the team cannot agree on the decision, do not ask AI to hide the ambiguity with a polished outline. Record the competing intents and choose one primary page. A single page that tries to serve a beginner tutorial, a vendor comparison, and an enterprise procurement guide usually serves none of them well.",
+        ],
+      },
+      {
+        heading: "Build a compact source packet before prompting",
+        body: [
+          "Use approved first-party inputs: de-identified customer language, sales or support themes, verified product capabilities, brand rules, the conversion path, and one or two examples of strong existing work. Add external primary sources only when the subject requires current factual support.",
+          "For each input, include a short source label and date. A customer-language note might be labeled Interview theme A, approved June 2026. A product statement might point to the current help document. These labels let the model cite its working material and let the reviewer find the evidence quickly.",
+          "Exclude names, email addresses, account details, private contracts, unreleased plans, and anything the chosen tool is not approved to process. If a customer quote is important, de-identify it and confirm that the intended use is permitted before it becomes public copy.",
+        ],
+      },
+      {
+        heading: "Give AI a brief template instead of an open-ended request",
+        body: [
+          "Ask for a fixed structure: primary reader, reader situation, decision to support, search intent, promise, evidence, objections, outline, example, internal links, call to action, and unresolved questions. Tell the model not to add statistics, customer claims, or product capabilities that are absent from the packet.",
+          "A reusable instruction is: using only the labeled sources below, draft a content brief for the stated reader decision. Put a source label after every factual claim. Mark reasonable interpretation as inference. Put missing proof under Evidence needed rather than filling the gap. Return one recommended angle and two rejected angles with reasons.",
+          "The rejected angles are useful. They show whether the model understood the constraints and help prevent a writer from drifting toward a more dramatic but unsupported promise later in the process.",
+        ],
+      },
+      {
+        heading: "Example: turn customer friction into a focused brief",
+        body: [
+          "Imagine a campaign-planning product whose approved inputs show three recurring problems: briefs arrive without a clear audience, reviewers dispute claims late, and channel owners recreate the same context. The page decision is not which campaign software is best. It is how a marketer can create one reviewable brief before production starts.",
+          "A strong AI-assisted brief would lead with the cost of missing decisions, explain the minimum source packet, provide a fill-in template, walk through a hypothetical campaign, and end with a QA checklist. It would not claim a percentage improvement because no such evidence appears in the inputs.",
+          "The call to action should match the reader's stage. A reader learning the workflow may want a template or assessment, not a sales conversation. The brief should name that conversion and explain how the page earns it.",
+        ],
+      },
+      {
+        heading: "Review the outline for intent, evidence, and information gain",
+        body: [
+          "First, test intent. Can the reader see the direct answer near the top? Does each section help complete the stated decision, or is it included because similar pages usually contain it? Remove generic history, broad definitions, and tool lists that do not advance the workflow.",
+          "Second, test evidence. Open every cited input and confirm that the brief preserves its meaning. Customer language should not become a universal claim. A product capability should not become an outcome promise. An inference should remain visibly separate from a fact.",
+          "Third, test information gain. Add something a generic model could not know without your approved inputs: a real decision tree, a sanitized pattern from support, a practical checklist, a worked example, or the tradeoff that your team has learned to manage. This is where human expertise turns a generated outline into a page worth publishing.",
+        ],
+      },
+      {
+        heading: "Make internal links part of the reader journey",
+        body: [
+          "Choose internal links while the brief is still being shaped. The pillar page should explain how the workflow fits the wider stack. A reporting guide should serve readers who already launched a campaign. A customer-language guide should support the evidence-gathering step. Each link should answer the next likely question, not merely repeat a target keyword.",
+          "Write the link purpose into the brief: after the source-packet section, link to the customer-review workflow for readers who need language inputs. After the measurement section, link to the performance-summary workflow. This makes the final links contextual and crawlable instead of an unrelated card list at the bottom.",
+          "Also identify older pages that should link into the new guide. A cluster works in both directions. Updating the existing marketing pillar creates a stronger discovery path for people and crawlers than publishing an isolated article and waiting for the sitemap alone.",
+        ],
+      },
+      {
+        heading: "Use a pre-publish QA checklist",
+        body: [
+          "Before handing the brief to a writer, confirm that the title describes the actual task, the introduction gives a direct answer, and the outline contains a worked example. Confirm that the primary and secondary intents do not conflict and that every section has a job.",
+          "Check that all factual claims have a valid source, all customer material is approved and de-identified, and all product statements match current documentation. Flag time-sensitive details for a future review date. Remove placeholder facts and unsupported numbers rather than asking the writer to find something impressive.",
+          "Finally, verify the canonical target, proposed title and description, internal links, structured-data requirements, and conversion. The brief is ready when a writer can produce the page without guessing what is true, who it serves, or what success means.",
+        ],
+      },
+      {
+        heading: "Measure whether the AI-assisted brief improved the work",
+        body: [
+          "Track more than drafting time. Record how many structural revisions the writer needed, how many claims the reviewer corrected, whether the page shipped, and whether readers reached the intended next step. Compare those signals with similar briefs created through the prior process.",
+          "Keep the prompt version and the final human edits. Repeated corrections reveal where the input packet or template is weak. If reviewers always have to remove unsupported outcome language, add a stronger prohibition and give the model approved alternatives.",
+          "The goal is a dependable briefing system, not an impressive one-off response. A good system makes the truth easier to preserve from research through publication.",
+        ],
+      },
+    ],
+    takeaways: [
+      "Define the reader's decision before asking AI for an outline.",
+      "Use a labeled, approved source packet and require claim-level source markers.",
+      "Add human information gain through examples, decision tools, and real operating lessons.",
+      "Plan contextual links and QA requirements inside the brief, not after the draft.",
+    ],
+    faq: [
+      {
+        question: "What should an AI content brief include?",
+        answer:
+          "Include the primary reader, their situation, the decision to support, search intent, promise, approved evidence, objections, outline, worked example, internal links, conversion, and unresolved evidence gaps. It should also state what the writer must not claim.",
+      },
+      {
+        question: "Can AI do keyword research for a content brief?",
+        answer:
+          "AI can organize supplied query data and group related intent, but it should not invent search volume or ranking difficulty. Use verified Search Console or SEO-tool exports for metrics, then ask AI to help interpret the patterns.",
+      },
+      {
+        question: "How do you stop AI from inventing facts in a brief?",
+        answer:
+          "Limit the task to labeled sources, require a source marker after every factual claim, separate inference from fact, and create an Evidence needed section for gaps. A human must still open and verify each important source.",
+      },
+      {
+        question: "Should a content brief include internal links?",
+        answer:
+          "Yes. Specify which reader question each internal link answers and where it belongs in the narrative. Also identify older relevant pages that should link back to the new guide so the cluster connects in both directions.",
+      },
+      {
+        question: "How long should an AI-generated content brief be?",
+        answer:
+          "It should be long enough to remove ambiguity about audience, evidence, structure, review, and conversion. A compact two-page brief can outperform a long document if every field helps the writer make a decision and no section is generic filler.",
+      },
+    ],
+    contextualLinks: [
+      {
+        href: "/blog/best-ai-tools-for-marketers-2026",
+        label: "Build a practical AI marketing stack",
+        description:
+          "Place content briefing inside a smaller, governed research-to-reporting tool stack.",
+      },
+      {
+        href: "/blog/how-to-turn-customer-reviews-into-marketing-copy-with-ai",
+        label: "Create an approved customer-language source packet",
+        description:
+          "Extract themes and exact language while preserving consent, nuance, and claim boundaries.",
+      },
+      {
+        href: "/blog/how-to-summarize-marketing-performance-with-ai",
+        label: "Close the loop with a performance summary",
+        description:
+          "Connect the brief's hypothesis to checked campaign results and one bounded next test.",
+      },
+    ],
+    relatedSlugs: [
+      "best-ai-tools-for-marketers-2026",
+      "how-to-turn-customer-reviews-into-marketing-copy-with-ai",
+      "how-to-summarize-marketing-performance-with-ai",
+    ],
+  },
+  {
+    slug: "how-to-summarize-marketing-performance-with-ai",
+    title: "How to summarize marketing performance with AI without bad math",
+    description:
+      "Turn a checked campaign export into an AI-assisted marketing performance summary with clear calculations, evidence, caveats, and one bounded next test.",
+    careerId: "marketing",
+    audience: "Performance marketers",
+    publishedAt: CONTENT_REFRESH_AT,
+    updatedAt: CONTENT_REFRESH_AT,
+    readingTime: "11 min read",
+    tags: ["Marketing", "Campaign reporting", "AI workflow"],
+    intro:
+      "To summarize marketing performance with AI, calculate the core metrics in a trusted spreadsheet or analytics system first, provide a clean comparison table plus campaign context, and ask AI to explain changes without changing the numbers. Then verify every statement and turn the summary into one specific next test.",
+    sections: [
+      {
+        heading: "Separate calculation from explanation",
+        body: [
+          "Use your analytics, ad platform, warehouse, or spreadsheet to calculate spend, impressions, clicks, conversions, revenue, and the rates your team has defined. AI can help write formulas or inspect a table, but the final numbers should come from a reproducible calculation outside the prose generator.",
+          "This separation prevents a fluent narrative from disguising a denominator error. It also makes review simpler: the analyst validates the table once, then checks whether the written interpretation matches it.",
+          "Label every column with its exact definition and time window. If conversion means a confirmed signup rather than a form start, say so. If revenue is delayed or modeled, say so. A summary cannot be more precise than the measurement contract underneath it.",
+        ],
+      },
+      {
+        heading: "Prepare a reporting packet AI can interpret",
+        body: [
+          "Include the approved metric table, campaign objective, target audience, channel, creative or offer changes, comparison period, known tracking changes, and the decision the report must support. Add annotations for launches, outages, budget shifts, or attribution changes that would otherwise look like performance movement.",
+          "Keep row-level customer or lead data out of a general reporting prompt. Aggregate the data to the level needed for the decision and remove names, email addresses, device identifiers, and free-text fields. Use only systems approved for the sensitivity of the data.",
+          "If multiple sources disagree, do not average them silently. State which source is authoritative for each metric and include the discrepancy as a caveat. A useful summary makes measurement uncertainty visible.",
+        ],
+      },
+      {
+        heading: "Use a prompt that forbids invented causes",
+        body: [
+          "Ask AI to return four sections: what changed, what did not change, plausible explanations, and the next test. Require every numeric statement to quote a value from the supplied table. Tell it not to calculate a new metric unless it shows the formula and inputs.",
+          "A strong instruction is: describe correlation as observation, not cause. Put unsupported explanations under Hypotheses to test. If the packet cannot answer a question, write Unknown. This keeps the report from claiming that a new headline caused a conversion increase when targeting, budget, landing-page speed, or random variation may also matter.",
+          "Request a short executive version and a detailed analyst version from the same packet. The executive version should preserve the core caveat; shorter must not mean more certain.",
+        ],
+      },
+      {
+        heading: "Worked example: explain a campaign without overclaiming",
+        body: [
+          "Imagine a paid campaign where spend rose, clicks rose, landing-page conversion held roughly steady, and cost per confirmed signup worsened. During the same period, the audience broadened and a new creative set launched. The table supports the performance changes, but it does not prove which operational change caused them.",
+          "A responsible summary says that higher spend produced more traffic, the page converted that traffic at a similar rate, and acquisition efficiency declined. It lists broader targeting and creative mix as hypotheses, then recommends comparing audience segments while holding the landing page and offer stable.",
+          "An irresponsible summary says the new creative failed. The data packet does not isolate creative from audience, auction, or budget effects. AI should help maintain that distinction, and the human reviewer should enforce it.",
+        ],
+      },
+      {
+        heading: "Check every sentence against the metric table",
+        body: [
+          "Highlight each number in the draft and find its source cell. Recalculate every percentage-point and percent-change statement. These are different: moving from a two percent rate to a three percent rate is a one percentage-point increase and a fifty percent relative increase. Use the form that answers the business question without exaggeration.",
+          "Check direction words such as improved, declined, efficient, and significant. A lower cost may be better, while a lower conversion rate is usually worse. Statistical significance has a specific meaning and should not appear unless an appropriate analysis supports it.",
+          "Review segment comparisons for small samples and mix changes. An overall rate can move because the share of traffic changed even when each segment stayed similar. Add sample sizes or volume context when a rate alone could mislead.",
+        ],
+      },
+      {
+        heading: "Turn the summary into one bounded next test",
+        body: [
+          "A report should end with a decision, not a list of generic optimizations. Choose the largest useful uncertainty, define one controlled change, name the primary metric and guardrails, and state how long or how much evidence the team needs before reviewing it.",
+          "For the example above, the next test could compare two audience definitions while holding creative, offer, landing page, and budget pacing as stable as practical. The primary metric might be cost per confirmed signup, with conversion rate and lead quality as guardrails.",
+          "AI can propose tests, but the channel owner must check feasibility, platform rules, budget, and interference from other changes. Record the chosen test beside the report so the next review can close the loop.",
+        ],
+      },
+      {
+        heading: "Create versions for leaders and channel owners",
+        body: [
+          "The leadership summary should state the objective, material change, business implication, caveat, and decision in a few paragraphs. It should not bury weak measurement under a polished recommendation. The channel-owner version can include segments, creative notes, tracking details, and the test setup.",
+          "Use the same verified table for both versions. This prevents separate narratives from drifting. If the channel owner corrects an interpretation, update the shared source summary before generating another audience version.",
+          "Archive the table, definitions, annotations, final narrative, and decision together. A future analyst should be able to reconstruct why the team made the call without asking the model to guess from a screenshot.",
+        ],
+      },
+      {
+        heading: "Use a recurring AI reporting QA checklist",
+        body: [
+          "Before distribution, confirm date ranges, time zones, currency, attribution window, filters, conversion definitions, and source ownership. Check that the comparison is appropriate and that tracking or campaign structure did not change unnoticed.",
+          "Confirm that every number matches the source, every causal statement is supported or labeled as a hypothesis, every caveat that could change the decision is visible, and no private row-level data appears in the prompt or final report.",
+          "Finally, name the owner, decision, next test, and review date. A high-quality AI-assisted report is auditable and actionable; its value is not the sophistication of its language.",
+        ],
+      },
+    ],
+    takeaways: [
+      "Calculate in a trusted system; use AI to explain a verified table.",
+      "Require numeric traceability and label proposed causes as hypotheses unless the design supports causality.",
+      "Preserve definitions, tracking changes, and uncertainty in both executive and analyst versions.",
+      "End with one controlled next test, an owner, and a review date.",
+    ],
+    faq: [
+      {
+        question: "Can AI analyze marketing campaign data?",
+        answer:
+          "AI can organize a clean table, identify patterns, draft explanations, and propose checks. Calculate and validate important metrics in a trusted analytics or spreadsheet system first, and have a human verify every numeric and causal statement.",
+      },
+      {
+        question: "What data should go into an AI marketing report?",
+        answer:
+          "Provide aggregated, approved metrics, exact definitions, date ranges, campaign context, comparison periods, known tracking changes, and the decision the report supports. Exclude row-level customer data unless the system is explicitly approved for it.",
+      },
+      {
+        question: "How do you prevent AI from making up marketing metrics?",
+        answer:
+          "Supply a locked source table, require every numeric claim to cite a table value, forbid new calculations unless the formula and inputs are shown, and manually reconcile the final draft to the source.",
+      },
+      {
+        question: "Should an AI campaign summary recommend next steps?",
+        answer:
+          "Yes, but the next step should be a bounded test tied to the largest decision-relevant uncertainty. A channel owner must validate feasibility, budget, platform rules, and the metric guardrails before launch.",
+      },
+      {
+        question: "What is the difference between correlation and causation in a campaign report?",
+        answer:
+          "Correlation means two changes appeared together. Causation means the evidence supports that one produced the other. Most routine campaign comparisons reveal observations and hypotheses; a controlled design is needed before making a strong causal claim.",
+      },
+    ],
+    contextualLinks: [
+      {
+        href: "/blog/best-ai-tools-for-marketers-2026",
+        label: "Choose an AI marketing stack by workflow",
+        description:
+          "Evaluate reporting tools alongside source handling, privacy, review controls, and total time saved.",
+      },
+      {
+        href: "/blog/how-to-write-a-content-brief-with-ai",
+        label: "Connect campaign results to the original content brief",
+        description:
+          "Preserve the audience, promise, proof, hypothesis, and measurement plan before production begins.",
+      },
+      {
+        href: "/blog/how-to-turn-customer-reviews-into-marketing-copy-with-ai",
+        label: "Use customer language as a qualitative performance input",
+        description:
+          "Add reviewed themes to the reporting packet without exposing identities or overstating prevalence.",
+      },
+    ],
+    relatedSlugs: [
+      "best-ai-tools-for-marketers-2026",
+      "how-to-write-a-content-brief-with-ai",
+      "how-to-turn-customer-reviews-into-marketing-copy-with-ai",
+    ],
+  },
+  {
+    slug: "how-to-turn-customer-reviews-into-marketing-copy-with-ai",
+    title: "How to turn customer reviews into marketing copy with AI",
+    description:
+      "Extract customer language, themes, objections, and proof from approved reviews with AI while protecting identities and avoiding unsupported marketing claims.",
+    careerId: "marketing",
+    audience: "Customer marketers",
+    publishedAt: CONTENT_REFRESH_AT,
+    updatedAt: CONTENT_REFRESH_AT,
+    readingTime: "12 min read",
+    tags: ["Marketing", "Customer reviews", "Copywriting"],
+    intro:
+      "To turn customer reviews into marketing copy with AI, use only reviews your team is allowed to process, remove personal details, keep a source ID for every excerpt, and ask AI to group language without changing its meaning. A marketer then verifies each quote and turns repeated themes into testable copy—not universal customer claims.",
+    sections: [
+      {
+        heading: "Decide what the review analysis should produce",
+        body: [
+          "Customer reviews can support several distinct jobs: finding the language customers use for a problem, identifying objections, discovering desired outcomes, improving FAQs, and generating message hypotheses. Choose one job before prompting so the analysis does not become an unstructured list of positive phrases.",
+          "Write the output contract. For example: identify recurring language about setup friction, show the source IDs, separate exact wording from paraphrase, and propose three landing-page hypotheses that do not claim prevalence. This makes the review usable by a human and auditable later.",
+          "Do not treat a review set as a representative survey unless the collection method supports that conclusion. Reviews often reflect who chose to respond and where the data came from. Use the material as qualitative evidence and label it that way.",
+        ],
+      },
+      {
+        heading: "Confirm permission, privacy, and source boundaries",
+        body: [
+          "Check the terms and permissions that apply to the review source and the intended use. Public visibility does not automatically settle whether text can be copied into a vendor, reproduced in an advertisement, or attributed to an individual. Use the company's approved legal and privacy process when the answer is uncertain.",
+          "Remove names, usernames, email addresses, order details, locations, and other identifiers before analysis unless the approved workflow requires and protects them. Assign a neutral source ID such as R-014 so the team can verify the original without putting identity into the working prompt.",
+          "Separate exact quotes from internal paraphrases. Do not clean up grammar inside quotation marks or combine pieces from different people. If a phrase will be published as a testimonial, confirm the exact wording, attribution, consent, and channel requirements through the appropriate review path.",
+        ],
+      },
+      {
+        heading: "Prepare a review table that preserves context",
+        body: [
+          "Create columns for source ID, date, product or plan when relevant, approved excerpt, situation, stated problem, stated outcome, objection, sentiment, and analyst note. Keep blank fields blank rather than asking AI to infer details that the reviewer never supplied.",
+          "Context changes meaning. The sentence it took a while may describe setup, team approval, learning, shipping, or support response. Preserve enough surrounding text for a reviewer to know which interpretation is justified.",
+          "If the dataset is large, sample deliberately and document the rule. You might analyze all reviews in a time window or a balanced set across ratings and use cases. Do not let a model silently choose the most dramatic examples.",
+        ],
+      },
+      {
+        heading: "Prompt AI to cluster meaning, not manufacture consensus",
+        body: [
+          "Ask for themes with supporting source IDs, contradictory examples, and an uncertainty note. Require a minimum number of distinct sources before calling something recurring, but do not convert the count into a market-wide percentage. The count only describes the supplied set.",
+          "Request separate fields for exact language, safe paraphrase, possible copy use, and prohibited overreach. If three customers describe fewer handoffs, a safe hypothesis might be keep campaign context in one reviewable place. An unsafe claim would be that the product cuts production time by a specific percentage without measured evidence.",
+          "Tell the model to preserve negative and mixed feedback. Objections and edge cases often make copy more credible because they reveal who the offer is for, what setup it requires, and what a buyer needs to believe.",
+        ],
+      },
+      {
+        heading: "Worked example: move from reviews to message hypotheses",
+        body: [
+          "Imagine an approved set of twenty de-identified reviews for a campaign collaboration product. Several sources mention losing context across documents, a smaller group values faster approvals, and two reviews say initial setup required more structure than expected.",
+          "The AI-assisted output might produce three hypotheses: keep the brief, feedback, and decision together; make approval ownership visible; and provide a setup checklist before the first campaign. Each hypothesis links back to source IDs and includes counterevidence from the setup comments.",
+          "The landing page can test one hypothesis at a time. It should not claim that most customers save hours or that setup is effortless. The reviews did not establish either claim. A useful copy workflow increases specificity while maintaining those boundaries.",
+        ],
+      },
+      {
+        heading: "Turn themes into a copy matrix",
+        body: [
+          "Create rows for audience situation, problem language, desired change, available proof, objection, response, channel, and next action. This forces every draft to connect a customer signal to evidence and a specific job instead of decorating generic copy with a quote.",
+          "For a landing page, the theme can inform the headline and section order. For ads, it can become several narrowly different hooks. For email, it can improve the first-line situation and objection handling. Adapt the idea to the channel rather than repeating the same sentence everywhere.",
+          "Keep exact quotations in a protected source column and use them only when approved. Most working copy can use a marketer's faithful paraphrase, which still needs review for meaning and claim strength.",
+        ],
+      },
+      {
+        heading: "Review every draft for claim inflation",
+        body: [
+          "Watch for words such as everyone, always, proven, effortless, instant, and best. AI often turns a specific customer observation into a confident general statement. Replace that language with the supported situation, or gather stronger evidence before publishing it.",
+          "Check that pain language does not stigmatize or manipulate customers. Check that sensitive personal details have not survived inside examples. Confirm that a competitor comparison is factual, current, and reviewed rather than inferred from a customer's frustration.",
+          "Maintain a claim ledger for important assets: final statement, evidence, source owner, approval, and review date. This makes future refreshes safer when product behavior, customer expectations, or source permissions change.",
+        ],
+      },
+      {
+        heading: "Close the loop with content and campaign performance",
+        body: [
+          "Carry the chosen customer-language hypothesis into the content brief with its source labels and limitations. Define the intended reader, channel, conversion, and metric before generating variants. The source trail should remain attached through review.",
+          "After launch, compare performance across the message hypotheses using the team's trusted measurement process. AI can summarize the checked result, but a marketer should decide whether the evidence is strong enough to keep, revise, or retire the language.",
+          "Add new approved reviews over time and record whether they reinforce, contradict, or narrow the existing theme. The goal is a living customer-language library grounded in consent and evidence, not a one-time quote-mining exercise.",
+        ],
+      },
+    ],
+    takeaways: [
+      "Use reviews only within an approved permission and privacy workflow.",
+      "Keep source IDs, exact wording, paraphrases, and analyst inference visibly separate.",
+      "Treat themes as qualitative message hypotheses unless the collection supports broader conclusions.",
+      "Carry the source trail into the content brief, final copy, and performance review.",
+    ],
+    faq: [
+      {
+        question: "Can I use customer reviews in marketing copy?",
+        answer:
+          "It depends on the source terms, applicable rules, consent, attribution, and how the text will be used. Confirm the approved legal and privacy process before reproducing or attributing a review, especially in paid promotion.",
+      },
+      {
+        question: "How can AI analyze reviews without exposing customer data?",
+        answer:
+          "Remove identifiers and unnecessary account details, assign neutral source IDs, use only approved systems, and retain the original in an access-controlled source. Give the model only the minimum context needed for the defined analysis.",
+      },
+      {
+        question: "Can AI rewrite a customer testimonial?",
+        answer:
+          "AI can propose an internal paraphrase, but it should not be presented as a direct quote. Published testimonial wording, attribution, and edits require the appropriate customer permission and review.",
+      },
+      {
+        question: "How many reviews are needed before using a theme?",
+        answer:
+          "There is no universal number. Document the size and selection of the supplied set, show the distinct source IDs behind the theme, preserve counterexamples, and describe the result as qualitative unless the research design supports a population claim.",
+      },
+      {
+        question: "What marketing assets can customer-review themes improve?",
+        answer:
+          "They can inform content briefs, landing-page sections, FAQs, email language, sales enablement, ad hypotheses, onboarding education, and objection handling. Each use still needs channel-specific review and evidence boundaries.",
+      },
+    ],
+    contextualLinks: [
+      {
+        href: "/blog/best-ai-tools-for-marketers-2026",
+        label: "Choose tools that preserve source visibility and privacy",
+        description:
+          "Evaluate customer-insight workflows as part of a small, governed AI marketing stack.",
+      },
+      {
+        href: "/blog/how-to-write-a-content-brief-with-ai",
+        label: "Turn approved themes into a source-aware content brief",
+        description:
+          "Connect customer language to a reader decision, evidence plan, worked example, and contextual links.",
+      },
+      {
+        href: "/blog/how-to-summarize-marketing-performance-with-ai",
+        label: "Measure the message hypothesis without inventing causes",
+        description:
+          "Use a checked metric table, preserve caveats, and end the report with one bounded test.",
+      },
+    ],
+    relatedSlugs: [
+      "best-ai-tools-for-marketers-2026",
+      "how-to-write-a-content-brief-with-ai",
+      "how-to-summarize-marketing-performance-with-ai",
     ],
   },
   {

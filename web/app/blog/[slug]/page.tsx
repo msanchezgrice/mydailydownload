@@ -75,7 +75,7 @@ export default async function BlogArticlePage({
   const relatedArticles = getRelatedArticles(article);
   const assessmentHref = mastAssessmentUrl("career_hub", article.careerId);
   const url = `${SITE_URL}/blog/${article.slug}`;
-  const jsonLd = {
+  const articleJsonLd = {
     "@context": "https://schema.org",
     "@type": "Article",
     headline: article.title,
@@ -89,12 +89,53 @@ export default async function BlogArticlePage({
     articleSection: article.tags,
     isPartOf: { "@type": "WebSite", name: "My Daily Download", url: SITE_URL },
   };
+  const breadcrumbJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      {
+        "@type": "ListItem",
+        position: 1,
+        name: "Home",
+        item: SITE_URL,
+      },
+      {
+        "@type": "ListItem",
+        position: 2,
+        name: "AI career guides",
+        item: `${SITE_URL}/blog`,
+      },
+      {
+        "@type": "ListItem",
+        position: 3,
+        name: article.title,
+        item: url,
+      },
+    ],
+  };
+  const faqJsonLd = article.faq?.length
+    ? {
+        "@context": "https://schema.org",
+        "@type": "FAQPage",
+        mainEntity: article.faq.map((item) => ({
+          "@type": "Question",
+          name: item.question,
+          acceptedAnswer: {
+            "@type": "Answer",
+            text: item.answer,
+          },
+        })),
+      }
+    : null;
+  const structuredData = [articleJsonLd, breadcrumbJsonLd, faqJsonLd].filter(Boolean);
 
   return (
     <div className="min-h-screen bg-[#0B0C10]">
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(structuredData).replace(/</g, "\\u003c"),
+        }}
       />
 
       <nav className="sticky top-0 z-40 backdrop-blur-xl bg-[rgba(11,12,16,0.85)] border-b border-white/[0.06]">
@@ -116,14 +157,25 @@ export default async function BlogArticlePage({
       </nav>
 
       <article className="max-w-[760px] mx-auto px-6 pt-16 pb-24">
-        <div className="mb-10">
-          <Link
-            href="/blog"
-            className="text-sm font-semibold text-[#F2A900] hover:underline"
-          >
-            All guides
-          </Link>
-        </div>
+        <nav aria-label="Breadcrumb" className="mb-10">
+          <ol className="flex flex-wrap items-center gap-2 text-sm text-[#8A91A0]">
+            <li>
+              <Link href="/" className="hover:text-[#F2A900] transition-colors">
+                Home
+              </Link>
+            </li>
+            <li aria-hidden>/</li>
+            <li>
+              <Link href="/blog" className="hover:text-[#F2A900] transition-colors">
+                AI career guides
+              </Link>
+            </li>
+            <li aria-hidden>/</li>
+            <li className="text-[#E6E8EE]" aria-current="page">
+              {article.title}
+            </li>
+          </ol>
+        </nav>
 
         <header>
           <div className="flex flex-wrap gap-2 mb-5">
@@ -180,6 +232,50 @@ export default async function BlogArticlePage({
             ))}
           </ul>
         </section>
+
+        {article.contextualLinks && article.contextualLinks.length > 0 && (
+          <section className="mt-12">
+            <p className="section-label mb-4">Related marketing workflows</p>
+            <div className="grid gap-4">
+              {article.contextualLinks.map((contextualLink) => (
+                <Link
+                  key={contextualLink.href}
+                  href={contextualLink.href}
+                  className="block rounded-lg border border-white/[0.08] bg-[#14171D] p-5 hover:border-[#F2A900] transition-colors"
+                >
+                  <h2 className="text-lg font-semibold text-[#E6E8EE]">
+                    {contextualLink.label}
+                  </h2>
+                  <p className="mt-2 text-sm text-[#8A91A0] leading-relaxed">
+                    {contextualLink.description}
+                  </p>
+                </Link>
+              ))}
+            </div>
+          </section>
+        )}
+
+        {article.faq && article.faq.length > 0 && (
+          <section className="mt-14 pt-10 border-t border-white/[0.08]">
+            <p className="section-label mb-3">Common questions</p>
+            <h2 className="text-3xl font-bold text-[#E6E8EE]">
+              Frequently asked questions
+            </h2>
+            <div className="mt-6 space-y-4">
+              {article.faq.map((item) => (
+                <details
+                  key={item.question}
+                  className="group rounded-lg border border-white/[0.08] bg-[#14171D] p-5"
+                >
+                  <summary className="cursor-pointer list-none font-semibold text-[#E6E8EE]">
+                    {item.question}
+                  </summary>
+                  <p className="mt-3 text-[#8A91A0] leading-relaxed">{item.answer}</p>
+                </details>
+              ))}
+            </div>
+          </section>
+        )}
 
         <section className="mt-12 rounded-lg border border-[#F2A900]/30 bg-[#14171D] p-7 text-center">
           <p className="section-label mb-3">Get your free AI-readiness score</p>
