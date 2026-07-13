@@ -187,15 +187,25 @@ export async function GET(req: NextRequest) {
   }
 
   if (confirmedNow) {
-    await dispatchAnalyticsEvent({
-      eventName: "subscription_confirmed",
+    const analyticsContext = {
       url: req.url,
       userAgent: req.headers.get("user-agent") ?? undefined,
       properties: {
         career_id: sub.career_id,
         confirmed_now: true,
+        conversion_source: "double_opt_in_confirmation",
       },
-    });
+    };
+    await Promise.all([
+      dispatchAnalyticsEvent({
+        eventName: "subscription_confirmed",
+        ...analyticsContext,
+      }),
+      dispatchAnalyticsEvent({
+        eventName: "signed_up",
+        ...analyticsContext,
+      }),
+    ]);
   }
 
   return htmlResponse(

@@ -84,6 +84,11 @@ export const ANALYTICS_EVENT_TAXONOMY = {
     primaryConversion: true,
     providers: ["posthog", "ga4", "google_ads", "meta"] as const,
   },
+  signed_up: {
+    description: "Canonical portfolio signup: user completed the double-opt-in confirmation.",
+    primaryConversion: true,
+    providers: ["posthog"] as const,
+  },
   checkout_started: {
     description: "Visitor asks to start Pro checkout.",
     providers: ["posthog", "ga4", "google_ads", "meta"] as const,
