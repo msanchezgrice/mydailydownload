@@ -1,0 +1,21 @@
+{
+  "name": "My Daily Download",
+  "description": "Personalized daily email briefing of AI news, tools, and tactics, curated per career vertical and seniority level. Every item cites a real source. Now part of My AI Skill Tutor (myaiskilltutor.com).",
+  "url": "https://mydailydownload.com",
+  "provider": {
+    "organization": "My Daily Download",
+    "url": "https://mydailydownload.com"
+  },
+  "version": "1.0.0",
+  "capabilities": [
+    "personalized-ai-news-briefing",
+    "career-specific-ai-guides",
+    "sample-guide-preview"
+  ],
+  "skills": [],
+  "documentation": [
+    "https://mydailydownload.com/llms.txt",
+    "https://mydailydownload.com/agents.md"
+  ],
+  "contact": "support@mydailydownload.com"
+}
