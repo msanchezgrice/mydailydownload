@@ -164,6 +164,7 @@ function Navigation() {
 
   return (
     <nav
+      data-agent-nav="primary"
       className={`fixed top-0 left-0 right-0 z-50 h-16 flex items-center transition-all duration-300 ${
         scrolled
           ? "bg-[rgba(11,12,16,0.85)] backdrop-blur-xl border-b border-white/[0.08]"
@@ -201,6 +202,8 @@ function Navigation() {
           ))}
           <a
             href={ASSESSMENT_HREF}
+            data-testid="cta-nav-assessment"
+            data-agent-action="start-assessment"
             className="text-sm font-semibold bg-[#F2A900] text-[#0B0C10] px-5 py-2.5 rounded-lg hover:bg-[#D49500] hover:shadow-[0_0_20px_rgba(242,169,0,0.3)] hover:-translate-y-0.5 transition-all duration-200"
           >
             Get your free AI score
@@ -250,6 +253,8 @@ function Navigation() {
             <a
               href={ASSESSMENT_HREF}
               onClick={() => setMobileOpen(false)}
+              data-testid="cta-nav-assessment-mobile"
+              data-agent-action="start-assessment"
               className="text-sm font-semibold bg-[#F2A900] text-[#0B0C10] px-5 py-2.5 rounded-lg hover:bg-[#D49500] transition-colors text-center"
             >
               Get your free AI score
@@ -275,7 +280,7 @@ function formatDeliveryTime(hour: number | null, timezone: string | null): strin
 
 function SignedInNavigation() {
   return (
-    <nav className="sticky top-0 z-50 h-16 flex items-center bg-[#0B0C10]/90 backdrop-blur-xl border-b border-white/[0.08]">
+    <nav data-agent-nav="signed-in" className="sticky top-0 z-50 h-16 flex items-center bg-[#0B0C10]/90 backdrop-blur-xl border-b border-white/[0.08]">
       <div className="max-w-[1200px] mx-auto w-full px-4 flex items-center justify-between">
         <Link
           href="/"
@@ -405,6 +410,8 @@ function SignedInHome({ user }: { user: SignedInHomeUser }) {
               <div className="mt-9 flex flex-wrap gap-4">
                 <Link
                   href={`/sample?career=${careerId}`}
+                  data-testid="cta-open-guide"
+                  data-agent-action="view-sample"
                   className="inline-flex items-center gap-2 px-7 py-3.5 bg-[#F2A900] text-[#0B0C10] font-semibold rounded-lg hover:bg-[#D49500] hover:shadow-[0_0_20px_rgba(242,169,0,0.3)] hover:-translate-y-0.5 transition-all duration-200"
                 >
                   Open latest guide
@@ -412,6 +419,8 @@ function SignedInHome({ user }: { user: SignedInHomeUser }) {
                 </Link>
                 <Link
                   href={hasProfile ? "/onboarding" : "/onboarding?source=signed-in-home"}
+                  data-testid="cta-update-profile"
+                  data-agent-action="update-profile"
                   className="inline-flex items-center gap-2 px-7 py-3.5 border border-white/[0.08] text-[#E6E8EE] font-medium rounded-lg hover:border-[#F2A900] hover:text-[#F2A900] transition-all duration-200"
                 >
                   {hasProfile ? "Update profile" : "Finish profile"}
@@ -514,12 +523,16 @@ function HeroSection() {
           <div className="flex flex-wrap gap-4 mt-10">
             <a
               href={ASSESSMENT_HREF}
+              data-testid="cta-hero-assessment"
+              data-agent-action="start-assessment"
               className="px-8 py-3.5 bg-[#F2A900] text-[#0B0C10] font-semibold rounded-lg hover:bg-[#D49500] hover:shadow-[0_0_20px_rgba(242,169,0,0.3)] hover:-translate-y-0.5 transition-all duration-200"
             >
               Get your free AI-readiness score
             </a>
             <Link
               href="/sample"
+              data-testid="cta-hero-sample"
+              data-agent-action="view-sample"
               className="px-8 py-3.5 border border-white/[0.08] text-[#E6E8EE] font-medium rounded-lg hover:border-[#F2A900] hover:text-[#F2A900] transition-all duration-200"
             >
               See a Guide
@@ -572,7 +585,7 @@ function TrustBar() {
 /* ───────── How It Works ───────── */
 function HowItWorksSection() {
   return (
-    <div id="how-it-works" className="w-full bg-[#0B0C10] py-24 md:py-32 px-4">
+    <section id="how-it-works" className="w-full bg-[#0B0C10] py-24 md:py-32 px-4">
       <div className="max-w-[1200px] mx-auto">
         <div className="text-center mb-16">
           <p className="section-label mb-4">How It Works</p>
@@ -602,14 +615,14 @@ function HowItWorksSection() {
           ))}
         </div>
       </div>
-    </div>
+    </section>
   );
 }
 
 /* ───────── Career Categories ───────── */
 function CareerCategoriesSection() {
   return (
-    <div id="careers" className="w-full bg-[#1A1D23] py-24 md:py-32 px-4">
+    <section id="careers" className="w-full bg-[#1A1D23] py-24 md:py-32 px-4">
       <div className="max-w-[1200px] mx-auto">
         <div className="text-center mb-16">
           <p className="section-label mb-4">For Every Career</p>
@@ -642,7 +655,7 @@ function CareerCategoriesSection() {
           })}
         </div>
       </div>
-    </div>
+    </section>
   );
 }
 
@@ -656,7 +669,7 @@ function SamplePreviewSection() {
   }));
 
   return (
-    <div className="w-full bg-[#0B0C10] py-24 md:py-32 px-4">
+    <section className="w-full bg-[#0B0C10] py-24 md:py-32 px-4">
       <div className="max-w-[1200px] mx-auto">
         <div className="grid lg:grid-cols-2 gap-12 items-center">
           <div>
@@ -714,7 +727,7 @@ function SamplePreviewSection() {
           </div>
         </div>
       </div>
-    </div>
+    </section>
   );
 }
 
@@ -735,7 +748,7 @@ function PricingSection() {
   ];
 
   return (
-    <div id="pricing" className="w-full bg-[#1A1D23] py-24 md:py-32 px-4">
+    <section id="pricing" className="w-full bg-[#1A1D23] py-24 md:py-32 px-4">
       <div className="max-w-[800px] mx-auto">
         <div className="text-center mb-16">
           <p className="section-label mb-4">Simple Pricing</p>
@@ -769,6 +782,8 @@ function PricingSection() {
             </ul>
             <a
               href={ASSESSMENT_HREF}
+              data-testid="cta-pricing-free"
+              data-agent-action="start-assessment"
               className="block text-center w-full py-3.5 border border-white/[0.08] text-[#E6E8EE] font-semibold rounded-lg hover:border-[#F2A900] hover:text-[#F2A900] transition-all duration-200"
             >
               Get your free AI score
@@ -797,6 +812,8 @@ function PricingSection() {
             </ul>
             <a
               href={ASSESSMENT_HREF}
+              data-testid="cta-pricing-pro"
+              data-agent-action="start-assessment"
               className="block text-center w-full py-3.5 bg-[#F2A900] text-[#0B0C10] font-semibold rounded-lg hover:bg-[#D49500] hover:shadow-[0_0_20px_rgba(242,169,0,0.3)] hover:-translate-y-0.5 transition-all duration-200"
             >
               Start with the free assessment
@@ -804,15 +821,31 @@ function PricingSection() {
           </div>
         </div>
       </div>
-    </div>
+    </section>
   );
 }
 
 /* ───────── FAQ ───────── */
 function FAQSection() {
   const [openIndex, setOpenIndex] = useState<number | null>(null);
+  const faqJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    mainEntity: faqData.map((faq) => ({
+      "@type": "Question",
+      name: faq.q,
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: faq.a,
+      },
+    })),
+  };
   return (
-    <div id="faq" className="w-full bg-[#0B0C10] py-24 md:py-32 px-4">
+    <section id="faq" className="w-full bg-[#0B0C10] py-24 md:py-32 px-4">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
+      />
       <div className="max-w-[800px] mx-auto">
         <div className="text-center mb-16">
           <p className="section-label mb-4">FAQ</p>
@@ -847,7 +880,7 @@ function FAQSection() {
           })}
         </div>
       </div>
-    </div>
+    </section>
   );
 }
 
@@ -876,6 +909,8 @@ function FinalCTASection() {
             <div className="mt-10">
               <a
                 href={ASSESSMENT_HREF}
+                data-testid="cta-final-assessment"
+                data-agent-action="start-assessment"
                 className="inline-block px-12 py-4 bg-[#F2A900] text-[#0B0C10] font-semibold text-lg rounded-lg hover:bg-[#D49500] hover:shadow-[0_0_20px_rgba(242,169,0,0.3)] hover:-translate-y-0.5 transition-all duration-200"
               >
                 Get your free AI-readiness score
@@ -924,6 +959,12 @@ function SiteFooter() {
           <Link href="/refunds" className="hover:text-[#F2A900] transition-colors">
             Refunds
           </Link>
+          <a href="/llms.txt" className="hover:text-[#F2A900] transition-colors">
+            llms.txt
+          </a>
+          <a href="/agents.md" className="hover:text-[#F2A900] transition-colors">
+            agents.md
+          </a>
         </div>
         <p className="text-xs text-[#8A91A0]">
           © {new Date().getFullYear()} My Daily Download. Every item cites a real
@@ -975,14 +1016,16 @@ export default function HomeClient({ signedInUser }: HomeClientProps) {
   return (
     <div className="min-h-[100dvh] bg-[#0B0C10]">
       <Navigation />
-      <HeroSection />
-      <TrustBar />
-      <HowItWorksSection />
-      <CareerCategoriesSection />
-      <SamplePreviewSection />
-      <PricingSection />
-      <FAQSection />
-      <FinalCTASection />
+      <main>
+        <HeroSection />
+        <TrustBar />
+        <HowItWorksSection />
+        <CareerCategoriesSection />
+        <SamplePreviewSection />
+        <PricingSection />
+        <FAQSection />
+        <FinalCTASection />
+      </main>
       <SiteFooter />
     </div>
   );

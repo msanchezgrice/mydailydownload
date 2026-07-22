@@ -83,6 +83,35 @@ export const metadata: Metadata = {
   },
 };
 
+const organizationJsonLd = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Organization",
+      "@id": `${SITE_URL}/#organization`,
+      name: "My Daily Download",
+      url: SITE_URL,
+      email: "support@mydailydownload.com",
+      description:
+        "Personalized daily email briefing of AI news, tools, and tactics, curated per career vertical and seniority level. Every item cites a real source.",
+      parentOrganization: {
+        "@type": "Organization",
+        name: "My AI Skill Tutor",
+        url: "https://www.myaiskilltutor.com",
+      },
+    },
+    {
+      "@type": "WebSite",
+      "@id": `${SITE_URL}/#website`,
+      url: SITE_URL,
+      name: "My Daily Download",
+      description:
+        "AI news that actually matters to your career. Personalized by role + seniority. Real sources only.",
+      publisher: { "@id": `${SITE_URL}/#organization` },
+    },
+  ],
+};
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -127,6 +156,10 @@ fbq('track', 'PageView');`}
       className={`${inter.variable} ${jetbrainsMono.variable} h-full antialiased`}
     >
       <head>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationJsonLd) }}
+        />
         <script
           src="https://analytics.ahrefs.com/analytics.js"
           data-key="3HOyldboGt4zv2IDpiFwPQ"

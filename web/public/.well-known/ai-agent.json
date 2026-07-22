@@ -1,0 +1,27 @@
+{
+  "name": "My Daily Download",
+  "description": "Personalized daily email briefing of AI news, tools, and tactics, curated per career vertical and seniority level. Every item cites a real source. Now part of My AI Skill Tutor (myaiskilltutor.com).",
+  "url": "https://mydailydownload.com",
+  "capabilities": [
+    "personalized-ai-news-briefing",
+    "career-specific-ai-guides",
+    "sample-guide-preview"
+  ],
+  "guardrails": {
+    "allowed_actions": [
+      "Read and cite public pages (/, /sample, /blog/*, /ai-for/*, /privacy, /terms, /refunds, /contact)",
+      "Follow primary CTAs tagged with data-agent-action to the external My AI Skill Tutor assessment",
+      "Use the career preview selector on the home and sample pages",
+      "Execute the one-click unsubscribe flow (/api/unsubscribe?token=...) only with a token from the user's own email and explicit user instruction"
+    ],
+    "disallowed_actions": [
+      "Purchases, upgrades, or any payment action (no checkout exists on this site)",
+      "Account creation or sign-in on a user's behalf without explicit user instruction",
+      "Calling internal /api/* routes other than the documented unsubscribe flow",
+      "Submitting or modifying subscriber profile data at /onboarding without explicit user instruction",
+      "Scraping behind authentication"
+    ],
+    "notes": "Subscription cancellation is handled via support@mydailydownload.com or the one-click unsubscribe link in every email; there is no self-serve cancel button on the site.",
+    "contact": "support@mydailydownload.com"
+  }
+}

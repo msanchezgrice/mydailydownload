@@ -1,0 +1,47 @@
+# My Daily Download
+
+> My Daily Download is a personalized daily email briefing of AI news, tools, and tactics, curated per career vertical and seniority level, with every item citing a real source. It is now part of My AI Skill Tutor (myaiskilltutor.com); new signups start with MAST's free AI-readiness assessment.
+
+## Pages
+
+- [Home](https://mydailydownload.com/): Product overview, how it works, career verticals, pricing (Free $0/mo, Pro $19/mo), FAQ
+- [Sample guide](https://mydailydownload.com/sample): Full example of a daily briefing/guide
+- [Blog / guides](https://mydailydownload.com/blog): Career-specific AI guides
+- [Onboarding](https://mydailydownload.com/onboarding): Subscriber profile setup (career, seniority, delivery time)
+- [Contact](https://mydailydownload.com/contact): Support contact (support@mydailydownload.com)
+- [Privacy policy](https://mydailydownload.com/privacy)
+- [Terms of service](https://mydailydownload.com/terms)
+- [Refund policy](https://mydailydownload.com/refunds)
+- [Sign in](https://mydailydownload.com/sign-in): Subscriber account access (Clerk)
+
+## Career vertical hubs
+
+Personalized briefing pages per profession:
+
+- [AI for Product Management](https://mydailydownload.com/ai-for/product-management)
+- [AI for Marketing](https://mydailydownload.com/ai-for/marketing)
+- [AI for Sales](https://mydailydownload.com/ai-for/sales)
+- [AI for Operations](https://mydailydownload.com/ai-for/operations)
+- [AI for HR & People](https://mydailydownload.com/ai-for/hr-people)
+- [AI for Design](https://mydailydownload.com/ai-for/design)
+- [AI for Finance](https://mydailydownload.com/ai-for/finance)
+- [AI for Engineering](https://mydailydownload.com/ai-for/engineering)
+- [AI for Data Science](https://mydailydownload.com/ai-for/data-science)
+- [AI for Customer Success](https://mydailydownload.com/ai-for/customer-success)
+- [AI for Content Creation](https://mydailydownload.com/ai-for/content-creation)
+- [AI for Consulting](https://mydailydownload.com/ai-for/consulting)
+- [AI for Legal](https://mydailydownload.com/ai-for/legal)
+- [AI for Healthcare](https://mydailydownload.com/ai-for/healthcare)
+- [AI for Entrepreneurship](https://mydailydownload.com/ai-for/entrepreneurship)
+
+## Related products
+
+- [My AI Skill Tutor](https://www.myaiskilltutor.com): Parent product. All signup CTAs on this site funnel to MAST's free AI-readiness assessment (0-100 score plus skill-gap report).
+
+## Machine-readable files
+
+- [agents.md](https://mydailydownload.com/agents.md): Agent interaction guide
+- [Agent card](https://mydailydownload.com/.well-known/agent-card.json): A2A-style capability manifest
+- [AI agent manifest](https://mydailydownload.com/.well-known/ai-agent.json): Guardrails and allowed/disallowed actions
+- [Sitemap](https://mydailydownload.com/sitemap.xml)
+- [robots.txt](https://mydailydownload.com/robots.txt)
