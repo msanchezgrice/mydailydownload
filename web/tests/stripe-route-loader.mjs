@@ -22,7 +22,12 @@ function page(rows, params = {}) {
     (range.gte === undefined || row.created >= range.gte) &&
     (range.lt === undefined || row.created < range.lt)
   );
-  return { data: filtered, has_more: false };
+  const pageSize = Number(globalThis.__stripePageSize) || 100;
+  const start = params.starting_after === undefined
+    ? 0
+    : filtered.findIndex((row) => row.id === params.starting_after) + 1;
+  const data = filtered.slice(start, start + pageSize);
+  return { data, has_more: start + pageSize < filtered.length };
 }
 export default class Stripe {
   constructor(secretKey) {

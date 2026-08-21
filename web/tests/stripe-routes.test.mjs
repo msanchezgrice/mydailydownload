@@ -13,6 +13,7 @@ afterEach(() => {
   delete globalThis.__stripeBalanceTransactions;
   delete globalThis.__stripeRefunds;
   delete globalThis.__stripeDisputes;
+  delete globalThis.__stripePageSize;
 });
 
 test("checkout creates a subscription session for the product price without hardcoded payment methods", async () => {
@@ -71,9 +72,12 @@ test("portfolio revenue returns only authenticated, account-pinned aggregates", 
   process.env.STRIPE_SECRET_KEY = "sk_live_product";
   process.env.PORTFOLIO_METRICS_TOKEN = "portfolio-token-with-enough-entropy";
   globalThis.__stripeAccounts = [{ id: "acct_1Tf4DDPnLtm1veVC" }];
+  globalThis.__stripePageSize = 1;
   globalThis.__stripeBalanceTransactions = [
     { id: "txn_current", created: 1_720_051_200, type: "charge", amount: 1900, net: 1814 },
-    { id: "txn_prior", created: 1_719_446_400, reporting_category: "charge", amount: 1900, net: 1814 },
+    { id: "txn_refund", created: 1_720_051_250, type: "refund", amount: -500, net: -500 },
+    { id: "txn_dispute", created: 1_720_051_275, type: "dispute", amount: -100, net: -100 },
+    { id: "txn_prior", created: 1_719_446_400, type: "charge", reporting_category: "charge", amount: 1900, net: 1814 },
   ];
   globalThis.__stripeRefunds = [{ id: "re_current", created: 1_720_051_300, amount: 500 }];
   globalThis.__stripeDisputes = [{ id: "dp_current", created: 1_720_051_400 }];
@@ -105,7 +109,7 @@ test("portfolio revenue returns only authenticated, account-pinned aggregates", 
   const payload = await response.json();
   assert.deepEqual(payload.current, {
     grossCents: 1900,
-    netCents: 1814,
+    netCents: 1214,
     paidConversions: 1,
     refundCents: 500,
     refunds: 1,
@@ -116,6 +120,61 @@ test("portfolio revenue returns only authenticated, account-pinned aggregates", 
   assert.equal(payload.mode, "live");
   assert.deepEqual(payload.history.days, [{ date: "2024-07-03", grossCents: 1900 }]);
   assert.equal(Object.hasOwn(payload, "transactions"), false);
+});
+
+test("portfolio revenue fails closed when Stripe returns malformed rows", async () => {
+  process.env.STRIPE_SECRET_KEY = "sk_live_product";
+  process.env.PORTFOLIO_METRICS_TOKEN = "portfolio-token-with-enough-entropy";
+  globalThis.__stripeAccounts = [{ id: "acct_1Tf4DDPnLtm1veVC" }];
+  globalThis.__stripeBalanceTransactions = [
+    { created: 1_720_051_200, type: "charge", amount: 1900, net: 1814 },
+  ];
+
+  const { POST } = await import("../app/api/internal/portfolio-revenue/route.ts");
+  const response = await POST(new Request("https://mydailydownload.com/api/internal/portfolio-revenue", {
+    method: "POST",
+    headers: {
+      "content-type": "application/json",
+      authorization: `Bearer ${process.env.PORTFOLIO_METRICS_TOKEN}`,
+    },
+    body: JSON.stringify({
+      current: { start: 1_720_000_000, end: 1_720_100_000 },
+      prior: { start: 1_719_400_000, end: 1_719_500_000 },
+    }),
+  }));
+
+  assert.equal(response.status, 502);
+  assert.deepEqual(await response.json(), { error: "Revenue provider query failed" });
+});
+
+test("portfolio revenue fails closed when pagination exceeds the page cap", async () => {
+  process.env.STRIPE_SECRET_KEY = "sk_live_product";
+  process.env.PORTFOLIO_METRICS_TOKEN = "portfolio-token-with-enough-entropy";
+  globalThis.__stripeAccounts = [{ id: "acct_1Tf4DDPnLtm1veVC" }];
+  globalThis.__stripePageSize = 1;
+  globalThis.__stripeBalanceTransactions = Array.from({ length: 101 }, (_, index) => ({
+    id: `txn_${index}`,
+    created: 1_720_000_000 + index,
+    type: "charge",
+    amount: 100,
+    net: 95,
+  }));
+
+  const { POST } = await import("../app/api/internal/portfolio-revenue/route.ts");
+  const response = await POST(new Request("https://mydailydownload.com/api/internal/portfolio-revenue", {
+    method: "POST",
+    headers: {
+      "content-type": "application/json",
+      authorization: `Bearer ${process.env.PORTFOLIO_METRICS_TOKEN}`,
+    },
+    body: JSON.stringify({
+      current: { start: 1_720_000_000, end: 1_720_100_000 },
+      prior: { start: 1_719_400_000, end: 1_719_500_000 },
+    }),
+  }));
+
+  assert.equal(response.status, 502);
+  assert.deepEqual(await response.json(), { error: "Revenue provider query failed" });
 });
 
 test("portfolio revenue fails closed on malformed windows and account mismatch", async () => {
