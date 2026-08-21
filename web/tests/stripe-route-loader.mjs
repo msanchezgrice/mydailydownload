@@ -16,6 +16,14 @@ export class NextResponse extends Response {
 `;
 
 const stripeModule = `
+function page(rows, params = {}) {
+  const range = params.created || {};
+  const filtered = (rows || []).filter((row) =>
+    (range.gte === undefined || row.created >= range.gte) &&
+    (range.lt === undefined || row.created < range.lt)
+  );
+  return { data: filtered, has_more: false };
+}
 export default class Stripe {
   constructor(secretKey) {
     globalThis.__stripeConstructors = globalThis.__stripeConstructors || [];
@@ -35,6 +43,18 @@ export default class Stripe {
         globalThis.__stripeConstructedEvents.push({ rawBody, signature, secret });
         return JSON.parse(rawBody);
       },
+    };
+    this.accounts = {
+      retrieve: async () => (globalThis.__stripeAccounts || [])[0] || { id: "acct_missing" },
+    };
+    this.balanceTransactions = {
+      list: async (params) => page(globalThis.__stripeBalanceTransactions, params),
+    };
+    this.refunds = {
+      list: async (params) => page(globalThis.__stripeRefunds, params),
+    };
+    this.disputes = {
+      list: async (params) => page(globalThis.__stripeDisputes, params),
     };
   }
 }
