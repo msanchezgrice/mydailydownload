@@ -146,6 +146,9 @@ const REVENUE_IMPACT_MATRIX: Readonly<Record<string, { types: readonly string[];
   refund_failure: { types: ["refund_failure"], affectsGross: false },
 };
 
+const REVENUE_IMPACT_TYPES = new Set(Object.values(REVENUE_IMPACT_MATRIX).flatMap((entry) => entry.types));
+const AMBIGUOUS_BALANCE_TYPES = new Set(["adjustment"]);
+
 function revenueImpactEntry(row: BalanceRow): { types: readonly string[]; affectsGross: boolean } | undefined {
   const entry = REVENUE_IMPACT_MATRIX[row.reporting_category];
   if (entry) {
@@ -154,12 +157,16 @@ function revenueImpactEntry(row: BalanceRow): { types: readonly string[]; affect
     }
     return entry;
   }
-  // Reporting category is authoritative. Generic types such as `adjustment`
-  // legitimately appear in non-revenue categories, so unsupported categories
-  // are ignored. A payment reversal is an explicit exception until Stripe's
-  // category mapping is proven, because silently omitting that debit would
-  // overstate revenue.
+  // Stripe documents payment_reversal as removing previously credited payment
+  // funds but does not publish its reporting_category mapping. Never guess and
+  // never silently omit it: fail closed until Stripe exposes a stable category.
   if (row.type === "payment_reversal") throw new Error("Unsupported Stripe payment reversal reporting category");
+  // `adjustment` is shared by unrelated categories such as other_adjustment;
+  // reporting_category is authoritative, so only uniquely mapped types make an
+  // unsupported category a contract violation.
+  if (REVENUE_IMPACT_TYPES.has(row.type) && !AMBIGUOUS_BALANCE_TYPES.has(row.type)) {
+    throw new Error("Stripe balance transaction used a revenue-impact type without a supported reporting category");
+  }
   return undefined;
 }
 

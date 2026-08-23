@@ -354,6 +354,34 @@ test("portfolio revenue fails closed on an invalid reporting-category/type pairi
   assert.deepEqual(await response.json(), { error: "Revenue provider query failed" });
 });
 
+test("portfolio revenue fails closed when a known revenue-impact type has an unsupported reporting category", async () => {
+  process.env.STRIPE_SECRET_KEY = "sk_live_product";
+  process.env.PORTFOLIO_METRICS_TOKEN = "portfolio-token-with-enough-entropy";
+  globalThis.__stripeAccounts = [{ id: "acct_1Tf4DDPnLtm1veVC" }];
+  globalThis.__stripeBalanceTransactions = [
+    { id: "txn_charge_unknown_category", created: 1_720_051_200, currency: "usd", type: "charge", reporting_category: "other_adjustment", amount: 1900, net: 1814 },
+  ];
+  globalThis.__stripeCharges = [
+    { id: "ch_succeeded", created: 1_720_051_200, currency: "usd", amount: 1900, paid: true, status: "succeeded" },
+  ];
+
+  const { POST } = await import("../app/api/internal/portfolio-revenue/route.ts");
+  const response = await POST(new Request("https://mydailydownload.com/api/internal/portfolio-revenue", {
+    method: "POST",
+    headers: {
+      "content-type": "application/json",
+      authorization: `Bearer ${process.env.PORTFOLIO_METRICS_TOKEN}`,
+    },
+    body: JSON.stringify({
+      current: { start: 1_720_000_000, end: 1_720_100_000 },
+      prior: { start: 1_719_400_000, end: 1_719_500_000 },
+    }),
+  }));
+
+  assert.equal(response.status, 502);
+  assert.deepEqual(await response.json(), { error: "Revenue provider query failed" });
+});
+
 test("portfolio revenue ignores a generic adjustment in an unrelated reporting category", async () => {
   process.env.STRIPE_SECRET_KEY = "sk_live_product";
   process.env.PORTFOLIO_METRICS_TOKEN = "portfolio-token-with-enough-entropy";
