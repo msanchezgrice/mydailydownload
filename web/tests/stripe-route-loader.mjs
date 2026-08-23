@@ -29,6 +29,12 @@ function page(rows, params = {}) {
   const data = filtered.slice(start, start + pageSize);
   return { data, has_more: start + pageSize < filtered.length };
 }
+function list(resource, rows, params) {
+  if ((globalThis.__stripeListErrors || []).includes(resource)) {
+    throw new Error(\`Simulated Stripe \${resource} failure\`);
+  }
+  return page(rows, params);
+}
 export default class Stripe {
   constructor(secretKey) {
     globalThis.__stripeConstructors = globalThis.__stripeConstructors || [];
@@ -53,13 +59,16 @@ export default class Stripe {
       retrieve: async () => (globalThis.__stripeAccounts || [])[0] || { id: "acct_missing" },
     };
     this.balanceTransactions = {
-      list: async (params) => page(globalThis.__stripeBalanceTransactions, params),
+      list: async (params) => list("balanceTransactions", globalThis.__stripeBalanceTransactions, params),
+    };
+    this.charges = {
+      list: async (params) => list("charges", globalThis.__stripeCharges, params),
     };
     this.refunds = {
-      list: async (params) => page(globalThis.__stripeRefunds, params),
+      list: async (params) => list("refunds", globalThis.__stripeRefunds, params),
     };
     this.disputes = {
-      list: async (params) => page(globalThis.__stripeDisputes, params),
+      list: async (params) => list("disputes", globalThis.__stripeDisputes, params),
     };
   }
 }
